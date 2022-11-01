@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="meowmeowattack" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+    <link rel="stylesheet" href="http://localhost:1313/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -18,7 +18,7 @@
     <meta property="og:title" content="Notes - Attack by ports/protocols: SMB tcp:139,445" />
 <meta property="og:description" content="tcp/139 smb grep the smb version, https://github.com/rewardone/OSCPRepo/blob/master/scripts/recon_enum/smbver.sh &gt; ngrep -i -d tun0 &#39;s.?a.?m.?b.?a.*[[:digit:]]&#39;&gt; smbclient -L \\\\ip -N new smbclient doesn&rsquo;t support old protocols, to enable # edit /etc/samba/smb.conf under `global`client min protocol = LANMAN1&gt; service smbd restart smb 3.4.5 symlink directory traversal: https://github.com/roughiz/Symlink-Directory-Traversal-smb-manually List all smb shared &gt; smbclient -L \\\\{target-ip}\\ -U {user_name} Recurse all content under share &gt; smbmap -u {user} -p {pass} -H {target-ip} -d {target." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/" /><meta property="article:section" content="notes" />
+<meta property="og:url" content="http://localhost:1313/notes/attack-by-protocols/smb-tcp139445/" /><meta property="article:section" content="notes" />
 <meta property="article:published_time" content="2022-06-01T23:18:05+13:00" />
 <meta property="article:modified_time" content="2022-06-01T23:18:05+13:00" />
 
@@ -27,7 +27,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <a href="http://localhost:1313/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
       <span class="app-header-title">meowmeowattack</span>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">/meow</a>
@@ -44,6 +44,17 @@
       
   <article class="post">
     <header class="post-header">
+      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SLVHGT13XR');
+</script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: SMB tcp:139,445</h1>
       <div class="post-meta">
         <div>
@@ -61,8 +72,6 @@
           1 min read
         </div>
       </div>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
-     crossorigin="anonymous"></script>
     </header>
     <div class="post-content">
       <h1 id="tcp139-smb">tcp/139 smb</h1>
