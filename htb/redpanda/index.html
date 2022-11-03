@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="meowmeowattack" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css" />
+    <link rel="stylesheet" href="/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="HTB - RedPanda [Easy]"/>
-<meta name="twitter:description" content="TCP Scan TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!"/>
+<meta name="twitter:description" content="Scanning TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!"/>
 
     <meta property="og:title" content="HTB - RedPanda [Easy]" />
-<meta property="og:description" content="TCP Scan TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!" />
+<meta property="og:description" content="Scanning TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &lt;!" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://meowmeowattack.github.io/htb/redpanda/" /><meta property="article:section" content="htb" />
+<meta property="og:url" content="/htb/redpanda/" /><meta property="article:section" content="htb" />
 <meta property="article:published_time" content="2022-07-10T23:18:05+13:00" />
 <meta property="article:modified_time" content="2022-07-10T23:18:05+13:00" />
 
@@ -27,7 +27,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <a href=""><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
       <span class="app-header-title">meowmeowattack</span>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">/meow</a>
@@ -74,7 +74,7 @@
       </div>
     </header>
     <div class="post-content">
-      <h1 id="tcp-scan">TCP Scan</h1>
+      <h1 id="scanning">Scanning</h1>
 <pre tabindex="0"><code>TARGET=10.10.11.170 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
 
 PORT     STATE SERVICE    REASON         VERSION
