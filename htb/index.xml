@@ -6,7 +6,16 @@
     <description>Recent content in Htbs on meowmeowattack</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 30 Oct 2022 21:32:38 +1300</lastBuildDate><atom:link href="/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Nov 2022 12:02:16 +1300</lastBuildDate><atom:link href="/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB - Flight [Hard]</title>
+      <link>/htb/flight/</link>
+      <pubDate>Mon, 07 Nov 2022 12:02:16 +1300</pubDate>
+      
+      <guid>/htb/flight/</guid>
+      <description>TCP Scan &amp;gt; TARGET=10.129.69.58 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1) | http-methods: | Supported Methods: OPTIONS HEAD GET POST TRACE |_ Potentially risky methods: TRACE |_http-title: g0 Aviation |_http-server-header: Apache/2.</description>
+    </item>
+    
     <item>
       <title>HTB - Meta Two [Easy]</title>
       <link>/htb/metatwo/</link>
