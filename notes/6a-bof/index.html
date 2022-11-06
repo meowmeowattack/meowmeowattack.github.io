@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="meowmeowattack" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
+    <link rel="stylesheet" href="/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -18,7 +18,7 @@
     <meta property="og:title" content="Notes - Buffer Overflow Development" />
 <meta property="og:description" content="Understanding the registers ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame EIP: points to the next instruction, usually targeted Common MS protections DEP: Data Execution Prevention, prevent code execution from data pages ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot Older OS such as XP does not have this CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites BOF Methodology FUZZ THE APPLICATION FINDING THE EIP OFFSET CONTROL THE EIP CHECK FOR BAD CHARACTERS FINDING A RETURN ADDRESS - JMP ESP SHELL CODE GENERATION Find entry point and offset Run the app (service) and find entry point (may use wireshark) Fuzz to find bof offset, roughly the range, this may trigger error on the return address Genereate patterns to substitute the buffer &gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://meowmeowattack.github.io/notes/6a-bof/" /><meta property="article:section" content="notes" />
+<meta property="og:url" content="/notes/6a-bof/" /><meta property="article:section" content="notes" />
 <meta property="article:published_time" content="2022-07-05T23:18:05+13:00" />
 <meta property="article:modified_time" content="2022-07-05T23:18:05+13:00" />
 
@@ -27,7 +27,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <a href="/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
       <span class="app-header-title">meowmeowattack</span>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">/meow</a>

