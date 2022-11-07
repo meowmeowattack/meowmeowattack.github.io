@@ -47,7 +47,7 @@
     <loc>https://meowmeowattack.github.io/htb/outdated/</loc>
     <lastmod>2022-08-14T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/moderators/</loc>
+    <loc>https://meowmeowattack.github.io/htb/_retired/moderators/</loc>
     <lastmod>2022-08-07T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/htb/support/</loc>
@@ -98,7 +98,7 @@
     <loc>https://meowmeowattack.github.io/htb/carpediem/</loc>
     <lastmod>2022-07-03T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/retired/faculty/</loc>
+    <loc>https://meowmeowattack.github.io/htb/_retired/faculty/</loc>
     <lastmod>2022-07-03T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/notes/7a-filetransfer/</loc>
@@ -110,10 +110,10 @@
     <loc>https://meowmeowattack.github.io/notes/7c-maintain-access/</loc>
     <lastmod>2022-07-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/retired/trick/</loc>
+    <loc>https://meowmeowattack.github.io/htb/_retired/trick/</loc>
     <lastmod>2022-06-26T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/retired/overgraph/</loc>
+    <loc>https://meowmeowattack.github.io/htb/_retired/overgraph/</loc>
     <lastmod>2022-06-19T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</loc>

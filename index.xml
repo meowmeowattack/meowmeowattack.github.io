@@ -126,10 +126,10 @@
     
     <item>
       <title>HTB - Moderators [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/moderators/</link>
+      <link>https://meowmeowattack.github.io/htb/_retired/moderators/</link>
       <pubDate>Sun, 07 Aug 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/moderators/</guid>
+      <guid>https://meowmeowattack.github.io/htb/_retired/moderators/</guid>
       <description>Scanning &amp;gt; TARGET=10.129.129.9 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))|_http-title: Moderators| http-methods: |_ Supported Methods: GET HEAD POST OPTIONS|_http-server-header: Apache/2.</description>
     </item>
     
@@ -270,10 +270,10 @@
     
     <item>
       <title>HTB - Faculty [Medium]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/faculty/</link>
+      <link>https://meowmeowattack.github.io/htb/_retired/faculty/</link>
       <pubDate>Sun, 03 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/faculty/</guid>
+      <guid>https://meowmeowattack.github.io/htb/_retired/faculty/</guid>
       <description>Scanning TARGET=10.10.11.169 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu)|_http-title: Did not follow redirect to http://faculty.htb|_http-server-header: nginx/1.18.0 (Ubuntu)| http-methods: |_ Supported Methods: GET HEAD POST OPTIONSService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel domain: faculty.</description>
     </item>
     
@@ -306,19 +306,19 @@
     
     <item>
       <title>HTB - Trick [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/trick/</link>
+      <link>https://meowmeowattack.github.io/htb/_retired/trick/</link>
       <pubDate>Sun, 26 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/trick/</guid>
+      <guid>https://meowmeowattack.github.io/htb/_retired/trick/</guid>
       <description>Scanning TARGET=10.10.11.166 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)25/tcp open smtp syn-ack ttl 63 Postfix smtpd|_smtp-commands: debian.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8, CHUNKING53/tcp open domain syn-ack ttl 63 ISC BIND 9.</description>
     </item>
     
     <item>
       <title>HTB - OverGraph [Hard]</title>
-      <link>https://meowmeowattack.github.io/htb/retired/overgraph/</link>
+      <link>https://meowmeowattack.github.io/htb/_retired/overgraph/</link>
       <pubDate>Sun, 19 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/retired/overgraph/</guid>
+      <guid>https://meowmeowattack.github.io/htb/_retired/overgraph/</guid>
       <description>Scanning TARGET=10.10.11.157 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapnmap -p- --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvnmap --min-rate=1000 -T4 10.10.11.157 -Pn -sU -vvvPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)80/tcp open http syn-ack ttl 63 nginx 1.</description>
     </item>
     
