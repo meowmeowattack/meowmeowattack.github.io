@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: RSYNC tcp:873"/>
 <meta name="twitter:description" content="tcp/873 rsync https://book.hacktricks.xyz/pentesting/873-pentesting-rsync &gt; nmap -sV --script &#34;rsync-list-modules&#34; -p873 &lt;ip&gt;# list files&gt; rsync -av --list-only rsync://&lt;ip&gt;# transfer files&gt; rsync -av rsync://&lt;ip&gt;/fox ./fox # upload files&gt; rsync -av .ssh/ rsync://&lt;ip&gt;/fox/.ssh "/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: RSYNC tcp:873</h1>

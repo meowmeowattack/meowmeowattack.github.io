@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Pivoting/Networking"/>
 <meta name="twitter:description" content="chisel https://ap3x.github.io/posts/pivoting-with-chisel/ https://vegardw.medium.com/reverse-socks-proxy-using-chisel-the-easy-way-48a78df92f29 # On Kali &gt; chisel server -p &lt;kali-port&gt; --reverse # update /etc/proxychains.conf # comment out `proxy_dns` for nmap to work socks5 127.0.0.1 &lt;sock-port&gt; # On Pivot # for sock proxy &gt; chisel client --max-retry-count=1 &lt;kali-ip&gt;:&lt;kali-port&gt; R:&lt;sock-port&gt;:socks # for socks proxy # for specific port forwarding &gt; chisel client --max-retry-count=1 &lt;kali-ip&gt;:&lt;kali-port&gt; R:&lt;kali-mapping-port&gt;:localhost:&lt;target-local-port&gt; # for specific port mapping Escape org firewall outbound # On a box inside the org # edit /etc/proxychains."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Pivoting/Networking</h1>

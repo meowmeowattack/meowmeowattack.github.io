@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: FTP tcp:21, TFTP udp:69"/>
 <meta name="twitter:description" content="21/tcp ftp https://book.hacktricks.xyz/pentesting/pentesting-ftp # ftp brute force&gt; nmap --script ftp-brute -p 21 &lt;host&gt;# ftp `bounce` scan&gt; nmap -PO -b username:password@ftpserver.tld:21 -vvv -oN scan_internal.nmap 127.0.0.1 --script=&#34;default,vuln&#34;# recursive download&gt; wget -r ftp://anonymous:anonymous@&lt;ip&gt;:&lt;port&gt;/# Use `ls -la` to show hidden files# If cannot list directory, try `passive` mode lftp &gt; lftplftp :~&gt; set ftp:ssl-force falselftp :~&gt; set ssl:verify-certificate nolftp :~&gt; connect &lt;ip&gt;lftp :~&gt; login anonymous anonymouslftp :~&gt; ls udp/69 tftp https://book."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: FTP tcp:21, TFTP udp:69</h1>

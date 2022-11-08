@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Password/Hash Cracking"/>
 <meta name="twitter:description" content="bkcrack: cracking password when some files are known https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#known-plaintext-zip-attack Browser password cracking https://github.com/moonD4rk/HackBrowserData crackmeexec mass brute forcing &gt; crackmapexec ldap -u users.txt -p pass.txt -M laps &lt;target-ip&gt; gpg cracking convert private key to john format &gt; gpg2john creds.priv crack the private key &gt; john --wordlist=/usr/share/wordlists/rockyou.txt gpg.john import to keyring &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --allow-secret-key-import --import creds.priv decrypt gpg text &gt; echo &#34;qwertyuiop&#34; | gpg --batch --yes --decrypt --passphrase-fd 0 creds."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Password/Hash Cracking</h1>

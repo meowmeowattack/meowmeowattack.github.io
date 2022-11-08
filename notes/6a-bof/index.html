@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Buffer Overflow Development"/>
 <meta name="twitter:description" content="Understanding the registers ESP: keeps track of most recently referenced location on the stack (top of the stack), dynamic EBP: stores a pointer to the top of the stack when a function is called, fixed for the frame EIP: points to the next instruction, usually targeted Common MS protections DEP: Data Execution Prevention, prevent code execution from data pages ASLR: Address Space Layout Randomisation, randomise base addresses of app and dll on boot Older OS such as XP does not have this CFG: Control Flow Guard, performs validation of indirect code branching, prevents pointer overwrites BOF Methodology FUZZ THE APPLICATION FINDING THE EIP OFFSET CONTROL THE EIP CHECK FOR BAD CHARACTERS FINDING A RETURN ADDRESS - JMP ESP SHELL CODE GENERATION Find entry point and offset Run the app (service) and find entry point (may use wireshark) Fuzz to find bof offset, roughly the range, this may trigger error on the return address Genereate patterns to substitute the buffer &gt; /opt/metasploit-framework/embedded/framework/tools/exploit/pattern_create."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Buffer Overflow Development</h1>

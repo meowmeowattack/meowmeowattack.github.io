@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - PE Linux"/>
 <meta name="twitter:description" content="PE Scripts linpeas.sh: https://github.com/carlospolop/PEASS-ng GTFOBins: https://gtfobins.github.io/ Other useful scripts Linux PE References: https://guif.re/linuxeop Docker PE: https://github.com/stealthcopter/deepce linenum.sh: https://github.com/rebootuser/LinEnum linuxprivchecker.py: https://github.com/sleventyeleven/linuxprivchecker linux exploit suggester: https://github.com/mzet-/linux-exploit-suggester https://github.com/jondonas/linux-exploit-suggester-2 linux-smart-enumeration https://github.com/diego-treitos/linux-smart-enumeration Capabilities &gt; getcap -r / 2&gt;/dev/null Create account by writing to /etc/passwd # `hacker:pass123` &gt; echo &#39;hacker:$1$hacker$zVnrpoW2JQO5YUrLmAs.o1:0:0:root:/root:/bin/bash&#39; &gt;&gt; /etc/passwd cron &amp; background processes cron jobs &gt; cat /etc/cron* /etc/at* /etc/anacrontab /var/spool/cron/crontabs/root 2&gt;/dev/null | grep -v &#34;^#&#34; &gt; ls -al /etc/cron* /etc/at* &gt; crontab -l Process monitoring, look for processes run as uid=0 and that you can write to: https://book."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - PE Linux</h1>

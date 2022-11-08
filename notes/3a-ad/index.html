@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Active Directory/Kerberos"/>
 <meta name="twitter:description" content="cheatsheet Kerberos cheatsheet: https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a Tools AD attacks cheatsheet: https://wadcoms.github.io/ Ghostpack: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries PowerSharkPack: https://github.com/S3cur3Th1sSh1t/PowerSharpPack # Each script is stored in gzip &#43; base64 format &gt; base64 -d &lt;b64-strings&gt; &gt; gzip -d file.gz bloodhound # setup &gt; apt install bloodhound neo4j &gt; python3 -m pip install bloodhound # run, default pass `neo4j:neo4j` &gt; neo4j console &gt; bloodhound --no-sandbox # clear db in neo4j &gt; match (a) -[r] -&gt; () delete a, r &gt; match (a) delete a # bloodhound domain enum &gt; bloodhound-python -d {domain} -u &lt;user&gt; -p &lt;pass&gt; -dc &lt;dc-ip&gt; -c all -ns &lt;target-ns&gt; &gt; SharpHound."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Active Directory/Kerberos</h1>

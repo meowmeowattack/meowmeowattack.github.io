@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: SMB tcp:139,445"/>
 <meta name="twitter:description" content="tcp/139 smb grep the smb version, https://github.com/rewardone/OSCPRepo/blob/master/scripts/recon_enum/smbver.sh &gt; ngrep -i -d tun0 &#39;s.?a.?m.?b.?a.*[[:digit:]]&#39;&gt; smbclient -L \\\\ip -N new smbclient doesn&rsquo;t support old protocols, to enable # edit /etc/samba/smb.conf under `global`client min protocol = LANMAN1&gt; service smbd restart smb 3.4.5 symlink directory traversal: https://github.com/roughiz/Symlink-Directory-Traversal-smb-manually List all smb shared &gt; smbclient -L \\\\{target-ip}\\ -U {user_name} Recurse all content under share &gt; smbmap -u {user} -p {pass} -H {target-ip} -d {target."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: SMB tcp:139,445</h1>

