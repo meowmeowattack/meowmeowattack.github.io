@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>HTB - Forgot [Medium]</title>
+      <link>https://meowmeowattack.github.io/htb/forgot/</link>
+      <pubDate>Mon, 14 Nov 2022 13:53:21 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/forgot/</guid>
+      <description>TCP Scan &amp;gt; TARGET=10.129.71.155 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 Werkzeug/2.1.2 Python/3.8.10 |_http-server-header: Werkzeug/2.1.2 Python/3.8.10 | fingerprint-strings: | FourOhFourRequest: | HTTP/1.</description>
+    </item>
+    
+    <item>
       <title>HTB - Flight [Hard]</title>
       <link>https://meowmeowattack.github.io/htb/flight/</link>
       <pubDate>Mon, 07 Nov 2022 12:02:16 +1300</pubDate>
