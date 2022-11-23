@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>HTB - Derailed [Insane]</title>
+      <link>https://meowmeowattack.github.io/htb/derailed/</link>
+      <pubDate>Wed, 23 Nov 2022 23:29:58 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/derailed/</guid>
+      <description>TCP Scan &amp;gt; TARGET=&amp;lt;target-ip&amp;gt; &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 3000/tcp open http syn-ack ttl 63 nginx 1.18.0 |_http-title: derailed.htb |_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: nginx/1.</description>
+    </item>
+    
+    <item>
       <title></title>
       <link>https://meowmeowattack.github.io/privacy/</link>
       <pubDate>Fri, 18 Nov 2022 10:04:53 +1300</pubDate>

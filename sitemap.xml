@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://meowmeowattack.github.io/htb/derailed/</loc>
+    <lastmod>2022-11-23T23:29:58+13:00</lastmod>
+  </url><url>
+    <loc>https://meowmeowattack.github.io/htb/</loc>
+    <lastmod>2022-11-23T23:29:58+13:00</lastmod>
+  </url><url>
     <loc>https://meowmeowattack.github.io/privacy/</loc>
     <lastmod>2022-11-18T10:04:53+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/htb/forgot/</loc>
-    <lastmod>2022-11-14T13:53:21+13:00</lastmod>
-  </url><url>
-    <loc>https://meowmeowattack.github.io/htb/</loc>
     <lastmod>2022-11-14T13:53:21+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/htb/flight/</loc>

