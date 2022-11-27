@@ -2,10 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://meowmeowattack.github.io/htb/derailed/</loc>
-    <lastmod>2022-11-23T23:29:58+13:00</lastmod>
+    <loc>https://meowmeowattack.github.io/htb/precious/</loc>
+    <lastmod>2022-11-28T11:37:35+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/htb/</loc>
+    <lastmod>2022-11-28T11:37:35+13:00</lastmod>
+  </url><url>
+    <loc>https://meowmeowattack.github.io/htb/derailed/</loc>
     <lastmod>2022-11-23T23:29:58+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/privacy/</loc>
@@ -80,7 +83,7 @@
     <loc>https://meowmeowattack.github.io/notes/1b-pe-win/</loc>
     <lastmod>2022-07-11T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/redpanda/</loc>
+    <loc>https://meowmeowattack.github.io/htb/_retired/redpanda/</loc>
     <lastmod>2022-07-10T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/notes/2a-web/</loc>

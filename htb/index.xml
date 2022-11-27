@@ -6,7 +6,16 @@
     <description>Recent content in Htbs on meowmeowattack</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Nov 2022 23:29:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Nov 2022 11:37:35 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB - Precious [Easy]</title>
+      <link>https://meowmeowattack.github.io/htb/precious/</link>
+      <pubDate>Mon, 28 Nov 2022 11:37:35 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/precious/</guid>
+      <description>TCP Scan &amp;gt; TARGET=10.129.77.232 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 |_http-server-header: nginx/1.18.0 |_http-title: Did not follow redirect to http://precious.htb/ | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS Found domain: precious.</description>
+    </item>
+    
     <item>
       <title>HTB - Derailed [Insane]</title>
       <link>https://meowmeowattack.github.io/htb/derailed/</link>
@@ -180,10 +189,10 @@
     
     <item>
       <title>HTB - RedPanda [Easy]</title>
-      <link>https://meowmeowattack.github.io/htb/redpanda/</link>
+      <link>https://meowmeowattack.github.io/htb/_retired/redpanda/</link>
       <pubDate>Sun, 10 Jul 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/htb/redpanda/</guid>
+      <guid>https://meowmeowattack.github.io/htb/_retired/redpanda/</guid>
       <description>Scanning TARGET=10.10.11.170 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmapPORT STATE SERVICE REASON VERSION22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)8080/tcp open http-proxy syn-ack ttl 63| fingerprint-strings: | GetRequest: | HTTP/1.1 200 | Content-Type: text/html;charset=UTF-8| Content-Language: en-US| Date: Sun, 17 Jul 2022 21:29:22 GMT| Connection: close| &amp;lt;!</description>
     </item>
     
