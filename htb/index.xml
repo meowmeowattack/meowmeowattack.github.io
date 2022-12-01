@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Htbs on MeowMeowAttack</title>
+    <title>Htbs on MeowMeowAttack&#39;s security.log</title>
     <link>https://meowmeowattack.github.io/htb/</link>
-    <description>Recent content in Htbs on MeowMeowAttack</description>
+    <description>Recent content in Htbs on MeowMeowAttack&#39;s security.log</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 28 Nov 2022 11:37:35 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
