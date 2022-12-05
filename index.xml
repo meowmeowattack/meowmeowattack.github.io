@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>HTB - Pollution [Hard]</title>
+      <link>https://meowmeowattack.github.io/htb/pollution/</link>
+      <pubDate>Tue, 06 Dec 2022 09:50:27 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/pollution/</guid>
+      <description>TCP Scan &amp;gt; TARGET=&amp;lt;target&amp;gt; &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 80/tcp open http syn-ack Apache httpd 2.4.54 ((Debian)) |_http-server-header: Apache/2.4.54 (Debian) 6379/tcp open redis Redis key-value store Found: collect.htb Web Enum Subdomain search &amp;gt; wfuzz -c -f subdomains.</description>
+    </item>
+    
+    <item>
       <title>HTB - Precious [Easy]</title>
       <link>https://meowmeowattack.github.io/htb/precious/</link>
       <pubDate>Mon, 28 Nov 2022 11:37:35 +1300</pubDate>
