@@ -8,6 +8,17 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Nov 2022 14:49:58 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>About MeowMeow</title>
+      <link>https://meowmeowattack.github.io/about/</link>
+      <pubDate>Thu, 08 Dec 2022 14:00:59 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/about/</guid>
+      <description>Who&amp;rsquo;s MeowMeow A cyber-cat that consists of a cybernetic brain, a liquid metal frame and a bunch of artificial fur.
+Where to find MeowMeow e-mail: meowmeowattack@protonmail.com
+meow helps humanoid creatures with ctf tips, but requests asking for passwords or something doesn&amp;rsquo;t work simply because a humanoid creature hasn&amp;rsquo;t tried hard enough will be ignored, purrr~~~</description>
+    </item>
+    
+    <item>
       <title>HTB - Pollution [Hard]</title>
       <link>https://meowmeowattack.github.io/htb/pollution/</link>
       <pubDate>Tue, 06 Dec 2022 09:50:27 +1300</pubDate>
