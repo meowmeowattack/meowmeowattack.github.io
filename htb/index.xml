@@ -6,7 +6,16 @@
     <description>Recent content in Htbs on MeowMeowAttack&#39;s security.log</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Dec 2022 22:30:13 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Jan 2023 14:38:04 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB - Response [Insane]</title>
+      <link>https://meowmeowattack.github.io/htb/response/</link>
+      <pubDate>Fri, 06 Jan 2023 14:38:04 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/response/</guid>
+      <description>Scanning &amp;gt; TARGET=10.10.11.163 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0) 80/tcp open http nginx 1.21.6 |_http-title: Did not follow redirect to http://www.response.htb |_http-server-header: nginx/1.21.6 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel Domain: response.</description>
+    </item>
+    
     <item>
       <title>HTB - Soccer [Easy]</title>
       <link>https://meowmeowattack.github.io/htb/soccer/</link>
