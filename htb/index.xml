@@ -6,7 +6,16 @@
     <description>Recent content in Htbs on MeowMeowAttack&#39;s security.log</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jan 2023 14:38:04 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 Jan 2023 08:40:32 +1300</lastBuildDate><atom:link href="https://meowmeowattack.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB - BroScience [Medium]</title>
+      <link>https://meowmeowattack.github.io/htb/broscience/</link>
+      <pubDate>Mon, 09 Jan 2023 08:40:32 +1300</pubDate>
+      
+      <guid>https://meowmeowattack.github.io/htb/broscience/</guid>
+      <description>Scannings &amp;gt; TARGET=10.129.94.18 &amp;amp;&amp;amp; nmap -p$(nmap -p- --min-rate=1000 -T4 $TARGET -Pn | grep ^[0-9] | cut -d &amp;#39;/&amp;#39; -f 1 | tr &amp;#39;\n&amp;#39; &amp;#39;,&amp;#39; | sed s/,$//) -sC -sV -Pn -vvv $TARGET -oN nmap_tcp_all.nmap PORT STATE SERVICE REASON VERSION 22/tcp open ssh syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0) 80/tcp open http syn-ack ttl 63 Apache httpd 2.4.54 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-title: Did not follow redirect to https://broscience.</description>
+    </item>
+    
     <item>
       <title>HTB - Response [Insane]</title>
       <link>https://meowmeowattack.github.io/htb/response/</link>
