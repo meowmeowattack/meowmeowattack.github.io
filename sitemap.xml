@@ -83,7 +83,7 @@
     <loc>https://meowmeowattack.github.io/htb/outdated/</loc>
     <lastmod>2022-08-14T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/_retired/moderators/</loc>
+    <loc>https://meowmeowattack.github.io/htb/moderators/</loc>
     <lastmod>2022-08-07T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/htb/support/</loc>
@@ -107,7 +107,7 @@
     <loc>https://meowmeowattack.github.io/notes/1b-pe-win/</loc>
     <lastmod>2022-07-11T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/_retired/redpanda/</loc>
+    <loc>https://meowmeowattack.github.io/htb/redpanda/</loc>
     <lastmod>2022-07-10T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/notes/2a-web/</loc>
@@ -134,7 +134,7 @@
     <loc>https://meowmeowattack.github.io/htb/carpediem/</loc>
     <lastmod>2022-07-03T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/_retired/faculty/</loc>
+    <loc>https://meowmeowattack.github.io/htb/faculty/</loc>
     <lastmod>2022-07-03T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/notes/7a-filetransfer/</loc>
@@ -146,52 +146,52 @@
     <loc>https://meowmeowattack.github.io/notes/7c-maintain-access/</loc>
     <lastmod>2022-07-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/_retired/trick/</loc>
+    <loc>https://meowmeowattack.github.io/htb/trick/</loc>
     <lastmod>2022-06-26T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/htb/_retired/overgraph/</loc>
+    <loc>https://meowmeowattack.github.io/htb/overgraph/</loc>
     <lastmod>2022-06-19T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/ftp/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/irc-tcp1946660~7000/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/irc/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/mssql-tcp1433/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/mssql/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/mysql-tcp3306/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/mysql/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/nfs-tcp2049/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/nfs/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/pop3-tcp110/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/pop3/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/postgres-tcp5432/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/postgres/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/redis-tcp6379/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/redis/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/rsync-tcp873/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/rsync/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/smb/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/smtp-tcp25/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/smtp/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/snmp-udp161/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/snmp/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/ssh-tcp22/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/ssh/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
-    <loc>https://meowmeowattack.github.io/notes/attack-by-protocols/telnet-tcp23/</loc>
+    <loc>https://meowmeowattack.github.io/notes/ports-protocols/telnet/</loc>
     <lastmod>2022-06-01T23:18:05+13:00</lastmod>
   </url><url>
     <loc>https://meowmeowattack.github.io/categories/</loc>

