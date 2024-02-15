@@ -11,7 +11,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v3
         with:
           repo: meowmeowattack/mma-site
-          workflow: hugo.yaml
+          workflow: hugo.yml
           github_token: ${{ secrets.ARTIFACT_READ }}
           name: github-pages
       - run: tar -xf artifact.tar && rm artifact.tar
