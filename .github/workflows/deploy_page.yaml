@@ -1,0 +1,32 @@
+name: Deploy Site
+on:
+  repository_dispatch:
+    types: [trigger-wf]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          repo: meowmeowattack/mma-site
+          workflow: hugo.yaml
+          github_token: ${{ secrets.ARTIFACT_READ }}
+          name: github-pages
+      - run: tar -xf artifact.tar && rm artifact.tar
+      - name: upload
+        uses: actions/upload-pages-artifact@v3
+  deploy:
+    needs: setup
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
