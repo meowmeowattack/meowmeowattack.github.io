@@ -17,6 +17,8 @@ jobs:
       - run: tar -xf artifact.tar && rm artifact.tar
       - name: upload
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
   deploy:
     needs: setup
     permissions:
